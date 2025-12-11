@@ -1,0 +1,579 @@
+body {
+  font-family: "Kosugi Maru", sans-serif;
+}
+
+body {
+  text-size-adjust: 100% !important;
+  -webkit-text-size-adjust: 100% !important;
+
+}
+
+.modal-body {
+  text-size-adjust: 100% !important;
+  -webkit-text-size-adjust: 100% !important;
+  overflow-x: auto;
+  overflow-y: auto;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
+}
+
+body {
+  font-size: 20px;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-user-drag: none;
+}
+small {
+  font-size: 12px !important;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-user-drag: none;
+}
+
+h1 {
+  text-align: center;
+  font-weight: bolder;
+  font-size: 18px;
+}
+h5 {
+  text-align: center!important;
+}
+span {
+  text-align: center;
+  text-shadow: 1px 1px 2px rgb(151, 151, 151);
+}
+p {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+.hyogoaria {
+  background-color: #114400;
+  text-align: center;
+  font-size: 16px;
+}
+
+@media (min-width: 768px) {
+  a[href^="tel:"] {
+    pointer-events: none;
+  }
+}
+
+.accordion-button {
+  text-shadow: 3px 3px 2px rgb(194, 193, 193);
+  height: 45px;
+}
+.accordion-button:hover {
+  background-color: #fbe3ee;
+}
+.br {
+  border: solid 1px red;
+  padding: 3px;
+
+  border-radius: 5px;
+  background-color: white;
+  color: red;
+}
+.bg {
+  border: solid 1px black;
+  padding: 3px;
+  border-radius: 5px;
+  background-color: rgb(205, 203, 203);
+  color: black;
+}
+.by {
+  padding: 3px;
+  border-radius: 5px;
+  border: solid 2px black;
+  background-color: white;
+  color: black;
+}
+
+.bb {
+  padding: 3px;
+  border-radius: 5px;
+  background-color: rgb(3, 152, 244);
+  color: white;
+}
+.bp {
+  padding: 3px;
+  border-radius: 5px;
+  background-color: rgb(250, 156, 248);
+  color: black;
+}
+.bm {
+  padding: 3px;
+  border-radius: 5px;
+  border: solid 2px black;
+  background-color: #dcfadc;
+  color: black;
+}
+
+.bn {
+  padding: 1px 1px 1px 1px;
+  margin-top: 10px;
+  border: solid 1px navy;
+  border-radius: 5px;
+  background-color: white;
+  color: navy;
+}
+
+.bman {
+  border: solid 1px black;
+  padding: 3px;
+
+  border-radius: 5px;
+  background-color: rgb(179, 206, 249);
+  color: black;
+}
+.bnumber {
+  padding: 3px;
+  border-radius: 50%;
+  background-color: rgb(91, 152, 251);
+  color: white;
+}
+.bnumber2 {
+  padding: 3px;
+  border-radius: 50%;
+  background-color: red;
+  color: black;
+}
+.bgsya {
+  border: solid 1px black;
+  padding: 3px;
+
+  border-radius: 5px;
+  background-color: rgb(249, 210, 82);
+  color: black;
+}
+.circle {
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  color: #fff;
+  background-color: rgb(21, 133, 15);
+  line-height: 50px;
+  text-align: center;
+  border-radius: 50%;
+}
+
+.bblack {
+  padding: 3px;
+  border-radius: 5px;
+  border: solid 2px black;
+  background-color: white;
+  color: black;
+}
+.borange {
+  padding: 3px;
+  border-radius: 5px;
+  background-color: black;
+  color: rgb(245, 129, 86);
+}
+.borange2 {
+  padding: 3px;
+  border-radius: 5px;
+  background-color: orangered;
+  color: white;
+}
+.bred {
+  padding: 3px;
+  border-radius: 5px;
+  background-color: black;
+  color: red;
+}
+.bbn {
+  padding: 3px;
+  border: solid 1px navy;
+  border-radius: 5px;
+  background-color: white;
+  color: navy;
+  font-size: 10px;
+}
+.bgreen {
+  padding: 3px;
+  border-radius: 5px;
+  background-color: rgb(1, 70, 22);
+  color: white;
+}
+
+.bwhite {
+  border: solid 1px black;
+  padding: 3px;
+  border-radius: 5px;
+  background-color: white;
+  color: black;
+}
+
+.fblue {
+  color: blue;
+}
+
+.fred {
+  color: red;
+}
+.fgreen {
+  color: green;
+}
+
+.bi-eraser {
+  font-size: 2.5em;
+}
+
+.bi-share {
+  font-size: 1.5em;
+  text-align: center;
+}
+.progress {
+  height: 10px;
+}
+.btn-primary {
+  box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
+}
+.btn-success {
+  box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
+}
+.btn-warning {
+  box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
+}
+.carousel-button {
+  margin-top: 50px !important;
+  /*margin-bottom: 3px;*/
+  }
+  .button-carousel-container {
+  margin-top: 50px !important;
+  /*margin-bottom: 3px;*/
+ }
+
+thead {
+  font-size: 12px;
+}
+.mark_g {
+  background: linear-gradient(transparent 0%, hsl(120, 61%, 93%) 0%);
+  color: #16025e;
+  padding: 2px;
+  border-radius: 10px;
+  background-size: 100% 100%;
+}
+
+.mark_b {
+  background: linear-gradient(transparent 0%, #c6dcfe 0%);
+  padding: 5px;
+  border-radius: 5px;
+}
+.mark_r {
+  background: linear-gradient(transparent 0%, red 0%);
+  padding: 5px;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+summary {
+  margin: 5px;
+}
+details[open] summary ~ * {
+  animation: open 0.5s ease-in-out;
+}
+@keyframes open {
+  0% {
+    height: 0;
+  }
+  100% {
+    height: 100%;
+  }
+}
+
+details[open] p {
+  animation: grow 0.5s ease-in-out;
+}
+@keyframes grow {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+details summary:after {
+  content: "＋";
+  color: black;
+  position: absolute;
+  line-height: 0;
+  margin-top: 1rem;
+  left: 10px;
+  font-weight: 100;
+  transform-origin: center 0%;
+  font-size: 2rem;
+  display: inline-block;
+  height: 2rem;
+  transition: 800ms linear;
+}
+details[open] summary:after {
+  transform: rotate(945deg);
+}
+
+details summary::-webkit-details-marker {
+  display: none;
+}
+
+details summary {
+  width: 100%;
+  padding: 5px 0px 0px 40px;
+  cursor: pointer;
+  list-style: none;
+}
+.speechBubble {
+  position: relative;
+  display: inline-block;
+  margin-left: 0;
+  padding: 5px;
+  border-radius: 10px;
+  background-color: #79aefe;
+  text-align: center;
+  line-height: 1;
+  color: white;
+  box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
+}
+.speechBubble::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  border-style: solid;
+  border-width: 0 10px 10px 0;
+  border-color: transparent #79aefe transparent transparent;
+  translate: -100% calc(-50% - 0.2px);
+  transform: skew(0, 30deg);
+  transform-origin: right;
+}
+
+.toc-005 {
+  margin-bottom: 30px;
+  border-radius: 3px;
+  background-color: #f2f2f2;
+  max-width: 500px;
+}
+
+.toc-005 div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 10px 0;
+  background-color: #4ab2fc;
+  color: #fff;
+  font-weight: 600;
+  font-size: 1em;
+}
+
+.toc-005 ol {
+  list-style-type: disc;
+  margin: 0;
+  overflow: hidden;
+}
+
+.toc-005 > ol {
+  padding: 1em;
+}
+
+.toc-005 a {
+  color: #0c0c0c;
+  text-decoration: none;
+  font-size: 0.7em;
+  padding: 2em 1em 1em 1em;
+}
+.pagetop {
+  height: 50px;
+  width: 50px;
+  position: fixed;
+  right: 30px;
+  bottom: 30px;
+  background: #fff;
+  border: solid 2px #000;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+}
+
+.pagetop__arrow {
+  height: 10px;
+  width: 10px;
+  border-top: 3px solid #000;
+  border-right: 3px solid #000;
+  transform: translateY(20%) rotate(-45deg);
+}
+
+.kokuban {
+  color: #fff;
+  background-color: #114400;
+  margin: 3px 0 3px 0;
+  padding: 1px 5px 1px 5px;
+  border: 5px solid #a60;
+  border-radius: 3px;
+  box-shadow: 2px 2px 4px #666, 2px 2px 2px #111 inset;
+  text-shadow: 0px 0px 2px #000;
+  line-height: 1.5;
+}
+.kokuban2 {
+  color: #fff;
+  background-color: #114400;
+  margin: 3px 0 3px 0;
+  padding: 1px 5px 1px 5px;
+  border: 5px solid #a60;
+  border-radius: 3px;
+  box-shadow: 2px 2px 4px #666, 2px 2px 2px #111 inset;
+  text-shadow: 0px 0px 2px #000;
+  line-height: 1.5;
+  max-width: 600px;
+}
+details {
+  background-color: #d6f0fa;
+}
+.popup {
+  display: none;
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fff;
+  border: 1px solid #333;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+}
+.popup::backdrop {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+.bpoint {
+  padding: 5px;
+  border-radius: 20px;
+  background-color: navy;
+  color: white;
+}
+.bpoint2 {
+  padding: 5px;
+  border-radius: 20px;
+  border: 2px solid navy;
+  background-color: white;
+  color: navy;
+}
+.bpoint3 {
+  padding: 5px;
+  border-radius: 20px;
+  border: 2px solid red;
+  background-color: white;
+  color: red;
+}
+.bgmo {
+  padding: 5px;
+  background-color: blue;
+  color: white;
+}
+.button-carousel-container {
+  position: relative;
+  width: 100%;
+  margin: 15px auto;
+  overflow: hidden;  /*子要素のはみ出しを隠す */
+}
+.button-carousel-track {
+  display: flex; /* ボタンを横並びにする */
+  overflow-x: scroll; /* 横スクロールを可能にする */
+  scroll-behavior: smooth; /* スムーズスクロール */
+  -webkit-overflow-scrolling: touch; /* iOSでの慣性スクロール */
+  padding-bottom: 30px; /*スクロールバーのためのスペース */
+  scrollbar-width: none; /* Firefoxのスクロールバーを非表示にする */
+}
+
+/* Chrome, Safari, Edgeのスクロールバーを非表示にする 
+.button-carousel-track::-webkit-scrollbar {
+  display: none;
+}*/
+
+.carousel-button {
+  margin: 0 10px;
+  padding: 10px 15px;
+  border: none;
+  text-decoration: none;
+  font-size:medium;
+  cursor: pointer;
+  white-space: nowrap; /* ボタン内のテキストの折り返しを防ぐ */
+  box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.5);
+  border-radius: 100px;
+}
+#bc1{
+  background-color: #fd0378;;
+  color: white;
+}
+#bc1_1{
+  background-color: #0217fc;;
+  color: white;
+}
+#bc2{
+  background-color: #f54900;;
+  color: white;
+}
+#bc2_1{
+  background-color: #f99136;;
+  color: white;
+}
+#bc3{
+  background-color: #fdc700;;
+  color: white;
+}
+#bc4{
+  background-color: #00a63e;;
+  color: white;
+}
+#bc5{
+  background-color: #039af8;;
+  color: white;
+}
+#bc6{
+  background-color: #2b06fc;;
+  color: white;
+}
+#bc7{
+  background-color: #645fff;;
+  color: white;
+}
+#bc8{
+  background-color: #ad46ff;;
+  color: white;
+}
+#bc9{
+  background-color: #fd0378;;
+  color: white;
+}
+#bc10{
+  background-color: #0f0339;;
+  color: white;
+}
+#bc11{
+  background-color: #0f0339;;
+  color: white;
+}
+#bc12{
+  background-color: #08f7a7;;
+  color: rgb(12, 12, 12);
+}
+.carousel-control-prev {
+  height: 50px;
+  top: 50%;
+  left: 5px;
+  transform: translateY(-50%);
+  border-radius: 100%;
+  background-color: #00000080;
+}
+.carousel-control-next {
+  height: 50px;
+  top: 50%;
+   right: 5px;
+  transform: translateY(-50%);
+  border-radius: 100%;
+  background-color: #00000080;
+}
