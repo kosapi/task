@@ -1,0 +1,94 @@
+# ======================================
+# task CMS - マルチ環境対応 .htaccess
+# ======================================
+
+# セキュリティ設定
+Options -Indexes
+
+# UTF-8 エンコーディング
+AddDefaultCharset UTF-8
+
+# ========== リライトルール ==========
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /task/
+    
+    # 実際のファイル・ディレクトリはスキップ
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+</IfModule>
+
+# ========== ファイルアクセス制限 ==========
+
+# data/ディレクトリへの直接アクセスを禁止
+<FilesMatch "\.(json)$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# config.php への直接アクセスを禁止
+<FilesMatch "^config\.php$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# ========== アップロードサイズ制限 ==========
+php_value upload_max_filesize 20M
+php_value post_max_size 20M
+php_value memory_limit 256M
+
+# ========== セッション設定 ==========
+php_value session.cookie_httponly 1
+# ローカル環境では secure=0, 本番環境では secure=1 に設定
+php_value session.cookie_secure 0
+php_value session.use_strict_mode 1
+
+# ========== エラー表示制御 ==========
+# php_flag display_errors off  # 本番環境では有効化
+
+# ========== セキュリティヘッダー ==========
+<IfModule mod_headers.c>
+    # クリックジャッキング対策
+    Header always set X-Frame-Options "SAMEORIGIN"
+    
+    # MIME タイプスニッフィング対策
+    Header always set X-Content-Type-Options "nosniff"
+    
+    # XSS 対策
+    Header always set X-XSS-Protection "1; mode=block"
+    
+    # Referrer ポリシー
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# ========== gzip圧縮 ==========
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/json
+    AddOutputFilterByType DEFLATE image/svg+xml
+</IfModule>
+
+# ========== キャッシュ制御 ==========
+<IfModule mod_expires.c>
+    ExpiresActive On
+    
+    # キャッシュなし（変更頻度が高いファイル）
+    ExpiresByType text/html "now"
+    ExpiresByType application/json "now"
+    ExpiresByType application/x-www-form-urlencoded "now"
+    
+    # 短期キャッシュ（スタティックファイル）
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+    ExpiresByType image/jpeg "access plus 3 months"
+    ExpiresByType image/png "access plus 3 months"
+    ExpiresByType image/gif "access plus 3 months"
+    ExpiresByType image/svg+xml "access plus 3 months"
+    ExpiresByType image/webp "access plus 3 months"
+</IfModule>
+
+# ========== MIME タイプ設定 ==========
+<IfModule mod_mime.c>
+    AddType application/javascript js
+    AddType application/json json
+    AddType text/plain txt
+</IfModule>

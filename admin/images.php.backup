@@ -1,0 +1,562 @@
+<?php
+require_once __DIR__ . '/../config.php';
+require_once __DIR__ . '/../includes/functions.php';
+
+check_login();
+
+$success_message = '';
+$error_message = '';
+
+// 画像の使用状況をチェックする関数
+function check_image_usage($filename, $folder) {
+    $index_file = dirname(__DIR__) . '/index.html';
+    if (!file_exists($index_file)) {
+        return [];
+    }
+    
+    $content = file_get_contents($index_file);
+    $usage = [];
+    
+    // パターンを構築（フォルダによって変わる）
+    if ($folder === 'root') {
+        $patterns = [
+            '/"' . preg_quote($filename, '/') . '"/',
+            '/\'' . preg_quote($filename, '/') . '\'/',
+            '/=' . preg_quote($filename, '/') . '[\s>]/'
+        ];
+    } elseif ($folder === 'img') {
+        $patterns = [
+            '/img\/' . preg_quote($filename, '/') . '/',
+            '/img%2F' . preg_quote(rawurlencode($filename), '/') . '/'
+        ];
+    } else {
+        $patterns = [
+            '/uploads\/' . preg_quote($filename, '/') . '/',
+            '/uploads%2F' . preg_quote(rawurlencode($filename), '/') . '/'
+        ];
+    }
+    
+    $lines = explode("\n", $content);
+    foreach ($lines as $line_num => $line) {
+        foreach ($patterns as $pattern) {
+            if (preg_match($pattern, $line)) {
+                $usage[] = [
+                    'line' => $line_num + 1,
+                    'content' => trim($line)
+                ];
+                break;
+            }
+        }
+    }
+    
+    return $usage;
+}
+
+// 画像一覧を取得（root、img、uploadsの3箇所から）
+$image_files = [];
+$allowed_exts = ALLOWED_EXTENSIONS;
+
+// ルート直下から取得
+$root_dir = dirname(__DIR__);
+$root_files = glob($root_dir . '/*');
+foreach ($root_files as $file) {
+    if (is_file($file)) {
+        $ext = get_file_extension($file);
+        $filename = basename($file);
+        // ファビコンや特定のファイルは除外（PHPファイル、HTMLファイルなど）
+        if (in_array($ext, $allowed_exts) && 
+            !in_array($ext, ['php', 'html', 'css', 'js']) &&
+            !is_dir($file)) {
+            $image_files[] = [
+                'path' => $file,
+                'name' => $filename,
+                'size' => filesize($file),
+                'modified' => filemtime($file),
+                'url' => '/task/' . $filename,
+                'folder' => 'root',
+                'folder_label' => 'ルート',
+                'deletable' => true,
+                'movable' => true
+            ];
+        }
+    }
+}
+
+// uploadsフォルダから取得
+$upload_files = glob(UPLOADS_DIR . '/*');
+foreach ($upload_files as $file) {
+    if (is_file($file)) {
+        $ext = get_file_extension($file);
+        if (in_array($ext, $allowed_exts)) {
+            $image_files[] = [
+                'path' => $file,
+                'name' => basename($file),
+                'size' => filesize($file),
+                'modified' => filemtime($file),
+                'url' => '/task/uploads/' . basename($file),
+                'folder' => 'uploads',
+                'folder_label' => 'アップロード',
+                'deletable' => true,
+                'movable' => false
+            ];
+        }
+    }
+}
+
+// imgフォルダから取得
+$img_dir = dirname(__DIR__) . '/img';
+if (is_dir($img_dir)) {
+    $img_files = glob($img_dir . '/*');
+    foreach ($img_files as $file) {
+        if (is_file($file)) {
+            $ext = get_file_extension($file);
+            if (in_array($ext, $allowed_exts)) {
+                $image_files[] = [
+                    'path' => $file,
+                    'name' => basename($file),
+                    'size' => filesize($file),
+                    'modified' => filemtime($file),
+                    'url' => '/task/img/' . basename($file),
+                    'folder' => 'img',
+                    'folder_label' => 'imgフォルダ',
+                    'deletable' => true,
+                    'movable' => false
+                ];
+            }
+        }
+    }
+}
+
+// 更新日時でソート
+usort($image_files, function($a, $b) {
+    return $b['modified'] - $a['modified'];
+});
+
+// アップロード処理
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['image'])) {
+    $csrf_token = $_POST['csrf_token'] ?? '';
+    
+    if (!verify_csrf_token($csrf_token)) {
+        $error_message = 'セキュリティエラーが発生しました。';
+    } else {
+        $file = $_FILES['image'];
+        
+        if ($file['error'] === UPLOAD_ERR_OK) {
+            $ext = get_file_extension($file['name']);
+            
+            if (!in_array($ext, ALLOWED_EXTENSIONS)) {
+                $error_message = '許可されていないファイル形式です。';
+            } elseif ($file['size'] > MAX_UPLOAD_SIZE) {
+                $error_message = 'ファイルサイズが大きすぎます（最大5MB）。';
+            } else {
+                $safe_filename = generate_safe_filename($file['name']);
+                $destination = UPLOADS_DIR . '/' . $safe_filename;
+                
+                if (move_uploaded_file($file['tmp_name'], $destination)) {
+                    $success_message = '画像をアップロードしました: ' . $safe_filename;
+                    // リロードして一覧を更新
+                    header('Location: /task/admin/images.php?uploaded=1');
+                    exit;
+                } else {
+                    $error_message = 'アップロードに失敗しました。';
+                }
+            }
+        } else {
+            $error_message = 'アップロードエラー: ' . $file['error'];
+        }
+    }
+}
+
+// 削除処理
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
+    $csrf_token = $_POST['csrf_token'] ?? '';
+    $filename = $_POST['filename'] ?? '';
+    $folder = $_POST['folder'] ?? '';
+    
+    if (!verify_csrf_token($csrf_token)) {
+        $error_message = 'セキュリティエラーが発生しました。';
+    } else {
+        // 使用状況をチェック
+        $usage = check_image_usage($filename, $folder);
+        
+        if ($folder === 'uploads') {
+            $filepath = UPLOADS_DIR . '/' . basename($filename);
+        } elseif ($folder === 'img') {
+            $filepath = dirname(__DIR__) . '/img/' . basename($filename);
+        } elseif ($folder === 'root') {
+            $filepath = dirname(__DIR__) . '/' . basename($filename);
+        } else {
+            $error_message = '無効なフォルダが指定されました。';
+            $filepath = '';
+        }
+        
+        if ($filepath && file_exists($filepath) && unlink($filepath)) {
+            $success_message = '画像を削除しました。';
+            header('Location: /task/admin/images.php?deleted=1');
+            exit;
+        } else {
+            $error_message = '削除に失敗しました。';
+        }
+    }
+}
+
+// 移動処理（ルート画像をimgフォルダへ）+ HTML自動修正
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['move_to_img'])) {
+    $csrf_token = $_POST['csrf_token'] ?? '';
+    $filename = $_POST['filename'] ?? '';
+    
+    if (!verify_csrf_token($csrf_token)) {
+        $error_message = 'セキュリティエラーが発生しました。';
+    } else {
+        $source = dirname(__DIR__) . '/' . basename($filename);
+        $destination = dirname(__DIR__) . '/img/' . basename($filename);
+        $index_file = dirname(__DIR__) . '/index.html';
+        
+        if (!file_exists($source)) {
+            $error_message = 'ファイルが見つかりませんでした。';
+        } elseif (file_exists($destination)) {
+            $error_message = 'img/フォルダに同名のファイルが既に存在します。';
+        } else {
+            // バックアップ作成
+            $backup_dir = dirname(__DIR__) . '/data/backups';
+            if (!is_dir($backup_dir)) {
+                mkdir($backup_dir, 0755, true);
+            }
+            $backup_file = $backup_dir . '/index_' . date('Y-m-d_H-i-s') . '.html';
+            
+            if (!copy($index_file, $backup_file)) {
+                $error_message = 'バックアップの作成に失敗しました。';
+            } else {
+                // HTMLファイルのパスを修正
+                $html_content = file_get_contents($index_file);
+                $old_patterns = [
+                    '/"' . preg_quote($filename, '/') . '"/',
+                    '/\'' . preg_quote($filename, '/') . '\'/',
+                    '/src=' . preg_quote($filename, '/') . '/',
+                    '/href=' . preg_quote($filename, '/') . '/'
+                ];
+                
+                $replacements = 0;
+                foreach ($old_patterns as $pattern) {
+                    if (preg_match($pattern, $html_content)) {
+                        // パターンに応じて適切に置換
+                        $html_content = preg_replace(
+                            '/(["\'=])(' . preg_quote($filename, '/') . ')/', 
+                            '$1img/$2', 
+                            $html_content,
+                            -1,
+                            $count
+                        );
+                        $replacements += $count;
+                    }
+                }
+                
+                // HTMLファイルを保存
+                if (file_put_contents($index_file, $html_content) === false) {
+                    $error_message = 'HTMLファイルの更新に失敗しました。';
+                    // バックアップから復元
+                    copy($backup_file, $index_file);
+                } else {
+                    // 画像ファイルを移動
+                    if (rename($source, $destination)) {
+                        $success_message = "画像をimg/フォルダへ移動しました。HTMLファイルのパスを{$replacements}箇所修正しました。";
+                        header('Location: /task/admin/images.php?moved=1');
+                        exit;
+                    } else {
+                        $error_message = '画像ファイルの移動に失敗しました。';
+                        // HTMLを元に戻す
+                        copy($backup_file, $index_file);
+                    }
+                }
+            }
+        }
+    }
+}
+
+if (isset($_GET['uploaded'])) {
+    $success_message = '画像をアップロードしました。';
+}
+if (isset($_GET['deleted'])) {
+    $success_message = '画像を削除しました。';
+}
+if (isset($_GET['moved'])) {
+    $success_message = '画像を移動しました。';
+}
+
+$csrf_token = generate_csrf_token();
+
+render_admin_header('画像管理');
+?>
+
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">画像管理</h1>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#uploadModal">
+        <i class="bi bi-upload me-1"></i>画像をアップロード
+    </button>
+</div>
+
+<?php if ($success_message): ?>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="bi bi-check-circle me-2"></i><?php echo h($success_message); ?>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+<?php endif; ?>
+
+<?php if ($error_message): ?>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="bi bi-exclamation-triangle me-2"></i><?php echo h($error_message); ?>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+<?php endif; ?>
+
+<div class="card mb-3">
+    <div class="card-body">
+        <div class="row align-items-center">
+            <div class="col-md-4">
+                <div class="text-center">
+                    <h3 class="mb-0"><?php echo count($image_files); ?></h3>
+                    <small class="text-muted">アップロード済み画像</small>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="text-center">
+                    <h3 class="mb-0"><?php echo number_format(array_sum(array_column($image_files, 'size')) / 1024 / 1024, 2); ?> MB</h3>
+                    <small class="text-muted">合計サイズ</small>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="text-center">
+                    <h3 class="mb-0"><?php echo implode(', ', array_map('strtoupper', ALLOWED_EXTENSIONS)); ?></h3>
+                    <small class="text-muted">許可形式</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">画像一覧</h5>
+        <div class="btn-group btn-group-sm" role="group">
+            <input type="radio" class="btn-check" name="folderFilter" id="filterAll" autocomplete="off" checked>
+            <label class="btn btn-outline-primary" for="filterAll">すべて</label>
+            
+            <input type="radio" class="btn-check" name="folderFilter" id="filterRoot" autocomplete="off">
+            <label class="btn btn-outline-primary" for="filterRoot">ルート</label>
+            
+            <input type="radio" class="btn-check" name="folderFilter" id="filterImg" autocomplete="off">
+            <label class="btn btn-outline-primary" for="filterImg">imgフォルダ</label>
+            
+            <input type="radio" class="btn-check" name="folderFilter" id="filterUploads" autocomplete="off">
+            <label class="btn btn-outline-primary" for="filterUploads">アップロード</label>
+        </div>
+    </div>
+    <div class="card-body">
+        <?php if (empty($image_files)): ?>
+            <p class="text-muted text-center py-5">
+                <i class="bi bi-images" style="font-size: 3rem; opacity: 0.3;"></i><br>
+                アップロードされた画像がありません。<br>
+                <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#uploadModal">
+                    最初の画像をアップロード
+                </button>
+            </p>
+        <?php else: ?>
+            <div class="row g-3" id="imageGrid">
+                <?php foreach ($image_files as $image): ?>
+                    <div class="col-md-4 col-lg-3 image-item" data-folder="<?php echo h($image['folder']); ?>">
+                        <div class="card h-100">
+                            <div class="position-relative" style="height: 200px; overflow: hidden; background: #f8f9fa;">
+                                <?php 
+                                $badge_color = 'info';
+                                if ($image['folder'] === 'uploads') $badge_color = 'success';
+                                elseif ($image['folder'] === 'root') $badge_color = 'warning';
+                                ?>
+                                <span class="badge bg-<?php echo $badge_color; ?> position-absolute top-0 start-0 m-2">
+                                    <?php echo h($image['folder_label']); ?>
+                                </span>
+                                <?php if (in_array(get_file_extension($image['name']), ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'])): ?>
+                                    <img src="<?php echo h($image['url']); ?>" class="w-100 h-100" style="object-fit: contain;" alt="<?php echo h($image['name']); ?>">
+                                <?php else: ?>
+                                    <div class="d-flex align-items-center justify-content-center h-100">
+                                        <i class="bi bi-file-earmark text-muted" style="font-size: 4rem;"></i>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+                            <div class="card-body">
+                                <h6 class="card-title text-truncate" title="<?php echo h($image['name']); ?>">
+                                    <?php echo h($image['name']); ?>
+                                </h6>
+                                <p class="card-text small text-muted mb-2">
+                                    <i class="bi bi-calendar me-1"></i><?php echo date('Y/m/d H:i', $image['modified']); ?><br>
+                                    <i class="bi bi-hdd me-1"></i><?php echo number_format($image['size'] / 1024, 2); ?> KB
+                                </p>
+                                <?php 
+                                // 使用状況をチェック
+                                $usage = check_image_usage($image['name'], $image['folder']);
+                                if (!empty($usage)):
+                                ?>
+                                <div class="alert alert-warning alert-sm p-2 mb-2">
+                                    <small><i class="bi bi-exclamation-triangle me-1"></i><?php echo count($usage); ?>箇所で使用中</small>
+                                    <button type="button" class="btn btn-link btn-sm p-0 ms-1" onclick="showUsage('<?php echo h($image['name']); ?>', '<?php echo h($image['folder']); ?>')">
+                                        詳細
+                                    </button>
+                                </div>
+                                <?php endif; ?>
+                                <div class="d-flex gap-2 mb-2">
+                                    <button type="button" class="btn btn-sm btn-outline-primary flex-fill" onclick="copyUrl('<?php echo h($image['url']); ?>')">
+                                        <i class="bi bi-clipboard"></i>
+                                    </button>
+                                    <a href="<?php echo h($image['url']); ?>" target="_blank" class="btn btn-sm btn-outline-info flex-fill">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                    <button type="button" class="btn btn-sm btn-outline-danger flex-fill" onclick="deleteImage('<?php echo h($image['name']); ?>', '<?php echo h($image['folder']); ?>')">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </div>
+                                <?php if ($image['folder'] === 'root'): ?>
+                                    <button type="button" class="btn btn-sm btn-outline-success w-100" onclick="moveToImg('<?php echo h($image['name']); ?>')">
+                                        <i class="bi bi-folder-symlink me-1"></i>img/へ移動
+                                    </button>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+    </div>
+</div>
+
+<!-- アップロードモーダル -->
+<div class="modal fade" id="uploadModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="POST" action="" enctype="multipart/form-data">
+                <input type="hidden" name="csrf_token" value="<?php echo h($csrf_token); ?>">
+                
+                <div class="modal-header">
+                    <h5 class="modal-title">画像をアップロード</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">画像ファイル</label>
+                        <input type="file" class="form-control" name="image" accept="image/*,.pdf" required>
+                        <div class="form-text">
+                            最大サイズ: 5MB<br>
+                <input type="hidden" name="folder" id="deleteFolder">
+                
+                <div class="modal-header">
+                    <h5 class="modal-title">削除確認</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>以下の画像を削除してもよろしいですか？</p>
+                    <p class="text-danger"><strong id="deleteImageName"></strong></p>
+                    <p class="small text-muted">フォルダ: <span id="deleteFolderName"></span></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
+                    <button type="submit" class="btn btn-danger">削除</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- 移動確認モーダル -->
+<div class="modal fade" id="moveModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="POST" action="">
+                <input type="hidden" name="csrf_token" value="<?php echo h($csrf_token); ?>">
+                <input type=", folder) {
+    document.getElementById('deleteFilename').value = filename;
+    document.getElementById('deleteFolder').value = folder;
+    document.getElementById('deleteImageName').textContent = filename;
+    document.getElementById('deleteFolderName').textContent = folder === 'uploads' ? 'アップロード' : '既存画像';
+    new bootstrap.Modal(document.getElementById('deleteModal')).show();
+}
+
+function moveImage(filename) {
+    document.getElementById('moveFilename').value = filename;
+    document.getElementById('moveImageName').textContent = filename;
+    new bootstrap.Modal(document.getElementById('moveModal')).show();
+}
+
+// フォルダフィルタ機能
+document.addEventListener('DOMContentLoaded', function() {
+    const filterButtons = document.querySelectorAll('input[name="folderFilter"]');
+    
+    filterButtons.forEach(button => {
+        button.addEventListener('change', function() {
+            const filterValue = this.id.replace('filter', '').toLowerCase();
+            const imageItems = document.querySelectorAll('.image-item');
+            
+            imageItems.forEach(item => {
+                if (filterValue === 'all') {
+                    item.style.display = '';
+                } else {
+                    const itemFolder = item.getAttribute('data-folder');
+                    item.style.display = itemFolder === filterValue ? '' : 'none';
+                }
+            });
+        });
+    });
+});                   <h5 class="modal-title">移動確認</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>以下の画像を <strong>uploads</strong> フォルダへ移動してもよろしいですか？</p>
+                    <p class="text-primary"><strong id="moveImageName"></strong></p>
+                    <div class="alert alert-info small mb-0">
+                        <i class="bi bi-info-circle me-1"></i>
+                        移動後は「アップロード」フォルダで管理されます。
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
+                    <button type="submit" class="btn btn-primary">移動
+
+<!-- 削除確認モーダル -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="POST" action="">
+                <input type="hidden" name="csrf_token" value="<?php echo h($csrf_token); ?>">
+                <input type="hidden" name="delete" value="1">
+                <input type="hidden" name="filename" id="deleteFilename">
+                
+                <div class="modal-header">
+                    <h5 class="modal-title">削除確認</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>以下の画像を削除してもよろしいですか？</p>
+                    <p class="text-danger"><strong id="deleteImageName"></strong></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
+                    <button type="submit" class="btn btn-danger">削除</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+function copyUrl(url) {
+    const fullUrl = window.location.origin + url;
+    navigator.clipboard.writeText(fullUrl).then(() => {
+        alert('URLをコピーしました: ' + fullUrl);
+    });
+}
+
+function deleteImage(filename) {
+    document.getElementById('deleteFilename').value = filename;
+    document.getElementById('deleteImageName').textContent = filename;
+    new bootstrap.Modal(document.getElementById('deleteModal')).show();
+}
+</script>
+
+<?php render_admin_footer(); ?>

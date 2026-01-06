@@ -13,7 +13,7 @@ body {
   -webkit-text-size-adjust: 100% !important;
   overflow-x: auto;
   overflow-y: auto;
-  white-space: nowrap;
+  white-space: normal;
   -webkit-overflow-scrolling: touch;
 }
 

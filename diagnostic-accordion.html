@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>アコーディオン動作診断</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .diagnostic-box {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 10px 0;
+            border-left: 4px solid #0d6efd;
+            font-family: monospace;
+            word-break: break-all;
+        }
+        .status-ok { color: #28a745; font-weight: bold; }
+        .status-error { color: #dc3545; font-weight: bold; }
+        .status-warning { color: #ffc107; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1><i class="bi bi-bug"></i> アコーディオン動作診断</h1>
+        
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">1. 環境確認</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="env-check"></div>
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-header bg-info text-white">
+                        <h5 class="mb-0">2. DOM 要素確認</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="dom-check"></div>
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0">3. アコーディオン操作テスト</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="mb-3">下記のボタンで異なる方法を試してみてください：</p>
+                        <div class="btn-group-vertical w-100" role="group">
+                            <button class="btn btn-warning text-start" onclick="testMethod('click')">
+                                <strong>方法1:</strong> ボタンのクリックイベント
+                            </button>
+                            <button class="btn btn-warning text-start" onclick="testMethod('bootstrap')">
+                                <strong>方法2:</strong> Bootstrap Collapse API
+                            </button>
+                            <button class="btn btn-warning text-start" onclick="testMethod('jquery')">
+                                <strong>方法3:</strong> jQuery collapse()
+                            </button>
+                            <button class="btn btn-warning text-start" onclick="testMethod('manual')">
+                                <strong>方法4:</strong> 手動 show クラス追加
+                            </button>
+                            <button class="btn btn-warning text-start" onclick="testMethod('hash')">
+                                <strong>方法5:</strong> ハッシュ変更 (#collapse0)
+                            </button>
+                        </div>
+                        <div id="test-result" class="mt-3"></div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header bg-danger text-white">
+                        <h5 class="mb-0">4. サンプル HTML 確認</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="mb-2">最初のアコーディオン要素の HTML：</p>
+                        <pre id="html-sample" style="background: #f8f9fa; padding: 10px; border-radius: 4px; overflow-x: auto; font-size: 0.75rem;"></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function runDiagnostics() {
+            // 環境確認
+            const envDiv = document.getElementById('env-check');
+            let envHtml = `
+                <div class="diagnostic-box">
+                    <strong>jQuery:</strong> <span class="${typeof jQuery !== 'undefined' ? 'status-ok' : 'status-error'}">
+                        ${typeof jQuery !== 'undefined' ? '✓ loaded (' + jQuery.fn.jquery + ')' : '✗ NOT loaded'}
+                    </span><br>
+                    <strong>Bootstrap:</strong> <span class="${typeof bootstrap !== 'undefined' ? 'status-ok' : 'status-error'}">
+                        ${typeof bootstrap !== 'undefined' ? '✓ loaded' : '✗ NOT loaded'}
+                    </span><br>
+                    <strong>window.HashNav:</strong> <span class="${typeof window.HashNav !== 'undefined' ? 'status-ok' : 'status-error'}">
+                        ${typeof window.HashNav !== 'undefined' ? '✓ available' : '✗ NOT available'}
+                    </span><br>
+                    <strong>modal-autoshow.js:</strong> <span class="${typeof window.debugHashNav !== 'undefined' ? 'status-ok' : 'status-error'}">
+                        ${typeof window.debugHashNav !== 'undefined' ? '✓ loaded' : '✗ NOT loaded'}
+                    </span>
+                </div>
+            `;
+            envDiv.innerHTML = envHtml;
+
+            // DOM 要素確認
+            const domDiv = document.getElementById('dom-check');
+            const collapses = document.querySelectorAll('[id^="collapse"]');
+            const accordion = document.getElementById('accordion');
+            
+            let domHtml = `<div class="diagnostic-box">`;
+            domHtml += `<strong>Accordion div:</strong> <span class="${accordion ? 'status-ok' : 'status-error'}">
+                ${accordion ? '✓ found' : '✗ NOT found'}
+            </span><br>`;
+            domHtml += `<strong>Collapse elements:</strong> <span class="${collapses.length > 0 ? 'status-ok' : 'status-error'}">
+                ${collapses.length} found
+            </span><br>`;
+            
+            if (collapses.length > 0) {
+                domHtml += `<hr><strong>最初のアコーディオン (collapse0):</strong><br>`;
+                const first = document.getElementById('collapse0');
+                if (first) {
+                    domHtml += `<span class="status-ok">✓ Found</span><br>`;
+                    domHtml += `<small>Parent: ${first.parentElement ? first.parentElement.className : 'none'}</small><br>`;
+                    domHtml += `<small>Classes: ${first.className}</small><br>`;
+                    
+                    const button = first.closest('.accordion-item')?.querySelector('[data-bs-toggle="collapse"]');
+                    if (button) {
+                        domHtml += `<span class="status-ok">✓ Button found</span><br>`;
+                        domHtml += `<small>data-bs-target: ${button.getAttribute('data-bs-target')}</small>`;
+                    } else {
+                        domHtml += `<span class="status-error">✗ Button NOT found</span>`;
+                    }
+                } else {
+                    domHtml += `<span class="status-error">✗ NOT found</span>`;
+                }
+            }
+            domHtml += `</div>`;
+            domDiv.innerHTML = domHtml;
+
+            // HTML サンプル表示
+            const htmlDiv = document.getElementById('html-sample');
+            const first = document.getElementById('collapse0');
+            if (first) {
+                const parent = first.closest('.accordion-item');
+                if (parent) {
+                    htmlDiv.textContent = parent.outerHTML.substring(0, 500) + '...';
+                } else {
+                    htmlDiv.textContent = first.outerHTML.substring(0, 500) + '...';
+                }
+            } else {
+                htmlDiv.textContent = 'collapse0 element not found';
+            }
+        }
+
+        function testMethod(method) {
+            console.log(`Testing method: ${method}`);
+            const resultDiv = document.getElementById('test-result');
+            let result = '';
+            let success = false;
+
+            try {
+                const collapse0 = document.getElementById('collapse0');
+                if (!collapse0) {
+                    result = '<div class="alert alert-danger">❌ collapse0 element not found!</div>';
+                    resultDiv.innerHTML = result;
+                    return;
+                }
+
+                switch(method) {
+                    case 'click':
+                        // ボタンをクリック
+                        const button = collapse0.closest('.accordion-item')?.querySelector('[data-bs-toggle="collapse"]');
+                        if (button) {
+                            button.click();
+                            result = '<div class="alert alert-success">✓ ボタンをクリックしました（アコーディオンが展開されるはずです）</div>';
+                            success = true;
+                        } else {
+                            result = '<div class="alert alert-danger">❌ ボタンが見つかりません</div>';
+                        }
+                        break;
+
+                    case 'bootstrap':
+                        // Bootstrap API
+                        if (typeof bootstrap !== 'undefined' && bootstrap.Collapse) {
+                            const bsCollapse = new bootstrap.Collapse(collapse0, { toggle: false });
+                            bsCollapse.show();
+                            result = '<div class="alert alert-success">✓ Bootstrap Collapse API を使用しました</div>';
+                            success = true;
+                        } else {
+                            result = '<div class="alert alert-danger">❌ Bootstrap が利用できません</div>';
+                        }
+                        break;
+
+                    case 'jquery':
+                        // jQuery collapse
+                        if (typeof jQuery !== 'undefined') {
+                            jQuery(collapse0).collapse('show');
+                            result = '<div class="alert alert-success">✓ jQuery collapse() を使用しました</div>';
+                            success = true;
+                        } else {
+                            result = '<div class="alert alert-danger">❌ jQuery が利用できません</div>';
+                        }
+                        break;
+
+                    case 'manual':
+                        // 手動
+                        collapse0.classList.add('show');
+                        collapse0.style.display = 'block';
+                        const button2 = collapse0.closest('.accordion-item')?.querySelector('[data-bs-toggle="collapse"]');
+                        if (button2) {
+                            button2.setAttribute('aria-expanded', 'true');
+                        }
+                        result = '<div class="alert alert-success">✓ 手動で show クラスを追加しました</div>';
+                        success = true;
+                        break;
+
+                    case 'hash':
+                        // ハッシュ変更
+                        window.location.hash = 'collapse0';
+                        result = '<div class="alert alert-info">⏳ ハッシュを変更しました（処理中...）</div>';
+                        break;
+                }
+
+                if (success) {
+                    setTimeout(() => {
+                        const isOpen = collapse0.classList.contains('show');
+                        if (isOpen) {
+                            resultDiv.innerHTML += '<div class="alert alert-success mt-2">✅ <strong>成功!</strong> アコーディオンが展開されました</div>';
+                        } else {
+                            resultDiv.innerHTML += '<div class="alert alert-warning mt-2">⚠️ クラスは追加されましたが、表示されていない可能性があります</div>';
+                        }
+                    }, 100);
+                }
+            } catch(e) {
+                result = `<div class="alert alert-danger">❌ エラー: ${e.message}</div>`;
+            }
+
+            resultDiv.innerHTML = result;
+        }
+
+        // 初期化
+        runDiagnostics();
+    </script>
+</body>
+</html>

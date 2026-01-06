@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>キャッシュクリア</title>
+    <style>
+        body {
+            font-family: 'Kosugi Maru', Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            max-width: 400px;
+        }
+        h1 {
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+        p {
+            margin: 15px 0;
+            color: #555;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            margin: 10px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            font-size: 14px;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .btn-primary:hover {
+            opacity: 0.9;
+        }
+        .btn-secondary {
+            background: #e0e0e0;
+            color: #333;
+        }
+        .btn-secondary:hover {
+            background: #d0d0d0;
+        }
+        .info {
+            background: #e7f3ff;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            text-align: left;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .step {
+            margin: 15px 0;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔄 キャッシュクリア手順</h1>
+        
+        <div class="info">
+            <p><strong>チャットアシスタント機能が読み込まれない場合は、以下を実行してください：</strong></p>
+        </div>
+
+        <div class="step">
+            <h3>方法1：ブラウザのキャッシュをクリア（推奨）</h3>
+            <p>下記キーを同時押ししてください：</p>
+            <ul style="text-align: left;">
+                <li><strong>Windows:</strong> Ctrl + Shift + Delete</li>
+                <li><strong>Mac:</strong> Command + Shift + Delete</li>
+            </ul>
+            <p style="font-size: 12px; color: #999;">開いたウィンドウで「キャッシュされた画像とファイル」にチェックを入れて削除</p>
+        </div>
+
+        <div class="step">
+            <h3>方法2：ページをハード更新</h3>
+            <p>下記キーを同時押ししてください：</p>
+            <ul style="text-align: left;">
+                <li><strong>Windows:</strong> Ctrl + Shift + R</li>
+                <li><strong>Mac:</strong> Command + Shift + R</li>
+            </ul>
+        </div>
+
+        <div style="margin: 30px 0;">
+            <button class="btn btn-primary" onclick="clearCacheAndRedirect()">
+                キャッシュをクリアしてメインページへ →
+            </button>
+        </div>
+
+        <p style="font-size: 12px; color: #999;">クリック後、数秒でメインページが開きます</p>
+    </div>
+
+    <script>
+        function clearCacheAndRedirect() {
+            // ローカルストレージをクリア（garlic.jsで使用）
+            try {
+                // garlic.jsのキャッシュをクリア
+                for (let i = localStorage.length - 1; i >= 0; i--) {
+                    const key = localStorage.key(i);
+                    if (key && key.includes('garlic:')) {
+                        localStorage.removeItem(key);
+                    }
+                }
+                console.log('ローカルストレージをクリアしました');
+            } catch (e) {
+                console.warn('ローカルストレージのクリアに失敗:', e);
+            }
+
+            // サービスワーカーをアンレジスター
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.getRegistrations().then(registrations => {
+                    registrations.forEach(registration => {
+                        registration.unregister();
+                    });
+                });
+            }
+
+            // ページをハード更新後、メインページへ
+            setTimeout(() => {
+                // キャッシュを無視するため、タイムスタンプを付加
+                window.location.href = '/?t=' + new Date().getTime();
+            }, 500);
+        }
+
+        // ページ読み込み時の自動チェック
+        window.addEventListener('load', () => {
+            console.log('キャッシュクリアページ読み込み完了');
+        });
+    </script>
+</body>
+</html>

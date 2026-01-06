@@ -1,0 +1,55 @@
+=== 消えた画像の一覧 (2025-12-16 07:47:41) ===
+
+合計: 47個
+
+【root】
+  - 整備工場前.jpg
+  - jyoumuhoukoku_004_v3.jpg
+  - tiketto_01.pdf
+  - jyoumuhoukoku_006_v3.jpg
+  - kyori_v5.jpg
+  - 屋根下建物側奥隅.jpg
+  - 屋根下リフト側奥隅.jpg
+  - 屋根下リフト側道側.jpg
+  - 建物側入口.jpg
+  - 急速充電器となり.jpg
+  - 駐輪場.jpg
+  - バック駐車.jpg
+  - メニュー.jpg
+  - taskqr.png
+
+【img/】
+  - img/支払方法.png
+  - img/GOPAY決済.png
+  - img/GOPAYイメージ.png
+  - img/GOPAY操作.png
+  - img/新GOPAY受付実車中.png
+  - img/新GOPAY受付支払時.png
+  - img/後席タブレット表示.png
+  - img/後席タブレット状態.png
+  - img/新後席タブ表示状態.png
+  - img/タッチ決済.png
+  - img/新タッチ決済.png
+  - img/ICカード.png
+  - img/磁気カード.png
+  - img/新ICカード.png
+  - img/新磁気カード.png
+  - img/カード抜取り.png
+  - img/交通系.png
+  - img/新交通系.png
+  - img/新QRコード.png
+  - img/後席タブ実車時_v2.png
+  - img/新後席タブ実車時.png
+  - img/後席タブメニュー.png
+  - img/新後席タブメニュー.png
+  - img/後席タブ再起動2.png
+  - img/後席タブ再起動.png
+  - img/新後席タブ再起動.png
+  - img/GO端末メニュー.png
+  - img/GO2.png
+  - img/GO3.png
+  - img/GO4.png
+  - img/GO5.png
+  - img/GO6.png
+  - img/GO7.png
+
