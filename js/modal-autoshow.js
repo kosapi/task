@@ -99,8 +99,19 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
           }, 100);
         } catch (e) {}
+      } else if (modalEl) {
+        // 繝｢繝ｼ繝繝ｫ縺ｧ縺ｯ縺ｪ縺・′隕∫ｴ縺ｯ蟄伜惠縺吶ｋ�ｼ郁ｦ句・ｺ縺ｪ縺ｩ�ｼ峨ｄ繧ｹ繧ｯ繝ｭ繝ｼ繝ｫ
+        console.log('繝ｻ Scrolling to element:', hash);
+        try {
+          setTimeout(() => {
+            modalEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }, 100);
+        } catch (e) {
+          console.warn('笞・・Scroll error:', e.message);
+        }
       } else {
-        console.log('笞・・Element with ID "' + hash + '" not found or not a modal');
+        // 隕∫ｴ縺瑚ｦ九▽縺九ｉ縺ｪ縺・ｴ蜷医・縺ｿ險ｯ蜻
+        console.warn('笞・・Element with ID "' + hash + '" not found');
       }
 
     } catch (e) {
