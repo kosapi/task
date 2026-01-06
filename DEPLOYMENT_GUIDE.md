@@ -68,6 +68,7 @@ task/
 │   ├── spek_v4.js            # スペック表示
 │   ├── cheke_v3.js           # チェック機能
 │   ├── checklist-search.js   # チェックリスト検索
+│   ├── notices.js            # お知らせ表示（集約モーダル・非表示保持）
 │   ├── popup-helper.js       # ポップアップヘルパー
 │   ├── slogans.js            # スローガン表示
 │   ├── update-footer-date.js # フッター日付更新
@@ -91,13 +92,16 @@ task/
 │   ├── settings.php          # 設定管理
 │   ├── slogans.php           # スローガン管理
 │   ├── accordion_links.php   # アコーディオンリンク管理
+│   ├── notices.php           # お知らせ管理（CRUD・プレビュー）
 │   └── visual_editor.php     # ビジュアルエディタ
 │
 ├── api/                   # APIエンドポイント
-│   └── get-content.php       # コンテンツ取得API
+│   ├── get-content.php       # コンテンツ取得API
+│   └── get-notices.php       # お知らせ取得API（JSON）
 │
 ├── data/                  # データファイル
 │   ├── content.json          # 最新コンテンツJSON
+│   ├── notices.json          # お知らせデータ（JSON・書込権限）
 │   └── backups/              # バックアップフォルダ
 │
 ├── includes/              # 共通PHPファイル
@@ -141,6 +145,38 @@ session.cookie_httponly = 1       // HTTPアクセス禁止
 opcache.enable = 1                // OPcache有効化
 ```
 
+### 3.1 お知らせ機能のセットアップ（新規）
+
+1) ファイル確認・読み込み
+
+- index.html で `js/notices.js` を読み込む（既定で `<script src="js/notices.js" defer></script>`）
+- `api/get-notices.php` が配置済みであること
+- 管理画面に `admin/notices.php` があり、メニューからアクセス可能であること
+
+2) データファイルの作成と権限（初回のみ）
+
+```bash
+# 本番サーバーで実行
+cd /var/www/html/teito.link/task/data
+[ -f notices.json ] || echo [] > notices.json
+sudo chown www-data:www-data notices.json
+chmod 664 notices.json
+```
+
+3) 仕様メモ
+
+- 管理画面で「メインページに表示する」がONのものだけがフロントに出ます
+- フロントは `api/get-notices.php` を相対パスで取得（localhost/本番どちらも可）
+- お知らせは「集約モーダル」で表示、ユーザーが「今後表示しない」を押すと
+  `localStorage.dismissedNotices` にIDを保存（ブラウザ単位）
+- 既読をリセットするにはブラウザのストレージで `dismissedNotices` を削除
+
+4) 動作確認
+
+- 管理画面でお知らせを1件作成（「表示」にチェック）
+- トップページを開き、モーダルに件数とカードが出ること
+- 「今後表示しない」をチェック後に再読込し、非表示になること
+
 ### 4. キャッシュクリア
 ```bash
 # PHP OPcache クリア（サーバ再起動 又は opcache_reset()）
@@ -157,6 +193,7 @@ window.DeploymentChecklist.runAll()
 // ✅ DEBUG.enabled: false
 // ✅ 全モーダル/アコーディオン表示可能
 // ✅ チェックリスト検索UI生成
+// ✅ お知らせモーダル表示・「今後表示しない」保持が機能
 // ✅ エラーログなし
 ```
 

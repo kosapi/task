@@ -1,0 +1,474 @@
+/* ===============================================
+   モバイルフレンドリー対応CSS
+   =============================================== */
+
+/* ===== タブレット対応（768px以下） ===== */
+@media (max-width: 768px) {
+  /* 基本設定 */
+  body {
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  /* ヘッダー対応 */
+  .kokuban h1 {
+    font-size: 24px;
+    padding: 12px 10px;
+    margin: 10px 5px;
+  }
+
+  /* 安全標語 */
+  #slogan-sync-text {
+    font-size: 14px;
+  }
+
+  .hyogoaria {
+    margin: 10px;
+  }
+
+  .hyogoaria p {
+    font-size: 12px;
+    margin: 4px 0;
+  }
+
+  /* アコーディオン対応 */
+  .accordion-button {
+    padding: 12px 10px;
+    font-size: 13px;
+  }
+
+  .accordion-body {
+    padding: 10px;
+  }
+
+  /* チェックボックス対応 */
+  .form-check {
+    margin-bottom: 10px;
+  }
+
+  .form-check-input {
+    width: 18px;
+    height: 18px;
+    margin-top: 2px;
+    cursor: pointer;
+  }
+
+  .form-check-label {
+    font-size: 13px;
+    margin-left: 8px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  /* ボタン対応 */
+  .btn {
+    padding: 8px 12px;
+    font-size: 13px;
+    border-radius: 6px;
+  }
+
+  .btn-sm {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+
+  /* モーダル対応 */
+  .modal-dialog {
+    margin: 10px auto;
+  }
+
+  .modal-header {
+    padding: 12px 10px;
+  }
+
+  .modal-title {
+    font-size: 16px;
+  }
+
+  .modal-body {
+    padding: 12px;
+    font-size: 13px;
+  }
+
+  .modal-footer {
+    padding: 10px;
+  }
+
+  /* テーブル対応 */
+  .table {
+    font-size: 12px;
+  }
+
+  .table th,
+  .table td {
+    padding: 8px 6px;
+  }
+
+  /* リスト対応 */
+  ol, ul {
+    padding-left: 20px;
+    margin-bottom: 10px;
+  }
+
+  li {
+    margin-bottom: 6px;
+    font-size: 13px;
+  }
+
+  /* 画像対応 */
+  img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  /* アラート対応 */
+  .alert {
+    padding: 10px 12px;
+    margin-bottom: 10px;
+    font-size: 13px;
+  }
+
+  .alert-heading {
+    font-size: 14px;
+  }
+
+  /* プログレスバー対応 */
+  .progress {
+    height: 20px;
+  }
+
+  /* フッター対応 */
+  footer {
+    padding: 15px 10px;
+    font-size: 12px;
+  }
+}
+
+/* ===== スマートフォン対応（480px以下） ===== */
+@media (max-width: 480px) {
+  /* 基本設定 */
+  body {
+    font-size: 12px;
+  }
+
+  /* ヘッダー対応 */
+  .kokuban h1 {
+    font-size: 18px;
+    padding: 8px 8px;
+    margin: 8px 5px;
+  }
+
+  /* 安全標語 */
+  .hyogoaria {
+    margin: 5px;
+    padding: 8px;
+  }
+
+  .hyogoaria p {
+    font-size: 11px;
+    margin: 2px 0;
+  }
+
+  /* アコーディオン対応 */
+  .accordion-button {
+    padding: 10px 8px;
+    font-size: 12px;
+    font-weight: 600;
+    min-height: auto;
+  }
+
+  .accordion-body {
+    padding: 8px;
+  }
+
+  .accordion-item {
+    margin-bottom: 6px;
+  }
+
+  /* チェックボックス対応 */
+  .form-check {
+    margin-bottom: 10px;
+    padding: 6px;
+    border-radius: 4px;
+  }
+
+  .form-check:active {
+    background-color: rgba(102, 126, 234, 0.05);
+  }
+
+  .form-check-input {
+    width: 20px;
+    height: 20px;
+    margin-top: 3px;
+    cursor: pointer;
+    accent-color: #667eea;
+  }
+
+  .form-check-label {
+    font-size: 12px;
+    margin-left: 8px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  /* ボタン対応 */
+  .btn {
+    padding: 10px 12px;
+    font-size: 12px;
+    border-radius: 6px;
+    font-weight: 600;
+    min-height: 44px;
+  }
+
+  .btn-sm {
+    padding: 8px 10px;
+    font-size: 11px;
+  }
+
+  /* モーダル対応 */
+  .modal-dialog {
+    margin: 5px auto;
+    max-width: calc(100% - 10px);
+  }
+
+  .modal-content {
+    border-radius: 8px;
+  }
+
+  .modal-header {
+    padding: 12px 10px;
+  }
+
+  .modal-title {
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  .modal-body {
+    padding: 12px;
+    font-size: 12px;
+  }
+
+  .modal-footer {
+    padding: 10px 8px;
+    gap: 6px;
+  }
+
+  /* テーブル対応 */
+  .table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .table {
+    font-size: 11px;
+    margin-bottom: 0;
+  }
+
+  .table th,
+  .table td {
+    padding: 6px 4px;
+    word-break: break-word;
+  }
+
+  /* リスト対応 */
+  ol, ul {
+    padding-left: 18px;
+    margin-bottom: 8px;
+  }
+
+  li {
+    margin-bottom: 4px;
+    font-size: 12px;
+    line-height: 1.4;
+  }
+
+  /* 画像対応 */
+  img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 4px;
+  }
+
+  /* アラート対応 */
+  .alert {
+    padding: 10px 10px;
+    margin-bottom: 10px;
+    font-size: 12px;
+    border-radius: 6px;
+  }
+
+  .alert-heading {
+    font-size: 13px;
+    margin-bottom: 6px;
+  }
+
+  /* カード対応 */
+  .card {
+    margin-bottom: 12px;
+    border-radius: 8px;
+  }
+
+  .card-header {
+    padding: 10px;
+  }
+
+  .card-body {
+    padding: 10px;
+  }
+
+  .card-title {
+    font-size: 13px;
+  }
+
+  /* プログレスバー対応 */
+  .progress {
+    height: 18px;
+  }
+
+  .progress-bar {
+    font-size: 10px;
+    line-height: 18px;
+  }
+
+  /* 入力フィールド対応 */
+  input,
+  textarea,
+  select {
+    padding: 10px 8px;
+    border-radius: 6px;
+    font-size: 14px;
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 100px;
+  }
+
+  /* チャット（検索）対応 */
+  #checklist-chat-assistant {
+    width: calc(100% - 20px);
+    height: 70vh;
+    bottom: 10px;
+    right: 10px;
+    left: 10px;
+  }
+
+  .chat-header {
+    padding: 12px;
+  }
+
+  .chat-messages {
+    max-height: calc(70vh - 160px);
+  }
+
+  .chat-input-area {
+    padding: 10px;
+  }
+
+  .chat-input {
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+
+  .chat-send-btn {
+    width: 40px;
+    height: 40px;
+  }
+
+  #chat-toggle-btn {
+    width: 56px;
+    height: 56px;
+    font-size: 24px;
+  }
+
+  /* フッター対応 */
+  footer {
+    padding: 12px 10px;
+    font-size: 11px;
+  }
+}
+
+/* ===== 非常に小さいデバイス対応（320px以下） ===== */
+@media (max-width: 320px) {
+  .kokuban h1 {
+    font-size: 16px;
+  }
+
+  .accordion-button {
+    font-size: 11px;
+    padding: 8px 6px;
+  }
+
+  .btn {
+    padding: 8px 10px;
+    font-size: 11px;
+  }
+
+  .table {
+    font-size: 10px;
+  }
+
+  .modal-title {
+    font-size: 13px;
+  }
+}
+
+/* ===== タッチデバイス用の改善 ===== */
+@media (hover: none) and (pointer: coarse) {
+  /* タッチ操作に最適なサイズ */
+  a, button {
+    touch-action: manipulation;
+  }
+
+  /* クリック可能な要素の最小サイズ */
+  .btn {
+    min-height: 44px;
+  }
+
+  .form-check-input {
+    min-width: 20px;
+    min-height: 20px;
+  }
+}
+
+/* ===== ランドスケープモード対応 ===== */
+@media (max-width: 768px) and (max-height: 500px) and (orientation: landscape) {
+  .kokuban h1 {
+    font-size: 18px;
+    padding: 6px 8px;
+    margin: 4px 0;
+  }
+
+  .hyogoaria {
+    margin: 4px;
+  }
+
+  .accordion-button {
+    padding: 8px 6px;
+    font-size: 11px;
+  }
+
+  .accordion-body {
+    padding: 6px;
+  }
+
+  .form-check-input {
+    width: 18px;
+    height: 18px;
+  }
+
+  .form-check-label {
+    font-size: 11px;
+  }
+}
+
+/* ===== ダークモード対応 ===== */
+@media (prefers-color-scheme: dark) {
+  .alert-container {
+    background: transparent;
+  }
+}
+

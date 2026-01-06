@@ -213,25 +213,101 @@ if (window.__checklistAssistantInitialized) {
       );
       
       if (results.length > 0) {
-        let response = '見つかった項目:\n';
-        results.slice(0, 5).forEach(r => {
-          response += '• ' + r.text + '\n';
+        // 見つかった項目をリンク化して表示
+        let htmlResponse = '<strong>見つかった項目:</strong><br>';
+        results.slice(0, 10).forEach((r, index) => {
+          htmlResponse += `<div class="checklist-item-link" data-checkbox-id="${r.checkboxId}" data-container-id="${r.containerId}" style="cursor: pointer; margin: 8px 0; padding: 8px; background: #f0f0f0; border-radius: 4px; border-left: 3px solid #667eea;">
+            <span style="color: #333;">• ${this.escapeHtml(r.text)}</span>
+          </div>`;
         });
-        this.addMessage('bot', response);
+        if (results.length > 10) {
+          htmlResponse += `<small>他 ${results.length - 10} 件</small>`;
+        }
+        this.addMessage('bot', htmlResponse, true);
       } else {
         this.addMessage('bot', 'その検索キーワードは見つかりませんでした。別のキーワードを試してください。');
       }
     }
 
-    addMessage(role, text) {
+    escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    addMessage(role, text, isHtml = false) {
       const messagesDiv = document.getElementById('chatMessages');
       if (!messagesDiv) return;
       
       const messageEl = document.createElement('div');
       messageEl.className = 'chat-message ' + role;
-      messageEl.textContent = text;
+      
+      const bubbleEl = document.createElement('div');
+      bubbleEl.className = 'chat-bubble';
+      
+      if (isHtml) {
+        bubbleEl.innerHTML = text;
+      } else {
+        bubbleEl.textContent = text;
+      }
+      
+      messageEl.appendChild(bubbleEl);
       messagesDiv.appendChild(messageEl);
+      
+      // リンククリックイベントを設定
+      if (isHtml) {
+        const links = bubbleEl.querySelectorAll('.checklist-item-link');
+        links.forEach(link => {
+          link.addEventListener('click', (e) => {
+            const checkboxId = link.getAttribute('data-checkbox-id');
+            const containerId = link.getAttribute('data-container-id');
+            this.navigateToCheckbox(checkboxId, containerId);
+          });
+        });
+      }
+      
       messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
+
+    navigateToCheckbox(checkboxId, containerId) {
+      // チャットを閉じる
+      const chat = document.getElementById('checklist-chat-assistant');
+      const toggleBtn = document.getElementById('chat-toggle-btn');
+      if (chat) chat.classList.add('chat-hidden');
+      if (toggleBtn) toggleBtn.classList.remove('hidden');
+      
+      // 対象の要素にスクロール
+      let targetElement = null;
+      if (checkboxId) {
+        targetElement = document.getElementById(checkboxId);
+      }
+      if (!targetElement && containerId) {
+        targetElement = document.getElementById(containerId);
+      }
+      
+      if (targetElement) {
+        // 親のアコーディオンを開く
+        const accordion = targetElement.closest('.accordion-item');
+        if (accordion) {
+          const button = accordion.querySelector('[data-bs-toggle="collapse"]');
+          if (button && button.classList.contains('collapsed')) {
+            button.click();
+          }
+        }
+        
+        // スクロール
+        setTimeout(() => {
+          targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          
+          // ハイライト効果
+          if (targetElement.closest('.form-check')) {
+            targetElement.closest('.form-check').classList.add('checklist-highlight');
+            setTimeout(() => {
+              targetElement.closest('.form-check').classList.remove('checklist-highlight');
+            }, 2000);
+          }
+        }, 300);
+      }
     }
   }
 

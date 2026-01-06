@@ -96,6 +96,13 @@ chmod 755 /var/www/html/teito.link/task/uploads
 # ファイルの所有者を設定（Apacheユーザーに）
 sudo chown -R www-data:www-data /var/www/html/teito.link/task/data
 sudo chown -R www-data:www-data /var/www/html/teito.link/task/uploads
+
+# お知らせデータ（初回のみ作成）
+if [ ! -f /var/www/html/teito.link/task/data/notices.json ]; then
+    echo [] | sudo tee /var/www/html/teito.link/task/data/notices.json >/dev/null
+fi
+sudo chown www-data:www-data /var/www/html/teito.link/task/data/notices.json
+sudo chmod 664 /var/www/html/teito.link/task/data/notices.json
 ```
 
 #### 3. config.php 内のパスワード変更
@@ -202,6 +209,8 @@ https://teito.link/task/admin/
 # 動作確認
 - 環境が "production" と表示されることを確認
 - すべてのリンクが HTTPS で動作することを確認
+- 管理画面でお知らせを作成→トップで集約モーダルに表示されること
+- 「今後表示しない」を有効にすると再訪時に出ないこと（localStorage）
 ```
 
 ## 環境別設定

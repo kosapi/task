@@ -478,15 +478,15 @@ details {
   position: relative;
   width: 100%;
   margin: 15px auto;
-  overflow: hidden;  /*子要素のはみ出しを隠す */
+  overflow-x: auto; /* PC・モバイル両対応: 横スクロール可能に */
+  overflow-y: hidden; /* 縦スクロールは不要 */
 }
 .button-carousel-track {
   display: flex; /* ボタンを横並びにする */
-  overflow-x: scroll; /* 横スクロールを可能にする */
   scroll-behavior: smooth; /* スムーズスクロール */
   -webkit-overflow-scrolling: touch; /* iOSでの慣性スクロール */
-  padding-bottom: 30px; /*スクロールバーのためのスペース */
-  scrollbar-width: none; /* Firefoxのスクロールバーを非表示にする */
+  padding-bottom: 10px; /*スクロールバーのためのスペース */
+  scrollbar-width: thin; /* Firefoxのスクロールバーを表示 */
 }
 
 /* Chrome, Safari, Edgeのスクロールバーを非表示にする 
@@ -504,6 +504,7 @@ details {
   white-space: nowrap; /* ボタン内のテキストの折り返しを防ぐ */
   box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.5);
   border-radius: 100px;
+  flex-shrink: 0; /* ボタンが縮小されないようにする */
 }
 #bc1{
   background-color: #fd0378;;

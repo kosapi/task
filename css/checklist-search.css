@@ -135,7 +135,7 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
-  background: #f8f9fa;
+  background: #f8f9fa !important;
   max-height: 400px;
 }
 
@@ -179,8 +179,8 @@
 }
 
 .chat-message-bot .chat-bubble {
-  background: white;
-  color: #333;
+  background: white !important;
+  color: #333 !important;
   border: 1px solid #e0e0e0;
   border-bottom-left-radius: 4px;
 }
@@ -315,18 +315,42 @@
 
 /* ダークモード対応（オプション） */
 @media (prefers-color-scheme: dark) {
-  .chat-bubble {
-    background: #2a2a3e;
-    color: #fff;
+  #checklist-chat-assistant {
+    background: #ffffff !important;
   }
 
   .chat-messages {
-    background: #1a1a2e;
+    background: #f8f9fa !important;
+  }
+
+  .chat-message-bot .chat-bubble {
+    background: white !important;
+    color: #333 !important;
+    border-color: #e0e0e0 !important;
+  }
+
+  .chat-message-user .chat-bubble {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+  }
+
+  .chat-input-area {
+    background: #ffffff !important;
+    border-top-color: #e0e0e0 !important;
   }
 
   .chat-input {
-    background: #2a2a3e;
-    color: white;
-    border-color: #444;
+    background: #f8f9fa !important;
+    color: #333 !important;
+    border-color: #ddd !important;
+  }
+
+  .chat-input::placeholder {
+    color: #999;
+  }
+
+  .chat-send-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    color: white !important;
   }
 }

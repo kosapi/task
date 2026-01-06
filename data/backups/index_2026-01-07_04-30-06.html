@@ -24,7 +24,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" integrity="sha385-l4UPAMHGzl7zwogLW4nOwaU2XTk6oiM1jhCRQstZEndoIiA2I5bg6fST3wzBSRBD" crossorigin="anonymous">
   
   <!-- Custom CSS -->
-  <link rel="stylesheet" href="css/main_v51.css?v=20260107">
+  <link rel="stylesheet" href="css/main_v51.css">
   <link rel="stylesheet" href="css/loader.css">
   <link rel="stylesheet" href="css/checklist-search.css">
   <link rel="stylesheet" href="css/modal-fix.css">
@@ -71,14 +71,8 @@
   <script src="js/update-footer-date.js" defer=""></script>
   <script src="js/hash-navigation.js" defer=""></script>
   <script src="js/deployment-checklist.js" defer=""></script>
-  <script src="js/nested-modals.js" defer=""></script>
-  <script src="js/notices.js" defer=""></script>
 
 </head>
-<body>
-  <!-- お知らせコンテナ -->
-  <div id="notices-container"></div>
-  
   <div class="kokuban">
     <h1>ワーク  チェック  リスト </h1>
     <!-- 即時表示用：パーサー実行中に本日の安全標語を同期描画（DOMContentLoadedを待たない） -->
@@ -1608,12 +1602,9 @@
                               <li>領収書と加盟店控えが発行される</li>
                               <li>お客様が2名以上の場合はメーターの<br><span class="bman">人員</span><br>を人数分押す</li>
                               <li>メーターの<br><span class="br">空車</span><br>を押す</li>
-                        </ol>     
                             
-<div class="alert alert-danger mt-3" role="alert">
-  ※アプリでGOPAY支払いを申し込んだ場合他の支払方法に変更できない
-</div>
-                         </div>
+                            <span class="fred">※アプリでGOPAY支払いを申し込んだ場合他の支払方法に変更できない</span>
+                          </ol></div>
                           <div>
                             <h5 class="kokuban sticky-top">GOPAY(GOチケット)とは</h5>
                             <ul>
@@ -1636,22 +1627,14 @@
 
                           <div>
                             <h5 class="kokuban sticky-top">注意事項</h5>
-                           
-<div class="alert alert-danger mt-3" role="alert">
-  決済がエラーになった場合はGO端末で<br><span class="fred">車内決済に切替ボタンをタップせず</span><br>にメーターの<br><span class="br">空車</span>を押す
-</div>
-
+                            <ul>
+                              <li>決済がエラーになった場合はGO端末で<br><span class="fred">車内決済に切替ボタンをタップせず</span><br>にメーターの<br><span class="br">空車</span><br>を押す</li>
                               <img src="img/GOPAY%E5%A4%B1%E6%95%971.png">
-                            
-                           
-<div class="alert alert-info mt-3" role="alert">
-  車内決済に切替ボタンをタップしてしまうとGO決済がキャンセルされてしまう
-</div>
-     
-<ul>
+                              <ul>
+                                <li><span class="fred">車内決済に切替ボタンをタップしてしまうとGO決済がキャンセルされてしまう</span></li>
                                 <li>電波状況が悪い場合にエラーになるがバックグランドでは処理されている</li>
                                 <li>現金扱いになっているので精算処理時に未収に手書きで変更する</li>
-                              
+                              </ul>
                               <li><span class="bb">決済実行</span><br>をタップせずにメーターの<br><span class="br">空車</span><br>を押すと現金扱いになり加盟店控えは発行されない</li>
                               <li>バックグランドでは自動でGOPAY決済処理されている</li>
                               <li>現金扱いになっているので精算処理時に未収に手書きで変更する</li>
@@ -1694,23 +1677,15 @@
                           </ol>
                           <div>
                             <h5 class="kokuban sticky-top">注意事項</h5>
-
-<div class="alert alert-danger mt-3" role="alert">
-  お客様が合計料金を記入しなかった場合は空欄のままにする
-</div>
-
                             <ul>
+                              <li>お客様が合計料金を記入しなかった場合は空欄のままにする</li>
                               <li>乗務員がチケットに記入すると不正になるので日付等を含め記入しない</li>
                               <li>信販系（JCBや楽天他）のチケットは<span class="fred">有効期限と限度額を確認して受け取る</span></li>
                               <li>チケットで１万５千円以上の場合は報告書が必要になるので人相を確認</li>
                               <li><span class="fred">領収書を必ず添付</span>して提出</li>
                               <li>領収書をお客様に渡してしまった場合は<br><span class="bg">チケット</span><br>をタップし<br><span class="bg">確定</span><br>をタップする前にメーターの<br><span class="bm">領収書</span><br>をタップすると領収書が再発行される</li>
+                              <li><span class="fred">愛のタクシーチケット裏面の記入欄は記入しない。領収書は必ず添付する</span></li>
                             </ul>
-
-<div class="alert alert-info mt-3" role="alert">
-  愛のタクシーチケット裏面の記入欄は記入しない。領収書は必ず添付する
-</div>
-
                           </div>
                         </div>
                       </div>
@@ -1937,60 +1912,27 @@
                             </ul>
                             <li>GO端末の<br><span class="bb">表示</span><br>ボタンをタップして後席タッチパネルを表示に切り替える</li>
 <img src="img/____________________________20260106124338_fb310ca3.png" alt="____________________________20260106124338_fb310ca3" class="img-fluid">
-
-<div class="alert alert-danger mt-3" role="alert">
-  定額処理の前にお客様が決済しないように必ず定額処理が済んでから後席タブレッドを表示に切り替える
-</div>
+                            <ul>
+                              <li>定額処理の前にお客様が決済しないように必ず<span class="fred">定額処理が済んでから後席タブレッドを表示に切り替える</span></li>
                            
-<div class="alert alert-warning mt-3" role="alert">
-  GOPAY(GOチケット)支払いの場合は<span class="fred">定額処理後に</span>GO端末の<br><span class="bb">決済実行</span><br>をタップする<
-</div>
-
+                              <li>GOPAY(GOチケット)支払いの場合は<span class="fred">定額処理後に</span>GO端末の<br><span class="bb">決済実行</span><br>をタップする</li>
+                            </ul>
                             <li>決済方法に従い処理をする</li>
                             <li>お客様が2名以上の場合はメーターの<br><span class="bman">人員</span><br>を人数分押す</li>
                             <li>メーターの<br><span class="br">空車</span><br>を押す</li>
-                      </ol>    
-                          <h5 class="kokuban">注意事項</h5>
                           
-<div class="alert alert-success mt-3" role="alert">
-  出発地と到着地の設定を間違えないようにし必要に応じてお客様に確認する
-</div>
-
-                        </div>
+                          <h5 class="kokuban">注意事項</h5>
+                          <ul>
+                            <li>出発地と到着地の設定を間違えないようにし必要に応じてお客様に確認する</li>
+                          </ul>
+                        </ol></div>
                       </div>
                     </div>
                   </div>
                   <div class="form-check">
                     <input class="form-check-input" type="checkbox" value="" id="Check7-7" name="Check7-7">
                     <label class="form-check-label" for="Check7-7">
-                      <a href="#Modal7-7" class="link-primary" data-bs-toggle="modal" data-bs-target="#Modal7-7" id="M7-7">置換処理</a></label></div>
-                  <div class="modal fade" id="Modal7-7" tabindex="-1" aria-labelledby="ModalLabel7-7" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-scrollable">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <h5 class="modal-title kokuban" id="ModalLabel7-7">置換について</h5>
-                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body d-inline-block text-wrap">
-                          <ol>
-                            <li>メーターの<br><span class="bblack">支払</span><br>を押した後に<br><span class="by">合計</span><br>を押す
-                            </li>
-                            <li>メーター画面左下の<br><span class="bg">障割</span><br>の上の<br><span class="bg"> 1/2
-                              </span><br>をタップし画面を切り替える</li>
-                            <li>メーター画面下に表示される<br><span class="bg">置換</span><br>をタップする</li>
-                            <li>メーターに表示されるテンキーを使用して置換額を入力し<br><span class="bg">確定</span><br>をタップする</li>
-                            <li>メーター画面下に表示される<br><span class="bg">チケット</span><br>をタップし<br><span class="bg">確定</span><br>をタップする（未収処理）
-                            </li>
-                            <li>未収書が発行される（不要）</li>
-                            <li>メーターの<br><span class="br">空車</span><br>を押す</li>
-                          </ol>
-                        </div>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
-                        </div>
-                      </div>
-                    </div>
-                  </div></div></div>
+                      <a href="#Moda7-7" class="link-primary" data-bs-toggle="modal" data-bs-target="#Modal7-7" id="M7-7">置換処理</a></label></div></div></div>
               <h5 class="kokuban2">後席タブレットの実車時</h5>
               <p>メーターを<span class="bn">実車</span>にすると画面が自動で変わる</p><p><img src="img/_________________________20260106123913_45edae71.png" alt="_________________________20260106123913_45edae71" class="img-fluid"><br></p>
               <br><div>
@@ -2204,18 +2146,94 @@
             </div>
           </div>
         </div>
-        <div class="accordion-item">
-          <h2 class="accordion-header" id="heading6">
-            <div class="progress">
-              <div class="progress-bar progress-bar6" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:8%;">残12</div>
-            </div>
-            <button class="accordion-button shadow text-reset fw-bold ps-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapse6" aria-expanded="true" aria-controls="collapse6">
-              精算処理
-            </button>
-          </h2>
-          <div id="collapse6" class="accordion-collapse collapse" aria-labelledby="heading6" data-bs-parent="#accordion">
-            <div class="accordion-body" style="padding-left: 1.5rem;">
-              <div id="items6">
+      </div><button id="chat-toggle-btn" class="chat-toggle-btn"><i class="bi bi-search"></i></button><div id="checklist-chat-assistant" class="chat-assistant chat-hidden">
+      <div class="chat-header">
+        <i class="bi bi-chat-dots"></i>
+        <span>チェックリスト検索</span>
+        <button class="chat-close-btn" onclick="document.getElementById('checklist-chat-assistant').classList.toggle('minimized')">
+          <i class="bi bi-chevron-down"></i>
+        </button>
+      </div>
+      <div class="chat-messages" id="chatMessages"><div class="chat-message chat-message-bot"><div class="chat-bubble">こんにちは👋 何について知りたいですか？キーワードを入力してください。</div></div></div>
+      <div class="chat-input-area">
+        <input type="text" class="chat-input" id="chatInput" placeholder="キーワード検索..." autocomplete="off">
+        <button class="chat-send-btn" onclick="window.checklistAssistant.sendMessage()">
+          <i class="bi bi-send"></i>
+        </button>
+      </div>
+    </div><button id="chat-toggle-btn" class="chat-toggle-btn"><i class="bi bi-search"></i></button><div id="checklist-chat-assistant" class="chat-assistant chat-hidden">
+      <div class="chat-header">
+        <i class="bi bi-chat-dots"></i>
+        <span>チェックリスト検索</span>
+        <button class="chat-close-btn" onclick="document.getElementById('checklist-chat-assistant').classList.toggle('minimized')">
+          <i class="bi bi-chevron-down"></i>
+        </button>
+      </div>
+      <div class="chat-messages" id="chatMessages"><div class="chat-message chat-message-bot"><div class="chat-bubble">こんにちは👋 何について知りたいですか？キーワードを入力してください。</div></div></div>
+      <div class="chat-input-area">
+        <input type="text" class="chat-input" id="chatInput" placeholder="キーワード検索..." autocomplete="off">
+        <button class="chat-send-btn" onclick="window.checklistAssistant.sendMessage()">
+          <i class="bi bi-send"></i>
+        </button>
+      </div>
+    </div><button id="chat-toggle-btn" class="chat-toggle-btn"><i class="bi bi-search"></i></button><div id="checklist-chat-assistant" class="chat-assistant chat-hidden">
+      <div class="chat-header">
+        <i class="bi bi-chat-dots"></i>
+        <span>チェックリスト検索</span>
+        <button class="chat-close-btn" onclick="document.getElementById('checklist-chat-assistant').classList.toggle('minimized')">
+          <i class="bi bi-chevron-down"></i>
+        </button>
+      </div>
+      <div class="chat-messages" id="chatMessages"><div class="chat-message chat-message-bot"><div class="chat-bubble">こんにちは👋 何について知りたいですか？キーワードを入力してください。</div></div></div>
+      <div class="chat-input-area">
+        <input type="text" class="chat-input" id="chatInput" placeholder="キーワード検索..." autocomplete="off">
+        <button class="chat-send-btn" onclick="window.checklistAssistant.sendMessage()">
+          <i class="bi bi-send"></i>
+        </button>
+      </div>
+    </div><button id="chat-toggle-btn" class="chat-toggle-btn"><i class="bi bi-search"></i></button><div id="checklist-chat-assistant" class="chat-assistant chat-hidden">
+      <div class="chat-header">
+        <i class="bi bi-chat-dots"></i>
+        <span>チェックリスト検索</span>
+        <button class="chat-close-btn" onclick="document.getElementById('checklist-chat-assistant').classList.toggle('minimized')">
+          <i class="bi bi-chevron-down"></i>
+        </button>
+      </div>
+      <div class="chat-messages" id="chatMessages"><div class="chat-message chat-message-bot"><div class="chat-bubble">こんにちは👋 何について知りたいですか？キーワードを入力してください。</div></div></div>
+      <div class="chat-input-area">
+        <input type="text" class="chat-input" id="chatInput" placeholder="キーワード検索..." autocomplete="off">
+        <button class="chat-send-btn" onclick="window.checklistAssistant.sendMessage()">
+          <i class="bi bi-send"></i>
+        </button>
+      </div>
+    </div><button id="chat-toggle-btn" class="chat-toggle-btn"><i class="bi bi-search"></i></button><div id="checklist-chat-assistant" class="chat-assistant chat-hidden">
+      <div class="chat-header">
+        <i class="bi bi-chat-dots"></i>
+        <span>チェックリスト検索</span>
+        <button class="chat-close-btn" onclick="document.getElementById('checklist-chat-assistant').classList.toggle('minimized')">
+          <i class="bi bi-chevron-down"></i>
+        </button>
+      </div>
+      <div class="chat-messages" id="chatMessages"><div class="chat-message chat-message-bot"><div class="chat-bubble">こんにちは👋 何について知りたいですか？キーワードを入力してください。</div></div></div>
+      <div class="chat-input-area">
+        <input type="text" class="chat-input" id="chatInput" placeholder="キーワード検索..." autocomplete="off">
+        <button class="chat-send-btn" onclick="window.checklistAssistant.sendMessage()">
+          <i class="bi bi-send"></i>
+        </button>
+      </div>
+    </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="heading6">
+          <div class="progress">
+            <div class="progress-bar progress-bar6" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:8%;">残12</div>
+          </div>
+          <button class="accordion-button shadow text-reset fw-bold ps-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapse6" aria-expanded="true" aria-controls="collapse6">
+            精算処理
+          </button>
+        </h2>
+        <div id="collapse6" class="accordion-collapse collapse" aria-labelledby="heading6" data-bs-parent="#accordion">
+          <div class="accordion-body" style="padding-left: 1.5rem;">
+            <div id="items6">
               <div class="form-check">
                 <input class="form-check-input" type="checkbox" value="" id="Check6-1" name="Check6-1">
                 <label class="form-check-label" for="Check6-1">
@@ -3087,7 +3105,7 @@
                               </li>
                             </ul>
                           </div>
-                          <button type="button" class="btn btn-outline-primary d-block w-100" id="openExampleModal2Btn" data-nested-modal-target="#exampleModal2"> 帝都無線キャンセル処理方法</button>
+                          <button type="button" class="btn btn-primary" id="openExampleModal2Btn" data-nested-modal-target="#exampleModal2"> 帝都無線キャンセル処理方法</button>
                         </div>
                       </div>
                     </div>
@@ -3206,7 +3224,7 @@
                           </table>
                           <ol>
                             <li>連続配車モードで優先パス実車を行う</li>
-                            <ul>
+                            </ol><ul>
                               <li>付与日:火曜日0:00</li>
                               <li>付与枚数:1実車に付き1枚(上限5枚)</li>
                             </ul>
@@ -3710,7 +3728,6 @@
           <a class="carousel-button" id="bc8" href="https://teito.link/violation_points">交通違反一覧</a>
           <a class="carousel-button" id="bc9" href="https://sites.google.com/view/teito">帝都板橋サイト</a>
           <a class="carousel-button" id="bc10" href="https://www.tokyo-tc.or.jp/driver">タクセン</a>
-          <a class="carousel-button" id="bc13" href="admin/login.php">管理</a>
         </div>
       </div>
       <div class="modal fade" id="Modal16" tabindex="-1" aria-labelledby="ModalLabe16" aria-hidden="true" data-original-parent="accordion">
@@ -3721,9 +3738,7 @@
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body d-inline-block text-wrap">
-              <div style="text-align: center; padding: 20px;">
-                <img id="qrcode-share" src="" alt="シェア用QRコード" style="max-width: 100%; width: 300px; height: 300px;">
-              </div>
+              
             </div>
           </div>
         </div>
@@ -3732,6 +3747,25 @@
       <!-- 削除: <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha385-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script> -->
       <script async="" src="https://cse.google.com/cse.js?cx=375ae0d636df54d04">
       </script>
+      <footer class="container-fluid mt-2 mb-2 text-center">
+        <small>更新日: <time>2026年01月06日</time></small>
+      </footer>
+<button id="chat-toggle-btn" class="chat-toggle-btn"><i class="bi bi-search"></i></button><div id="checklist-chat-assistant" class="chat-assistant chat-hidden">
+      <div class="chat-header">
+        <i class="bi bi-chat-dots"></i>
+        <span>チェックリスト検索</span>
+        <button class="chat-close-btn" onclick="document.getElementById('checklist-chat-assistant').classList.toggle('minimized')">
+          <i class="bi bi-chevron-down"></i>
+        </button>
+      </div>
+      <div class="chat-messages" id="chatMessages"><div class="chat-message chat-message-bot"><div class="chat-bubble">こんにちは👋 何について知りたいですか？キーワードを入力してください。</div></div></div>
+      <div class="chat-input-area">
+        <input type="text" class="chat-input" id="chatInput" placeholder="キーワード検索..." autocomplete="off">
+        <button class="chat-send-btn" onclick="window.checklistAssistant.sendMessage()">
+          <i class="bi bi-send"></i>
+        </button>
+      </div>
+    </div>
 
     <!-- モーダル: チケット/福祉券がある場合 -->
     <div class="modal fade" id="modal-ticket-welfare" tabindex="-1" aria-labelledby="label-ticket-welfare" aria-hidden="true">
@@ -3752,6 +3786,14 @@
       </div>
     </div>
 
+    <!-- モーダル: チケット/福祉券がある場合の親モーダル復帰スクリプト -->
+    <script>
+      document.getElementById('modal-ticket-welfare').addEventListener('hidden.bs.modal', function() {
+        var parentModal = new bootstrap.Modal(document.getElementById('Modal6-3'));
+        parentModal.show();
+      });
+    </script>
+
     <!-- モーダル: 福祉券を多くもらった場合 -->
     <div class="modal fade" id="modal-welfare-many" tabindex="-1" aria-labelledby="label-welfare-many" aria-hidden="true">
       <div class="modal-dialog modal-dialog-scrollable">
@@ -3771,6 +3813,14 @@
       </div>
     </div>
 
+    <!-- モーダル: 福祉券を多くもらった場合の親モーダル復帰スクリプト -->
+    <script>
+      document.getElementById('modal-welfare-many').addEventListener('hidden.bs.modal', function() {
+        var parentModal = new bootstrap.Modal(document.getElementById('Modal6-3'));
+        parentModal.show();
+      });
+    </script>
+
     <!-- モーダル: 追加未収処理がある場合 -->
     <div class="modal fade" id="modal-additional-uncollected" tabindex="-1" aria-labelledby="label-additional-uncollected" aria-hidden="true">
       <div class="modal-dialog modal-dialog-scrollable">
@@ -3789,6 +3839,14 @@
         </div>
       </div>
     </div>
+
+    <!-- モーダル: 追加未収処理がある場合の親モーダル復帰スクリプト -->
+    <script>
+      document.getElementById('modal-additional-uncollected').addEventListener('hidden.bs.modal', function() {
+        var parentModal = new bootstrap.Modal(document.getElementById('Modal6-3'));
+        parentModal.show();
+      });
+    </script>
 
     <!-- モーダル: 帝都無線キャンセル処理 -->
     <div class="modal fade" id="modal-teito-cancel" tabindex="-1" aria-labelledby="label-teito-cancel" aria-hidden="true">
@@ -3810,6 +3868,14 @@
       </div>
     </div>
 
+    <!-- モーダル: 帝都無線キャンセル処理の親モーダル復帰スクリプト -->
+    <script>
+      document.getElementById('modal-teito-cancel').addEventListener('hidden.bs.modal', function() {
+        var parentModal = new bootstrap.Modal(document.getElementById('Modal6-3'));
+        parentModal.show();
+      });
+    </script>
+
     <!-- モーダル: GOアプリキャンセル処理 -->
     <div class="modal fade" id="modal-go-app-cancel" tabindex="-1" aria-labelledby="label-go-app-cancel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-scrollable">
@@ -3830,6 +3896,14 @@
       </div>
     </div>
 
+    <!-- モーダル: GOアプリキャンセル処理の親モーダル復帰スクリプト -->
+    <script>
+      document.getElementById('modal-go-app-cancel').addEventListener('hidden.bs.modal', function() {
+        var parentModal = new bootstrap.Modal(document.getElementById('Modal6-3'));
+        parentModal.show();
+      });
+    </script>
+
     <!-- モーダル: メーターの押し間違い -->
     <div class="modal fade" id="modal-meter-mistake" tabindex="-1" aria-labelledby="label-meter-mistake" aria-hidden="true">
       <div class="modal-dialog modal-dialog-scrollable">
@@ -3849,6 +3923,14 @@
         </div>
       </div>
     </div>
+
+    <!-- モーダル: メーターの押し間違いの親モーダル復帰スクリプト -->
+    <script>
+      document.getElementById('modal-meter-mistake').addEventListener('hidden.bs.modal', function() {
+        var parentModal = new bootstrap.Modal(document.getElementById('Modal6-3'));
+        parentModal.show();
+      });
+    </script>
 
     <!-- モーダル: ETC利用明細書がある場 -->
     <div class="modal fade" id="modal-etc-statement" tabindex="-1" aria-labelledby="label-etc-statement" aria-hidden="true">
@@ -3884,34 +3966,12 @@
       </div>
     </div>
 
-    <!-- フッター -->
-    <footer class="container-fluid mt-2 mb-2 text-center">
-      <small>更新日: <time>2026年01月07日</time></small>
-    </footer>
-
-    <!-- シェア用QRコード生成スクリプト -->
+    <!-- モーダル: ETC利用明細書がある場の親モーダル復帰スクリプト -->
     <script>
-      // ページロード時にQRコードを生成して設定
-      function generateQRCode() {
-        const qrImg = document.getElementById('qrcode-share');
-        if (qrImg) {
-          const shareUrl = 'https://teito.link/task/';
-          // QR Server（無料のQRコード生成API）を使用
-          const qrApiUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=' + encodeURIComponent(shareUrl);
-          qrImg.src = qrApiUrl;
-          qrImg.alt = 'シェア用QRコード: ' + shareUrl;
-          console.log('QRコード生成完了:', qrApiUrl);
-        } else {
-          console.warn('QRコード要素が見つかりません');
-        }
-      }
-      
-      // ページロード時に実行
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', generateQRCode);
-      } else {
-        generateQRCode();
-      }
+      document.getElementById('modal-etc-statement').addEventListener('hidden.bs.modal', function() {
+        var parentModal = new bootstrap.Modal(document.getElementById('Modal6-3'));
+        parentModal.show();
+      });
     </script>
 
 </body></html>

@@ -107,6 +107,23 @@ render_admin_header('ダッシュボード');
             </div>
         </div>
     </div>
+    
+    <div class="col-md-3">
+        <div class="card text-white bg-secondary">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="card-title text-white-50 mb-1">お知らせ</h6>
+                        <h2 class="mb-0">?</h2>
+                    </div>
+                    <i class="bi bi-megaphone" style="font-size: 3rem; opacity: 0.5;"></i>
+                </div>
+                <a href="/task/admin/notices.php" class="stretched-link text-white text-decoration-none">
+                    <small>管理 <i class="bi bi-arrow-right"></i></small>
+                </a>
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- ✨ 使い方ガイドセクション -->
@@ -171,6 +188,15 @@ render_admin_header('ダッシュボード');
                             <div>
                                 <i class="bi bi-pencil-square text-secondary me-2"></i>
                                 <strong>ライブエディタで編集</strong>
+                            </div>
+                            <i class="bi bi-chevron-right"></i>
+                        </div>
+                    </a>
+                    <a href="/task/admin/notices.php" class="list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-between align-items-center">
+                            <div>
+                                <i class="bi bi-megaphone text-dark me-2"></i>
+                                <strong>お知らせを管理</strong>
                             </div>
                             <i class="bi bi-chevron-right"></i>
                         </div>

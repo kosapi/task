@@ -261,6 +261,11 @@ function render_admin_header($title = 'CMS管理画面') {
                                 </a>
                             </li>
                             <li class="nav-item">
+                                <a class="nav-link" href="/task/admin/notices.php">
+                                    <i class="bi bi-megaphone me-2"></i>お知らせ管理
+                                </a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link" href="/task/admin/settings.php">
                                     <i class="bi bi-gear me-2"></i>設定
                                 </a>
