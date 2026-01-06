@@ -47,23 +47,87 @@ tar -czf backup_$(date +%Y%m%d).tar.gz .
 ```
 
 ### 2. 本番環境へのファイル同期
-```bash
-# テスト/デバッグ系を除外した同期
-# 本番に以下を展開（テスト系は除外）
-# ✅ index.html (更新版)
-# ✅ 全JS/CSS (ログ削減版)
-# ✅ config-production.php (新規)
-# ✅ .htaccess (gzip追加版)
-# ✅ admin/ (login.php 認証確認)
-# ✅ data/ (最新JSON)
-# ✅ includes/
-# ✅ img/
 
-# 除外:
-# ❌ debug_*.html/php
-# ❌ test_*.html/php
-# ❌ puppeteer_test.js
-# ❌ index_cleaned.html (既削除)
+#### デプロイするファイル構造
+```
+task/
+├── index.html              # メインページ（更新版）
+├── config-production.php   # 本番用PHP設定
+├── config.php              # 環境設定
+├── .htaccess              # サーバー設定（gzip/キャッシュ）
+│
+├── js/                    # JavaScriptファイル（整理済み）
+│   ├── env-detection.js      # 環境判定（production/local/staging）
+│   ├── debug-config.js       # デバッグログ制御
+│   ├── modal-autoshow.js     # モーダルハッシュナビゲーション
+│   ├── init.js               # 初期化スクリプト
+│   ├── garlic.js             # フォーム保存ライブラリ
+│   ├── progress_v22.js       # 進捗バー制御
+│   ├── clear_v27.js          # クリア機能
+│   ├── reload.js             # リロード機能
+│   ├── spek_v4.js            # スペック表示
+│   ├── cheke_v3.js           # チェック機能
+│   ├── checklist-search.js   # チェックリスト検索
+│   ├── popup-helper.js       # ポップアップヘルパー
+│   ├── slogans.js            # スローガン表示
+│   ├── update-footer-date.js # フッター日付更新
+│   ├── hash-navigation.js    # ハッシュナビゲーション
+│   ├── deployment-checklist.js # デプロイテストツール
+│   ├── accordion_link.js     # アコーディオンリンク
+│   ├── checklist_v1.js       # チェックリスト機能
+│   └── calsel_v10.js         # カレンダー選択
+│
+├── css/                   # CSSファイル（整理済み）
+│   ├── main_v51.css          # メインスタイル
+│   ├── loader.css            # ローダースタイル
+│   ├── checklist-search.css  # 検索UIスタイル
+│   └── modal-fix.css         # モーダル修正スタイル
+│
+├── admin/                 # 管理画面
+│   ├── index.php             # 管理画面トップ
+│   ├── login.php             # ログイン（認証確認）
+│   ├── logout.php            # ログアウト
+│   ├── images.php            # 画像管理
+│   ├── settings.php          # 設定管理
+│   ├── slogans.php           # スローガン管理
+│   ├── accordion_links.php   # アコーディオンリンク管理
+│   └── visual_editor.php     # ビジュアルエディタ
+│
+├── api/                   # APIエンドポイント
+│   └── get-content.php       # コンテンツ取得API
+│
+├── data/                  # データファイル
+│   ├── content.json          # 最新コンテンツJSON
+│   └── backups/              # バックアップフォルダ
+│
+├── includes/              # 共通PHPファイル
+│   └── functions.php         # 共通関数
+│
+├── img/                   # 画像ファイル
+│   ├── *.png, *.jpg          # 各種画像
+│   └── (すべての画像ファイル)
+│
+└── uploads/               # アップロードフォルダ
+    └── .gitkeep
+
+```
+
+#### 同期コマンド例
+```bash
+# FTP/SCP/rsyncなどで同期
+# 以下のファイル・フォルダーを本番環境にアップロード:
+rsync -avz --exclude='test_*' --exclude='debug_*' \
+  --exclude='*.md' --exclude='.git' \
+  . user@teito.link:/path/to/production/
+```
+
+#### 除外するファイル（デプロイ不要）
+```
+❌ test_*.html/php          # テストファイル
+❌ debug_*.html/php         # デバッグファイル
+❌ *.md                     # ドキュメントファイル
+❌ .git/                    # Gitリポジトリ
+❌ node_modules/            # npmパッケージ（存在する場合）
 ```
 
 ### 3. 本番環境設定確認
@@ -151,7 +215,7 @@ window.DEBUG.enabled  // false であること
 **A:** modal-fix.css が読み込まれているか確認。
 ```html
 <!-- index.html で確認: -->
-<link rel="stylesheet" href="modal-fix.css">
+<link rel="stylesheet" href="css/modal-fix.css">
 ```
 
 ### Q: admin画面にアクセスできない
