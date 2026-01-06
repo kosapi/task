@@ -6,7 +6,11 @@
   author: Guillaume Potier - @guillaumepotier
 */
 
+console.log('[Garlic.js] スクリプト読み込み開始');
+
 !function ($) {
+
+  console.log('[Garlic.js] jQuery 確認:', typeof $ !== 'undefined');
 
   "use strict";
   /*global localStorage */
@@ -465,10 +469,17 @@
 
   /* GARLIC DATA-API
   * =============== */
+  console.log('[Garlic.js] window.load イベントハンドラー登録開始');
+  
   $( window ).on( 'load', function () {
+    console.log('[Garlic.js] window.load イベント発火');
     $( '[data-persist="garlic"]' ).each( function () {
+      console.log('[Garlic.js] data-persist="garlic" 要素を初期化', this);
       $(this).garlic();
     })
+  });
+  
+  console.log('[Garlic.js] スクリプト読み込み完了');
   });
 
 // This plugin works with jQuery or Zepto (with data extension builded for Zepto. See changelog 0.0.6)
