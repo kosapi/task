@@ -50,19 +50,72 @@
 /* チャットウィンドウ */
 #checklist-chat-assistant {
   position: fixed;
-  bottom: 20px;
-  right: 20px;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
   width: 380px;
-  max-height: 600px;
+  max-height: 35vh;
   background: white;
   border-radius: 12px;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
   display: flex;
   flex-direction: column;
-  z-index: 999998 !important;
-  pointer-events: auto !important;
+  z-index: 999998;
+  pointer-events: auto;
   animation: slideIn 0.3s ease-out;
   font-family: 'Kosugi Maru', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+  transition: top 0.3s ease;
+}
+
+/* スマホでキーボード表示時の対応 */
+@media (max-width: 768px) {
+  #checklist-chat-assistant {
+    top: 10px !important;
+    left: 10px !important;
+    right: 10px !important;
+    width: auto !important;
+    transform: none !important;
+    max-height: 45vh !important;
+  }
+  
+  /* キーボード表示時も高さは固定、入力欄を上に配置 */
+  #checklist-chat-assistant.keyboard-visible {
+    top: 10px !important;
+    max-height: 45vh !important;
+    height: 45vh !important;
+  }
+  
+  /* スマホではヘッダー→入力欄→結果の順 */
+  #checklist-chat-assistant .chat-header {
+    order: 0;
+  }
+  
+  #checklist-chat-assistant .chat-input-area {
+    order: 1;
+  }
+  
+  #checklist-chat-assistant .chat-messages {
+    order: 2;
+  }
+  
+  #checklist-chat-assistant.keyboard-visible .chat-messages {
+    flex: 1;
+    overflow-y: auto !important;
+    max-height: calc(45vh - 140px) !important;
+  }
+  
+  .chat-messages {
+    max-height: calc(45vh - 120px) !important;
+    overflow-y: auto !important;
+  }
+}
+
+/* keyboard-visibleクラスは使用しない（常に25vh固定） */
+
+#checklist-chat-assistant.keyboard-visible .chat-send-btn {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
 }
 
 #checklist-chat-assistant.chat-hidden {
@@ -111,6 +164,44 @@
 }
 
 .chat-close-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  cursor: pointer;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  border-radius: 6px;
+  transition: all 0.2s;
+  font-weight: 500;
+  min-width: 36px;
+  min-height: 36px;
+}
+
+.chat-close-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
+}
+
+/* スマホでは閉じるボタンをさらに大きくしてタップしやすく */
+@media (max-width: 768px) {
+  .chat-close-btn {
+    padding: 10px;
+    font-size: 24px;
+    min-width: 44px;
+    min-height: 44px;
+    border-radius: 8px;
+  }
+  
+  .chat-close-btn i {
+    font-size: 24px;
+  }
+}
+
+/* ヘッダー内の虫眼鏡ボタン */
+.chat-toggle-btn-header {
   background: none;
   border: none;
   color: white;
@@ -119,13 +210,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 16px;
-  opacity: 0.8;
+  font-size: 18px;
+  opacity: 0.9;
   transition: opacity 0.2s;
-}
-
-.chat-close-btn:hover {
-  opacity: 1;
 }
 
 .chat-messages {
@@ -136,7 +223,8 @@
   flex-direction: column;
   gap: 12px;
   background: #f8f9fa !important;
-  max-height: 400px;
+  max-height: calc(35vh - 120px);
+  min-height: 100px;
 }
 
 .chat-message {
@@ -194,11 +282,19 @@
   border-radius: 0 0 12px 12px;
 }
 
+.chat-input-wrapper {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
 .chat-input {
   flex: 1;
+  width: 100%;
   border: 1px solid #ddd;
   border-radius: 20px;
-  padding: 10px 15px;
+  padding: 10px 40px 10px 15px;
   font-size: 13px;
   outline: none;
   transition: border-color 0.2s;
@@ -208,6 +304,30 @@
 .chat-input:focus {
   border-color: #667eea;
   box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
+}
+
+.chat-clear-btn {
+  position: absolute;
+  right: 8px;
+  background: none;
+  border: none;
+  color: #999;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  transition: color 0.2s;
+  z-index: 10;
+}
+
+.chat-clear-btn:hover {
+  color: #667eea;
+}
+
+.chat-clear-btn i {
+  pointer-events: none;
 }
 
 .chat-send-btn {
@@ -293,11 +413,11 @@
 /* モバイル対応 */
 @media (max-width: 480px) {
   #checklist-chat-assistant {
-    width: calc(100% - 20px);
-    max-height: 70vh;
-    bottom: 10px;
-    right: 10px;
-    left: 10px;
+    width: calc(250% - 20px);
+    max-height: 35vh;
+    top: 80px;
+    left: 50%;
+    transform: translateX(-50%);
   }
 
   .chat-bubble {
@@ -352,5 +472,17 @@
   .chat-send-btn {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
     color: white !important;
+  }
+}
+
+/* モバイルキーボード対応 */
+@media (max-width: 768px) {
+  .chat-input {
+    font-size: 16px; /* iOS キーボード自動ズーム回避 */
+  }
+
+  /* タッチ操作時の背景色 */
+  .chat-input:focus {
+    background-color: #fff;
   }
 }
