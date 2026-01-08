@@ -139,7 +139,7 @@
                     <i class="bi bi-arrow-left me-2"></i>管理画面に戻る
                 </a>
             </div>
-            <p class="text-muted mb-0">各機能の追加方法をステップバイステップで説明します</p>
+            <p class="text-muted mb-0">各機能の追加方法と最新の運用ポイントをまとめています</p>
         </header>
 
         <!-- チェックリスト追加ガイド -->
@@ -360,6 +360,35 @@
             </div>
         </div>
 
+        <!-- 共有（QRコード）ガイド -->
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="bi bi-qr-code me-2"></i>サイト共有（QRコード）</h5>
+            </div>
+            <div class="card-body">
+                <div class="step-item">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h6>緑のシェアボタンをタップ</h6>
+                        <p>トップページ右上の <strong>シェアボタン</strong> を押すと共有モーダル（Modal16）が開きます</p>
+                    </div>
+                </div>
+
+                <div class="step-item">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h6>QRコードを読み取る</h6>
+                        <p>モーダル内に <strong>現在のページURLのQRコード</strong> が自動生成されます。別端末から読み取って共有できます</p>
+                    </div>
+                </div>
+
+                <div class="highlight-box">
+                    <i class="bi bi-info-circle"></i>
+                    <strong>補足:</strong> QRコードは <strong>QRCode.js</strong> を使用して生成しています。QRが表示されない場合はスクリプト読み込みを確認してください（<code>qrcode.min.js</code> と <code>js/qrcode-generator.js</code>）。
+                </div>
+            </div>
+        </div>
+
         <!-- クイックリンク -->
         <div class="card">
             <div class="card-header">
@@ -378,6 +407,9 @@
                     </a>
                     <a href="/task/admin/slogans.php">
                         <i class="bi bi-chat-quote"></i> スローガン
+                    </a>
+                    <a href="/task/admin/settings.php">
+                        <i class="bi bi-gear"></i> 設定（バックアップDL）
                     </a>
                 </div>
             </div>
@@ -456,14 +488,45 @@
                             </div>
                         </div>
                     </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5">
+                                Q5: チェックを入れても進捗バーが更新されません
+                            </button>
+                        </h2>
+                        <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                <strong>確認ポイント:</strong><br>
+                                1. 各アコーディオン見出しの進捗バーに <code>progress-bar0</code> 〜 <code>progress-bar8</code> のクラスが付与されていますか？<br>
+                                2. チェックボックスの変更イベントが発火しているか（JSの読み込み順やエラーを確認）<br>
+                                3. クリアボタンで状態をリセットした後はページが自動リロードされます<br>
+                                <br>
+                                これで解決しない場合は、最新版の <strong>progress_v22.js</strong> が読み込まれているかを確認してください。
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq6">
+                                Q6: バックアップを端末にダウンロードしたい
+                            </button>
+                        </h2>
+                        <div id="faq6" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                <strong>手順:</strong><br>
+                                設定ページのバックアップ一覧からダウンロードリンクをクリックしてください。<br>
+                                安全のため、<strong>認証済み＋ファイル名パターン検証</strong>のエンドポイント <code>admin/download_backup.php</code> 経由で配信されます。
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
         <!-- フッター -->
         <footer class="text-center mt-5 mb-5 text-white">
-            <p><i class="bi bi-info-circle me-2"></i>更新: 2026年1月2日</p>
-            <p class="small">何か問題が発生した場合は、<strong>ダッシュボード</strong>から復元機能をお試しください</p>
+            <p><i class="bi bi-info-circle me-2"></i>更新: 2026年1月9日</p>
+            <p class="small">問題が発生した場合は、<strong>ダッシュボード</strong>から復元、<strong>設定</strong>からバックアップのダウンロードが可能です</p>
         </footer>
     </div>
 

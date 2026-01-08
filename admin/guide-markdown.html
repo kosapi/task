@@ -141,7 +141,7 @@
                     <i class="bi bi-arrow-left me-2"></i>ダッシュボードに戻る
                 </a>
             </div>
-            <p class="text-muted mb-0">画像、チェックリスト、モーダルの追加方法</p>
+            <p class="text-muted mb-0">画像、チェックリスト、モーダルの追加方法と共有・バックアップの最新情報</p>
         </header>
 
         <div class="toc">
@@ -150,6 +150,7 @@
                 <li><a href="#section1">1️⃣ チェックリストを追加する方法</a></li>
                 <li><a href="#section2">2️⃣ 画像を追加する方法</a></li>
                 <li><a href="#section3">3️⃣ モーダルを追加する方法</a></li>
+                <li><a href="#sectionShare">⚡ サイト共有（QRコード）</a></li>
                 <li><a href="#section4">🔄 すべてのコンテンツの同期</a></li>
                 <li><a href="#section5">📋 よくある質問</a></li>
             </ul>
@@ -198,6 +199,18 @@
         </ul>
 
         <hr>
+
+        <h2 id="sectionShare">⚡ サイト共有（QRコード）</h2>
+
+        <div class="alert alert-success">
+            <strong><i class="bi bi-qr-code me-2"></i>QR共有</strong> トップページの緑色のシェアボタンを押すと、共有モーダルに現在ページURLのQRコードが表示されます
+        </div>
+        <ol>
+            <li>トップページ右上の <strong>シェアボタン</strong> をクリック</li>
+            <li>モーダル（Modal16）が開き、<strong>QRコード</strong>が自動生成されます</li>
+            <li>別端末から読み取って簡単共有できます</li>
+        </ol>
+        <p><strong>技術情報:</strong> <code>QRCode.js</code> と <code>js/qrcode-generator.js</code> を使用しています。表示されない場合はスクリプト読み込み順やエラーを確認してください。</p>
 
         <h2 id="section2">2️⃣ 画像を追加する方法</h2>
 
@@ -319,6 +332,14 @@
             <li><strong>自動バックアップ</strong> - 毎回の保存時に自動作成</li>
             <li><strong>リアルタイム反映</strong> - 保存後すぐにメインサイトに反映</li>
             <li><strong>復元機能</strong> - 問題が起きた場合、ダッシュボードから復元可能</li>
+            <li><strong>バックアップのダウンロード</strong> - 設定ページの一覧からダウンロード可能（<code>admin/download_backup.php</code> 経由）</li>
+        </ul>
+
+        <h3>クリアボタン（チェックの初期化）について</h3>
+        <ul>
+            <li>ローカル保存のうち <code>checkbox_persist_*</code> のみ削除し、他のデータは保持します</li>
+            <li>全チェックボックスを未チェックにし、進捗バーを 0% にリセットします</li>
+            <li>数十ミリ秒後に自動リロードします（状態の再保存を防ぐため）</li>
         </ul>
 
         <hr>
@@ -338,6 +359,10 @@
 
         <h3>Q4: 誤って削除してしまいました</h3>
         <p><strong>A:</strong> ダッシュボードの <strong>「バックアップから復元」</strong> で以前の状態に戻せます</p>
+
+        <h3>Q5: チェックを入れても進捗バーが更新されません</h3>
+        <p><strong>A:</strong> 各セクションの進捗バーに <code>progress-bar0</code>〜<code>progress-bar8</code> のクラスが付与されているか確認してください。<br>
+        また、最新版の <code>js/progress_v22.js</code> が読み込まれているか、ブラウザのコンソールエラーをご確認ください。</p>
 
         <hr>
 
@@ -367,6 +392,11 @@
                     <td><code>/task/admin/index.php</code></td>
                     <td>バックアップ・復元、統計表示</td>
                 </tr>
+                <tr>
+                    <td>設定</td>
+                    <td><code>/task/admin/settings.php</code></td>
+                    <td>バックアップ一覧のダウンロードリンク（安全な配信エンドポイント）</td>
+                </tr>
             </tbody>
         </table>
 
@@ -383,7 +413,7 @@
         <hr>
 
         <footer class="text-center text-muted mt-5">
-            <p><small>更新: 2026年1月2日 | <a href="/task/admin/guide.html">ビジュアルガイドを表示</a></small></p>
+            <p><small>更新: 2026年1月9日 | <a href="/task/admin/guide.html">ビジュアルガイドを表示</a></small></p>
         </footer>
     </div>
 
