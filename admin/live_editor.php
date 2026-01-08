@@ -238,6 +238,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
             // バックアップを作成
             $backupDir = __DIR__ . '/../data/backups';
             if (!file_exists($backupDir)) mkdir($backupDir, 0777, true);
+            rotate_html_backups(BACKUP_MAX_GENERATIONS);
             copy($indexPath, $backupDir . '/index_' . date('Y-m-d_H-i-s') . '.html');
             
             // 新しいHTMLを保存
@@ -366,6 +367,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
             // 現在のファイルをバックアップ
             $backupDir = '../data/backups';
             if (!file_exists($backupDir)) mkdir($backupDir, 0777, true);
+            rotate_html_backups(BACKUP_MAX_GENERATIONS);
             copy($indexPath, $backupDir . '/index_' . date('Y-m-d_H-i-s') . '.html');
             
             // バックアップから復元
@@ -937,6 +939,7 @@ HTML;
     }
 }
 
+$csrf_token = generate_csrf_token();
 render_admin_header('ライブ編集');
 ?>
 
@@ -944,8 +947,8 @@ render_admin_header('ライブ編集');
     .editor-container {
         display: flex;
         gap: 15px;
-        height: calc(100vh - 200px);
-        min-height: 600px;
+        height: calc(100vh - 140px);
+        min-height: 720px;
     }
     .editor-pane, .preview-pane, .image-browser-pane {
         display: flex;
@@ -965,6 +968,7 @@ render_admin_header('ライブ編集');
         flex: 1;
         min-width: 280px;
         max-width: 350px;
+        transition: max-height 0.2s ease, flex 0.2s ease;
     }
     .pane-header {
         padding: 12px 15px;
@@ -1039,6 +1043,13 @@ render_admin_header('ライブ編集');
     /* 画像ブラウザスタイル */
     .image-browser-content {
         padding: 10px;
+    }
+    .image-browser-pane.collapsed {
+        max-height: 56px;
+        flex: 0 0 auto;
+    }
+    .image-browser-pane.collapsed .pane-content {
+        display: none;
     }
     .folder-section {
         margin-bottom: 15px;
@@ -1172,6 +1183,26 @@ render_admin_header('ライブ編集');
         border-left: 3px solid #667eea;
         padding-left: 5px;
     }
+    /* 画像削除ボタン（ビジュアルモード内） */
+    .cms-image-delete-btn {
+        position: relative !important;
+        background: #dc3545 !important;
+        color: white !important;
+        border: none !important;
+        border-radius: 4px !important;
+        padding: 4px 8px !important;
+        cursor: pointer !important;
+        font-size: 14px !important;
+        margin-left: 5px !important;
+        z-index: 1000 !important;
+        opacity: 0;
+        transition: opacity 0.2s !important;
+        display: inline-block !important;
+    }
+    .cms-image-delete-btn:hover {
+        background: #bb2d3b !important;
+        opacity: 1 !important;
+    }
     /* ビジュアルエディタ */
     .editor-mode-toggle .btn {
         min-width: 120px;
@@ -1203,6 +1234,47 @@ render_admin_header('ライブ編集');
         border: 0;
         background: white;
     }
+
+    /* モバイル（プレビュー編集専用） */
+    @media (max-width: 768px) {
+        .image-browser-pane {
+            max-height: 320px;
+        }
+        .image-browser-pane .pane-content {
+            max-height: 260px;
+            overflow-y: auto;
+        }
+        .editor-container {
+            flex-direction: column;
+            height: auto;
+        }
+        .image-browser-pane,
+        .editor-pane,
+        .preview-pane {
+            min-height: auto;
+            max-height: none;
+        }
+        .pane-content {
+            max-height: none;
+        }
+        .preview-pane {
+            display: none !important;
+        }
+        #htmlEditorWrapper {
+            display: none !important;
+        }
+        #visualEditorWrapper {
+            display: flex !important;
+        }
+        .editor-mode-toggle,
+        #editorModeLabel,
+        #lineCount,
+        #historyStatus,
+        #autoPreviewSwitch,
+        label[for="autoPreviewSwitch"] {
+            display: none !important;
+        }
+    }
 </style>
 
 <div class="container-fluid mt-4">
@@ -1229,6 +1301,21 @@ render_admin_header('ライブ編集');
             <i class="bi bi-check-circle me-2"></i>保存しました！
         </div>
     </div>
+
+    <!-- 共通編集モーダル（各種編集/復元ダイアログに使用） -->
+    <div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalTitle">編集</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="閉じる"></button>
+                </div>
+                <div class="modal-body" id="editContent">
+                    <!-- 動的に内容を差し替え -->
+                </div>
+            </div>
+        </div>
+    </div>
     
     <!-- ツールバー -->
     <div class="toolbar mb-3">
@@ -1249,6 +1336,12 @@ render_admin_header('ライブ編集');
         <button class="btn btn-outline-warning" id="restoreBackupBtn">
             <i class="bi bi-clock-history me-1"></i>バックアップから復元
         </button>
+        <form method="POST" action="/task/admin/settings.php" class="d-inline ms-2">
+            <input type="hidden" name="csrf_token" value="<?php echo h($csrf_token); ?>">
+            <button type="submit" name="create_backup" class="btn btn-outline-primary" title="今すぐバックアップ">
+                <i class="bi bi-archive me-1"></i>今すぐバックアップ
+            </button>
+        </form>
         <div class="dropdown ms-2">
             <button class="btn btn-outline-info dropdown-toggle" type="button" id="insertAlertDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                 <i class="bi bi-chat-left-text me-1"></i>アラート挿入
@@ -1287,9 +1380,14 @@ render_admin_header('ライブ編集');
         <div class="image-browser-pane">
             <div class="pane-header">
                 <span><i class="bi bi-images"></i>画像ブラウザ</span>
-                <button class="btn btn-sm btn-outline-light" id="refreshImagesBtn" title="画像リストを更新">
-                    <i class="bi bi-arrow-clockwise"></i>
-                </button>
+                <div class="btn-group btn-group-sm">
+                    <button class="btn btn-outline-light" id="toggleImagePaneBtn" title="折りたたみ">
+                        <i class="bi bi-chevron-up"></i>
+                    </button>
+                    <button class="btn btn-outline-light" id="refreshImagesBtn" title="画像リストを更新">
+                        <i class="bi bi-arrow-clockwise"></i>
+                    </button>
+                </div>
             </div>
             <div class="pane-content">
                 <div class="image-browser-content">
@@ -1331,6 +1429,7 @@ render_admin_header('ライブ編集');
                         </div>
                         <div class="ms-auto d-flex gap-2">
                             <button class="btn btn-outline-success" id="visualInsertImageBtn"><i class="bi bi-image me-1"></i>画像を挿入</button>
+                            <button class="btn btn-outline-info" id="visualUploadImageBtn"><i class="bi bi-upload me-1"></i>画像アップロード</button>
                         </div>
                     </div>
                     <iframe id="visualEditorFrame" class="visual-frame" sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-modals"></iframe>
@@ -1472,6 +1571,9 @@ const preview = document.getElementById('preview');
 const saveBtn = document.getElementById('saveBtn');
 const reloadBtn = document.getElementById('reloadBtn');
 const restoreBackupBtn = document.getElementById('restoreBackupBtn');
+const isMobile = window.matchMedia('(max-width: 768px)').matches;
+const imageBrowserPane = document.querySelector('.image-browser-pane');
+const toggleImagePaneBtn = document.getElementById('toggleImagePaneBtn');
 const autoPreviewSwitch = document.getElementById('autoPreviewSwitch');
 const refreshPreviewBtn = document.getElementById('refreshPreviewBtn');
 const lineCount = document.getElementById('lineCount');
@@ -1489,10 +1591,218 @@ const visualEditorFrame = document.getElementById('visualEditorFrame');
 const visualApplyBtn = document.getElementById('visualApplyBtn');
 const visualReloadBtn = document.getElementById('visualReloadBtn');
 const visualInsertImageBtn = document.getElementById('visualInsertImageBtn');
+const visualUploadImageBtn = document.getElementById('visualUploadImageBtn');
 const alertInsertItems = document.querySelectorAll('.insert-alert-item');
+let isVisualMode = false;
+
+// モバイル向けUI調整（HTMLモード/リアルタイムプレビューを非表示）
+if (isMobile) {
+    // プレビュー画面を隠す
+    document.querySelector('.preview-pane')?.setAttribute('style', 'display: none !important;');
+    // HTMLモード切り替え系を隠し、ビジュアルモードをデフォルトに
+    htmlModeBtn?.classList.add('d-none');
+    editorModeLabel?.classList.add('d-none');
+    document.getElementById('historyStatus')?.classList.add('d-none');
+    document.getElementById('lineCount')?.classList.add('d-none');
+    const autoPreviewRow = autoPreviewSwitch?.closest('.form-check');
+    if (autoPreviewRow) autoPreviewRow.style.display = 'none';
+    if (autoPreviewSwitch) {
+        autoPreviewSwitch.checked = false;
+        autoPreviewSwitch.disabled = true;
+    }
+    setEditorMode('visual');
+}
+
+// 画像ブラウザの折りたたみ
+if (toggleImagePaneBtn && imageBrowserPane) {
+    toggleImagePaneBtn.addEventListener('click', () => {
+        const collapsed = imageBrowserPane.classList.toggle('collapsed');
+        const icon = toggleImagePaneBtn.querySelector('i');
+        if (icon) {
+            icon.classList.toggle('bi-chevron-up', !collapsed);
+            icon.classList.toggle('bi-chevron-down', collapsed);
+        }
+    });
+}
 
 let updateTimeout = null;
 let visualSyncTimeout = null;
+
+// ============ 画像アップロード関数 ============
+async function uploadImageFile(file) {
+    if (!file) return null;
+    
+    const formData = new FormData();
+    formData.append('action', 'upload_image');
+    formData.append('image', file);
+    
+    try {
+        const response = await fetch('live_editor.php', {
+            method: 'POST',
+            body: formData
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            showNotification('画像をアップロードしました', 'success');
+            // 画像リストを更新
+            loadImageList();
+            return result.url;
+        } else {
+            showNotification('アップロード失敗: ' + (result.error || ''), 'danger');
+            return null;
+        }
+    } catch (error) {
+        console.error('Upload error:', error);
+        showNotification('アップロードエラー: ' + error.message, 'danger');
+        return null;
+    }
+}
+
+// 画像ブラウザからのドラッグ&ドロップ機能
+function enableImageDragDrop() {
+    const imageList = document.getElementById('imageList');
+    if (!imageList) return;
+    
+    // 画像アイテムにドラッグ可能属性を追加
+    imageList.addEventListener('mousedown', function(e) {
+        const imgItem = e.target.closest('.image-item');
+        if (!imgItem) return;
+        
+        const imgPath = imgItem.dataset.path;
+        imgItem.setAttribute('draggable', 'true');
+        
+        imgItem.addEventListener('dragstart', function(e) {
+            e.dataTransfer.setData('text/plain', imgPath);
+            e.dataTransfer.effectAllowed = 'copy';
+        });
+    });
+    
+    // ビジュアルエディタフレームにドロップ対応を追加
+    if (visualEditorFrame && visualEditorFrame.contentDocument) {
+        const frameDoc = visualEditorFrame.contentDocument;
+        const frameBody = frameDoc.body;
+        
+        if (frameBody) {
+            frameBody.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                e.dataTransfer.dropEffect = 'copy';
+            });
+            
+            frameBody.addEventListener('drop', function(e) {
+                e.preventDefault();
+                const imgPath = e.dataTransfer.getData('text/plain');
+                
+                if (imgPath) {
+                    // ドロップ位置に画像を挿入
+                    const img = frameDoc.createElement('img');
+                    img.src = imgPath.startsWith('/') ? imgPath : '/' + imgPath;
+                    img.className = 'img-fluid';
+                    img.alt = '';
+                    img.style.maxWidth = '100%';
+                    
+                    // ドロップ位置に挿入
+                    let targetElement = frameDoc.elementFromPoint(e.clientX, e.clientY);
+                    if (targetElement) {
+                        // ブロック要素の場合は内部に、インライン要素の場合は後ろに挿入
+                        if (['DIV', 'P', 'SECTION', 'ARTICLE'].includes(targetElement.tagName)) {
+                            targetElement.appendChild(img);
+                        } else {
+                            targetElement.insertAdjacentElement('afterend', img);
+                        }
+                        showNotification('画像を挿入しました', 'success');
+                    }
+                }
+            });
+        }
+    }
+}
+
+// ビジュアルモード内の画像に削除ボタンを追加
+function addImageDeleteButtons(frameDoc) {
+    if (!frameDoc) return;
+    
+    const images = frameDoc.querySelectorAll('img');
+    images.forEach(img => {
+        // 既に削除ボタンがある場合はスキップ
+        if (img.nextElementSibling && img.nextElementSibling.classList.contains('cms-image-delete-btn')) {
+            return;
+        }
+        
+        // 画像にホバー時のアウトラインを追加
+        img.style.cursor = 'pointer';
+        img.addEventListener('mouseenter', function() {
+            this.style.outline = '2px dashed #dc3545';
+        });
+        img.addEventListener('mouseleave', function() {
+            this.style.outline = '';
+        });
+        
+        // 削除ボタンを作成
+        const deleteBtn = frameDoc.createElement('button');
+        deleteBtn.className = 'cms-image-delete-btn';
+        deleteBtn.innerHTML = '<i class="bi bi-trash"></i>';
+        deleteBtn.title = '画像を削除';
+        deleteBtn.style.cssText = `
+            position: absolute;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 4px 8px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-left: -40px;
+            margin-top: 5px;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.2s;
+        `;
+        
+        // 画像の後ろにボタンを挿入
+        img.insertAdjacentElement('afterend', deleteBtn);
+        
+        // 画像ホバー時にボタンを表示
+        img.addEventListener('mouseenter', function() {
+            deleteBtn.style.opacity = '1';
+        });
+        deleteBtn.addEventListener('mouseenter', function() {
+            this.style.opacity = '1';
+        });
+        img.addEventListener('mouseleave', function(e) {
+            if (!e.relatedTarget || e.relatedTarget !== deleteBtn) {
+                deleteBtn.style.opacity = '0';
+            }
+        });
+        deleteBtn.addEventListener('mouseleave', function() {
+            this.style.opacity = '0';
+        });
+        
+        // 削除ボタンのクリックイベント
+        deleteBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            if (confirm('この画像を削除しますか？')) {
+                img.remove();
+                deleteBtn.remove();
+                showNotification('画像を削除しました', 'success');
+            }
+        });
+    });
+}
+
+// ビジュアルエディタ読み込み時に画像削除ボタンを追加
+function enhanceVisualEditor() {
+    if (!visualEditorFrame || !visualEditorFrame.contentDocument) return;
+    
+    const frameDoc = visualEditorFrame.contentDocument;
+    addImageDeleteButtons(frameDoc);
+    
+    // ドラッグ&ドロップ機能を有効化
+    enableImageDragDrop();
+}
 
 // ============ Undo/Redo履歴管理 ============
 const MAX_HISTORY = 50; // 最大履歴数
@@ -1500,7 +1810,6 @@ let editHistory = [];
 let historyIndex = -1;
 let isRestoringHistory = false;
 let lastSavedContent = htmlEditor.value;
-let isVisualMode = false;
 
 // テキストエリアへカーソル位置に挿入
 function insertTextAtCursor(textarea, text) {
@@ -2001,6 +2310,9 @@ function findAndHighlightInEditor(elementInfo) {
 // エディタ内のコードをハイライト（改善版）
 function highlightCodeInEditor(index, tagName, description) {
     console.log(`highlightCodeInEditor called: index=${index}, tagName=${tagName}, description=${description}`);
+
+    // モバイルではHTMLモードを表示しないためスキップ
+    if (isMobile) return;
     
     // HTMLエディタラッパーが表示されていることを確認
     const htmlEditorWrapper = document.getElementById('htmlEditorWrapper');
@@ -2171,6 +2483,10 @@ function showHighlightIndicator(lineNum, description = '') {
 
 // ============ ビジュアル編集モード ============
 function setEditorMode(mode) {
+    if (isMobile && mode === 'html') {
+        mode = 'visual';
+    }
+
     if (mode === 'visual') {
         isVisualMode = true;
         htmlModeBtn.classList.remove('btn-light');
@@ -2228,6 +2544,11 @@ function loadVisualEditorFromHtml() {
                 }
             }, 500);
         });
+        
+        // 画像削除ボタンとドラッグ&ドロップ機能を追加
+        setTimeout(() => {
+            enhanceVisualEditor();
+        }, 100);
     }
 }
 
@@ -2263,6 +2584,12 @@ function insertImageIntoVisual(path, alt = '', cssClass = 'img-fluid') {
     } else {
         doc.body.appendChild(img);
     }
+    
+    // 画像削除ボタンを追加
+    setTimeout(() => {
+        addImageDeleteButtons(doc);
+    }, 100);
+    
     syncVisualToHtml();
     showNotification('ビジュアルに画像を挿入しました', 'success');
 }
@@ -2284,8 +2611,10 @@ htmlEditor.addEventListener('input', function() {
     }
 });
 
-// 手動プレビュー更新
-refreshPreviewBtn.addEventListener('click', updatePreview);
+// 手動プレビュー更新（モバイルではプレビューを非表示）
+if (!isMobile && refreshPreviewBtn) {
+    refreshPreviewBtn.addEventListener('click', updatePreview);
+}
 
 // エディタモード切り替え
 htmlModeBtn.addEventListener('click', () => setEditorMode('html'));
@@ -2301,8 +2630,41 @@ visualReloadBtn.addEventListener('click', loadVisualEditorFromHtml);
 visualInsertImageBtn.addEventListener('click', () => {
     // 画像ブラウザから選んでもらうため、左ペインを利用
     document.getElementById('imageList')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    showNotification('画像を選択してください（クリックで挿入）', 'info');
+    showNotification('画像を選択してください（クリックまたはドラッグ&ドロップで挿入）', 'info');
 });
+
+// 画像アップロードボタン
+if (visualUploadImageBtn) {
+    visualUploadImageBtn.addEventListener('click', () => {
+        const picker = document.createElement('input');
+        picker.type = 'file';
+        picker.accept = 'image/*';
+        picker.onchange = async () => {
+            const file = picker.files?.[0];
+            if (!file) return;
+            
+            const url = await uploadImageFile(file);
+            if (url && visualEditorFrame && visualEditorFrame.contentDocument) {
+                // ビジュアルエディタに画像を挿入
+                const frameDoc = visualEditorFrame.contentDocument;
+                const img = frameDoc.createElement('img');
+                img.src = url;
+                img.className = 'img-fluid';
+                img.alt = '';
+                img.style.maxWidth = '100%';
+                
+                // body の最後に追加
+                frameDoc.body.appendChild(img);
+                
+                // 削除ボタンを追加
+                addImageDeleteButtons(frameDoc);
+                
+                showNotification('画像をアップロードして挿入しました', 'success');
+            }
+        };
+        picker.click();
+    });
+}
 
 // アラート挿入
 alertInsertItems.forEach((item) => {
@@ -2383,77 +2745,6 @@ reloadBtn.addEventListener('click', function() {
         location.reload();
     }
 });
-
-// バックアップから復元
-restoreBackupBtn.addEventListener('click', async function() {
-    const modal = new bootstrap.Modal(document.getElementById('restoreModal'));
-    modal.show();
-    
-    try {
-        const response = await fetch('live_editor.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: 'action=get_backups'
-        });
-        
-        const result = await response.json();
-        const container = document.getElementById('backupListContainer');
-        
-        if (result.success && result.backups.length > 0) {
-            let html = '<div class="alert alert-warning"><i class="bi bi-exclamation-triangle me-2"></i>注意: 復元前に現在のページは自動でバックアップされます</div>';
-            html += '<div class="list-group">';
-            
-            result.backups.forEach(backup => {
-                html += `
-                    <button type="button" class="list-group-item list-group-item-action" onclick="restoreFromBackup('${backup.file}')">
-                        <div class="d-flex w-100 justify-content-between">
-                            <h6 class="mb-1"><i class="bi bi-clock-history me-2"></i>${backup.time}</h6>
-                            <small class="text-muted">${backup.file}</small>
-                        </div>
-                    </button>
-                `;
-            });
-            
-            html += '</div>';
-            container.innerHTML = html;
-        } else {
-            container.innerHTML = '<div class="alert alert-info">利用可能なバックアップがありません</div>';
-        }
-    } catch (error) {
-        document.getElementById('backupListContainer').innerHTML = 
-            '<div class="alert alert-danger">エラー: ' + error.message + '</div>';
-    }
-});
-
-// バックアップから復元実行
-async function restoreFromBackup(backupFile) {
-    if (!confirm('このバックアップから復元してもよろしいですか？')) {
-        return;
-    }
-    
-    try {
-        const response = await fetch('live_editor.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: 'action=restore_backup&backup_file=' + encodeURIComponent(backupFile)
-        });
-        
-        const result = await response.json();
-        
-        if (result.success) {
-            alert('バックアップから復元しました。ページを再読み込みします。');
-            location.reload();
-        } else {
-            alert('復元に失敗: ' + (result.error || '不明なエラー'));
-        }
-    } catch (error) {
-        alert('通信エラー: ' + error.message);
-    }
-}
 
 // キーボードショートカット
 htmlEditor.addEventListener('keydown', function(e) {

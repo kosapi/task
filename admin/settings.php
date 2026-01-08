@@ -11,8 +11,9 @@ $error_message = '';
 $backup_dir = DATA_DIR . '/backups';
 $backups = [];
 if (is_dir($backup_dir)) {
-    $files = glob($backup_dir . '/content_*.json');
-    foreach ($files as $file) {
+    $files_json = glob($backup_dir . '/content_*.json') ?: [];
+    $files_html = glob($backup_dir . '/index_*.html') ?: [];
+    foreach (array_merge($files_json, $files_html) as $file) {
         $backups[] = [
             'path' => $file,
             'name' => basename($file),
@@ -32,12 +33,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create_backup'])) {
     if (!verify_csrf_token($csrf_token)) {
         $error_message = 'セキュリティエラーが発生しました。';
     } else {
-        if (create_backup()) {
-            $success_message = 'バックアップを作成しました。';
-            header('Location: /task/admin/settings.php?backup=1');
-            exit;
+        // バックアップディレクトリ確保
+        if (!is_dir($backup_dir) && !mkdir($backup_dir, 0755, true)) {
+            $error_message = 'バックアップディレクトリの作成に失敗しました。';
         } else {
-            $error_message = 'バックアップの作成に失敗しました。';
+            $ok = true;
+            // HTMLバックアップ（index.html）
+            $indexPath = dirname(__DIR__) . '/index.html';
+            if (file_exists($indexPath)) {
+                rotate_html_backups(BACKUP_MAX_GENERATIONS);
+                $htmlBackup = $backup_dir . '/index_' . date('Y-m-d_H-i-s') . '.html';
+                if (!copy($indexPath, $htmlBackup)) {
+                    $ok = false;
+                    $error_message = 'index.html のバックアップ作成に失敗しました。';
+                }
+            }
+
+            // JSONバックアップ（content.json）
+            if ($ok) {
+                rotate_backups(BACKUP_MAX_GENERATIONS);
+                if (!create_backup()) {
+                    $ok = false;
+                    $error_message = 'content.json のバックアップ作成に失敗しました。';
+                }
+            }
+
+            if ($ok) {
+                $success_message = 'バックアップを作成しました。';
+                header('Location: /task/admin/settings.php?backup=1');
+                exit;
+            }
         }
     }
 }
@@ -151,7 +176,7 @@ render_admin_header('設定');
                                 <td><?php echo number_format($backup['size'] / 1024, 2); ?> KB</td>
                                 <td><?php echo date('Y/m/d H:i:s', $backup['modified']); ?></td>
                                 <td>
-                                    <a href="/data/backups/<?php echo h($backup['name']); ?>" download class="btn btn-sm btn-outline-primary">
+                                    <a href="/task/admin/download_backup.php?file=<?php echo h(urlencode($backup['name'])); ?>" class="btn btn-sm btn-outline-primary">
                                         <i class="bi bi-download"></i>ダウンロード
                                     </a>
                                 </td>

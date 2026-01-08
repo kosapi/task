@@ -92,13 +92,6 @@ $csrf_token = generate_csrf_token();
                 <button type="submit" class="btn btn-primary btn-lg">ログイン</button>
             </div>
         </form>
-        
-        <div class="mt-3 text-center">
-            <small class="text-muted">
-                初期ユーザー名: admin<br>
-                初期パスワード: admin123
-            </small>
-        </div>
     </div>
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

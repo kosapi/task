@@ -8,9 +8,80 @@ $content_data = get_content_data();
 $slogans_count = count($content_data['slogans'] ?? []);
 $checklist_count = count($content_data['checklist'] ?? []);
 
-// アップロード画像数
-$image_files = glob(UPLOADS_DIR . '/*');
-$images_count = count($image_files);
+// システム情報取得
+$system_info = get_system_info();
+
+// CSRFトークン（設定のバックアップPOSTで使用）
+$csrf_token = generate_csrf_token();
+
+// リンク数（アコーディオン + モーダルの総数）
+$links_count = 0;
+$index_html_path = dirname(__DIR__) . '/index.html';
+if (file_exists($index_html_path)) {
+    $html_content = file_get_contents($index_html_path);
+    // アコーディオンタイトル（ボタン）を抽出して数える
+    $accordion_titles = [];
+    if (preg_match_all('/data-bs-target="#(collapse\d+)"[^>]*>\s*([^<]+)\s*<\/button>/u', $html_content, $matches, PREG_SET_ORDER)) {
+        foreach ($matches as $m) {
+            $accordion_titles[$m[1]] = trim(html_entity_decode($m[2], ENT_QUOTES | ENT_HTML5, 'UTF-8'));
+        }
+    }
+    $accordion_count = count($accordion_titles);
+
+    // 各collapseセクション内のモーダルリンクを抽出して数える
+    $modals_total = 0;
+    if (preg_match_all('/<div id="(collapse\d+)" class="accordion-collapse collapse".*?>(.*?)<\/div>\s*<\/div>\s*(?=<div class="accordion-item"|<\/div>\s*<\/div>\s*<\/form>)/su', $html_content, $accordion_matches, PREG_SET_ORDER)) {
+        foreach ($accordion_matches as $am) {
+            $accordion_content = $am[2];
+            if (preg_match_all('/<a[^>]+data-bs-target="[#]*([^"]+)"[^>]*>(?:<p>)?([^<]+)(?:<\/p>)?<\/a>/u', $accordion_content, $modal_matches, PREG_SET_ORDER)) {
+                $modals_total += count($modal_matches);
+            }
+        }
+    }
+
+    $links_count = $accordion_count + $modals_total;
+}
+
+// 画像数（root, img, uploads を合算）
+$images_count = 0;
+$allowed_exts = ALLOWED_EXTENSIONS;
+
+// ルート直下
+$root_dir = dirname(__DIR__);
+$root_files = glob($root_dir . '/*');
+foreach ($root_files as $file) {
+    if (is_file($file)) {
+        $ext = get_file_extension($file);
+        if (in_array($ext, $allowed_exts) && !in_array($ext, ['php', 'html', 'css', 'js'])) {
+            $images_count++;
+        }
+    }
+}
+
+// uploads フォルダ
+$upload_files = glob(UPLOADS_DIR . '/*');
+foreach ($upload_files as $file) {
+    if (is_file($file)) {
+        $ext = get_file_extension($file);
+        if (in_array($ext, $allowed_exts)) {
+            $images_count++;
+        }
+    }
+}
+
+// img フォルダ
+$img_dir = dirname(__DIR__) . '/img';
+if (is_dir($img_dir)) {
+    $img_files = glob($img_dir . '/*');
+    foreach ($img_files as $file) {
+        if (is_file($file)) {
+            $ext = get_file_extension($file);
+            if (in_array($ext, $allowed_exts)) {
+                $images_count++;
+            }
+        }
+    }
+}
 
 render_admin_header('ダッシュボード');
 ?>
@@ -25,6 +96,12 @@ render_admin_header('ダッシュボード');
             <a href="/task/debug-accordion-links.html" target="_blank" class="btn btn-sm btn-outline-danger" title="アコーディオンリンク デバッグ">
                 <i class="bi bi-bug me-1"></i>デバッグ
             </a>
+            <form method="POST" action="/task/admin/settings.php" class="d-inline ms-2">
+                <input type="hidden" name="csrf_token" value="<?php echo h($csrf_token); ?>">
+                <button type="submit" name="create_backup" class="btn btn-sm btn-outline-primary" title="今すぐバックアップ">
+                    <i class="bi bi-archive me-1"></i>今すぐバックアップ
+                </button>
+            </form>
         </div>
     </div>
 </div>
@@ -80,7 +157,7 @@ render_admin_header('ダッシュボード');
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
                         <h6 class="card-title text-white-50 mb-1">リンク</h6>
-                        <h2 class="mb-0"><?php echo $checklist_count; ?></h2>
+                        <h2 class="mb-0"><?php echo $links_count; ?></h2>
                     </div>
                     <i class="bi bi-link-45deg" style="font-size: 3rem; opacity: 0.5;"></i>
                 </div>
@@ -224,6 +301,22 @@ render_admin_header('ダッシュボード');
                     <li class="mb-2">
                         <i class="bi bi-server text-muted me-2"></i>
                         <small>PHP: <?php echo phpversion(); ?></small>
+                    </li>
+                    <li class="mb-2">
+                        <i class="bi bi-file-earmark-text text-muted me-2"></i>
+                        <small>JSON容量: <?php echo h($system_info['content_size_formatted']); ?></small>
+                    </li>
+                    <li class="mb-2">
+                        <i class="bi bi-pencil-square text-muted me-2"></i>
+                        <small>最終更新: <?php echo h($system_info['content_modified_formatted']); ?></small>
+                    </li>
+                    <li class="mb-2">
+                        <i class="bi bi-archive text-muted me-2"></i>
+                        <small>バックアップ: <?php echo $system_info['backup_count']; ?>個</small>
+                    </li>
+                    <li class="mb-2">
+                        <i class="bi bi-clock-history text-muted me-2"></i>
+                        <small>最新BK: <?php echo h($system_info['latest_backup_formatted']); ?></small>
                     </li>
                 </ul>
             </div>
