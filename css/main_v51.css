@@ -58,12 +58,45 @@ p {
   }
 }
 
+.accordion {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+.accordion-item:first-child {
+  margin-top: 0 !important;
+  border-top: none !important;
+}
+
 .accordion-button {
   text-shadow: 3px 3px 2px rgb(194, 193, 193);
   height: 45px;
+  margin: 0 !important;
 }
 .accordion-button:hover {
   background-color: #fbe3ee;
+}
+
+.accordion-item {
+  margin: 0 !important;
+  border: none !important;
+}
+
+.accordion-header {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.accordion-header .progress {
+  margin: 0 !important;
+}
+
+.accordion-collapse {
+  margin: 0 !important;
+}
+
+.accordion-body {
+  padding: 1rem !important;
 }
 .br {
   border: solid 1px red;
@@ -247,6 +280,23 @@ p {
 thead {
   font-size: 12px;
 }
+
+table td {
+  padding: 12px !important;
+  vertical-align: top;
+  line-height: 1.8 !important;
+  min-height: 80px;
+}
+
+table th {
+  padding: 8px !important;
+}
+
+table td span {
+  display: inline-block;
+  margin: 5px 2px;
+}
+
 .mark_g {
   background: linear-gradient(transparent 0%, hsl(120, 61%, 93%) 0%);
   color: #16025e;
@@ -411,13 +461,28 @@ details summary {
 .kokuban {
   color: #fff;
   background-color: #114400;
-  margin: 3px 0 3px 0;
+  margin: 3px 0 0 0;
   padding: 1px 5px 1px 5px;
   border: 5px solid #a60;
   border-radius: 3px;
   box-shadow: 2px 2px 4px #666, 2px 2px 2px #111 inset;
   text-shadow: 0px 0px 2px #000;
   line-height: 1.5;
+}
+
+div[data-persist="garlic"] {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.accordion {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+.accordion-item:first-child {
+  margin-top: 0 !important;
+  border-top: none !important;
 }
 .kokuban2 {
   color: #fff;
@@ -561,6 +626,18 @@ details {
 #bc12{
   background-color: #08f7a7;;
   color: rgb(12, 12, 12);
+}
+
+/* チェックボックスラベル内のリンク設定 */
+.form-check-label a {
+  pointer-events: auto;
+}
+
+.form-check-label {
+  cursor: pointer;
+  margin-bottom: 0;
+  display: flex;
+  align-items: center;
 }
 .carousel-control-prev {
   height: 50px;

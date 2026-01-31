@@ -46,7 +46,7 @@
     try {
       const hash = window.location.hash.replace('#', '').trim();
       if (!hash) {
-        console.log('桃 No hash found in URL');
+        console.log('桃 No hash found in URL - all accordions will stay closed');
         return;
       }
 

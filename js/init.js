@@ -2,6 +2,31 @@
  * モーダル・アコーディオン初期化スクリプト
  */
 
+// URLハッシュをクリアしてアコーディオンが自動で開かないようにする
+if (window.location.hash) {
+  // ハッシュが collapse で始まる場合のみクリア
+  const hash = window.location.hash.replace('#', '').trim();
+  if (hash.startsWith('collapse')) {
+    console.log('Clearing accordion hash:', hash);
+    // ハッシュを削除（履歴に残さない）
+    history.replaceState(null, null, ' ');
+  }
+}
+
+// ローカルストレージからアコーディオン状態をクリア
+try {
+  // garlic.js や他のスクリプトが保存したアコーディオン状態をクリア
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    if (key && (key.includes('collapse') || key.includes('accordion'))) {
+      localStorage.removeItem(key);
+      console.log('Removed localStorage key:', key);
+    }
+  }
+} catch (e) {
+  console.log('Could not clear localStorage:', e);
+}
+
 function setupNestedModalHandlers() {
   console.log('🔧 ネストされたモーダルハンドラーをセットアップ中...');
   
