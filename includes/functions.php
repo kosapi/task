@@ -84,10 +84,99 @@ function get_content_data() {
 }
 
 /**
- * コンテンツデータを保存
+ * コンテンツデータを保存（排他ロック・原子的保存・自動バックアップ付き）
  */
 function save_content_data($data) {
-    return write_json_file(CONTENT_FILE, $data);
+    // バリデーション
+    if (!validate_content_data($data)) {
+        error_log('Content data validation failed');
+        return false;
+    }
+    
+    // 自動バックアップ（世代数上限10）
+    rotate_backups(BACKUP_MAX_GENERATIONS);
+    create_backup();
+    
+    // 原子的保存（テンポラリ→rename）
+    $json = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+    $temp_file = CONTENT_FILE . '.tmp.' . getmypid();
+    
+    // 排他ロックで書き込み
+    $fp = fopen($temp_file, 'w');
+    if (!$fp) {
+        error_log('Failed to open temp file: ' . $temp_file);
+        return false;
+    }
+    
+    if (flock($fp, LOCK_EX)) {
+        fwrite($fp, $json);
+        fflush($fp);
+        flock($fp, LOCK_UN);
+        fclose($fp);
+        
+        // 原子的にリネーム
+        if (rename($temp_file, CONTENT_FILE)) {
+            // content_new_structure.json にも保存
+            $new_structure_file = DATA_DIR . '/content_new_structure.json';
+            $temp_file_new = $new_structure_file . '.tmp.' . getmypid();
+            
+            $fp_new = fopen($temp_file_new, 'w');
+            if ($fp_new) {
+                if (flock($fp_new, LOCK_EX)) {
+                    fwrite($fp_new, $json);
+                    fflush($fp_new);
+                    flock($fp_new, LOCK_UN);
+                    fclose($fp_new);
+                    @rename($temp_file_new, $new_structure_file);
+                } else {
+                    fclose($fp_new);
+                    @unlink($temp_file_new);
+                }
+            }
+            
+            return true;
+        } else {
+            error_log('Failed to rename temp file to content file');
+            @unlink($temp_file);
+            return false;
+        }
+    } else {
+        fclose($fp);
+        @unlink($temp_file);
+        error_log('Failed to acquire lock on temp file');
+        return false;
+    }
+}
+
+/**
+ * コンテンツデータのバリデーション
+ */
+function validate_content_data($data) {
+    // 基本的な型チェック
+    if (!is_array($data)) {
+        return false;
+    }
+    
+    // slogansの検証
+    if (isset($data['slogans'])) {
+        if (!is_array($data['slogans'])) {
+            return false;
+        }
+        foreach ($data['slogans'] as $slogan) {
+            if (!is_string($slogan)) {
+                return false;
+            }
+        }
+    }
+    
+    // checklistの検証
+    if (isset($data['checklist'])) {
+        if (!is_array($data['checklist'])) {
+            return false;
+        }
+    }
+    
+    return true;
 }
 
 /**
@@ -156,6 +245,117 @@ function create_backup() {
         return copy(CONTENT_FILE, $backup_file);
     }
     return false;
+}
+
+/**
+ * バックアップをローテーション（古いものを削除）
+ */
+function rotate_backups($max_backups = 30) {
+    $backup_dir = DATA_DIR . '/backups';
+    if (!is_dir($backup_dir)) {
+        return;
+    }
+    
+    // バックアップファイルを取得
+    $files = glob($backup_dir . '/content_*.json');
+    if (count($files) <= $max_backups) {
+        return;
+    }
+    
+    // 更新日時でソート（古い順）
+    usort($files, function($a, $b) {
+        return filemtime($a) - filemtime($b);
+    });
+    
+    // 上限を超えた分を削除
+    $to_delete = count($files) - $max_backups;
+    for ($i = 0; $i < $to_delete; $i++) {
+        @unlink($files[$i]);
+    }
+}
+
+/**
+ * システム情報を取得
+ */
+function get_system_info() {
+    $info = [];
+    
+    // JSONファイルサイズ
+    if (file_exists(CONTENT_FILE)) {
+        $info['content_size'] = filesize(CONTENT_FILE);
+        $info['content_size_formatted'] = format_bytes($info['content_size']);
+        $info['content_modified'] = filemtime(CONTENT_FILE);
+        $info['content_modified_formatted'] = date('Y/m/d H:i:s', $info['content_modified']);
+    } else {
+        $info['content_size'] = 0;
+        $info['content_size_formatted'] = '0 B';
+        $info['content_modified'] = 0;
+        $info['content_modified_formatted'] = '-';
+    }
+    
+    // バックアップ数
+    $backup_dir = DATA_DIR . '/backups';
+    if (is_dir($backup_dir)) {
+        $backups = glob($backup_dir . '/content_*.json');
+        $info['backup_count'] = count($backups);
+        
+        // 最新のバックアップ
+        if (!empty($backups)) {
+            usort($backups, function($a, $b) {
+                return filemtime($b) - filemtime($a);
+            });
+            $info['latest_backup'] = filemtime($backups[0]);
+            $info['latest_backup_formatted'] = date('Y/m/d H:i:s', $info['latest_backup']);
+        } else {
+            $info['latest_backup'] = 0;
+            $info['latest_backup_formatted'] = '-';
+        }
+    } else {
+        $info['backup_count'] = 0;
+        $info['latest_backup'] = 0;
+        $info['latest_backup_formatted'] = '-';
+    }
+    
+    return $info;
+}
+
+/**
+ * バイト数を人間が読みやすい形式にフォーマット
+ */
+function format_bytes($bytes, $precision = 2) {
+    $units = ['B', 'KB', 'MB', 'GB', 'TB'];
+    $bytes = max($bytes, 0);
+    $pow = floor(($bytes ? log($bytes) : 0) / log(1024));
+    $pow = min($pow, count($units) - 1);
+    $bytes /= pow(1024, $pow);
+    return round($bytes, $precision) . ' ' . $units[$pow];
+}
+
+/**
+ * HTMLバックアップをローテーション（古いものを削除）
+ */
+function rotate_html_backups($max_backups = 10) {
+    $backup_dir = DATA_DIR . '/backups';
+    if (!is_dir($backup_dir)) {
+        return;
+    }
+    
+    // HTMLバックアップファイルを取得
+    $files = glob($backup_dir . '/index_*.html');
+    if (count($files) <= $max_backups) {
+        return;
+    }
+    
+    // 更新日時でソート（古い順）
+    usort($files, function($a, $b) {
+        return filemtime($a) - filemtime($b);
+    });
+    
+    // 上限を超えた分を削除
+    $to_delete = count($files) - $max_backups;
+    for ($i = 0; $i < $to_delete; $i++) {
+        @unlink($files[$i]);
+    }
 }
 
 /**
@@ -232,6 +432,14 @@ function render_admin_header($title = 'CMS管理画面') {
                         <div class="text-center mb-4">
                             <h4 class="text-white">Task CMS</h4>
                             <small class="text-white-50">管理画面</small>
+                        </div>
+                        <div class="px-3 mb-3">
+                            <form method="POST" action="/task/admin/settings.php" class="d-grid">
+                                <input type="hidden" name="csrf_token" value="<?php echo h(generate_csrf_token()); ?>">
+                                <button type="submit" name="create_backup" class="btn btn-sm btn-light w-100" title="今すぐバックアップ">
+                                    <i class="bi bi-archive me-1"></i>今すぐバックアップ
+                                </button>
+                            </form>
                         </div>
                         <ul class="nav flex-column">
                             <li class="nav-item">
