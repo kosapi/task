@@ -6,16 +6,29 @@
 
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
+header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+header('Pragma: no-cache');
+header('Expires: 0');
 
 require_once __DIR__ . '/../config.php';
 require_once __DIR__ . '/../includes/functions.php';
 
-// 新しい構造のファイルを優先的に読み込む
-$content_file = DATA_DIR . '/content_new_structure.json';
-if (file_exists($content_file)) {
+// content_new_structure.json と content.json のうち、更新日時が新しい方を採用
+$new_structure_file = DATA_DIR . '/content_new_structure.json';
+$legacy_file = CONTENT_FILE;
+
+$new_exists = file_exists($new_structure_file);
+$legacy_exists = file_exists($legacy_file);
+
+if ($new_exists && $legacy_exists) {
+    $new_mtime = filemtime($new_structure_file) ?: 0;
+    $legacy_mtime = filemtime($legacy_file) ?: 0;
+    $content_file = ($new_mtime >= $legacy_mtime) ? $new_structure_file : $legacy_file;
     $content_data = read_json_file($content_file);
+} elseif ($new_exists) {
+    $content_data = read_json_file($new_structure_file);
 } else {
-    // 従来のcontent.jsonを読み込む
+    // 従来のcontent.jsonを読み込む（存在しない場合はデフォルト作成）
     $content_data = get_content_data();
 }
 

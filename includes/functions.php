@@ -92,6 +92,9 @@ function save_content_data($data) {
         error_log('Content data validation failed');
         return false;
     }
+
+    // 内容更新日時を自動反映（日本時間）
+    $data['updated_at'] = date('Y年m月d日');
     
     // 自動バックアップ（世代数上限10）
     rotate_backups(BACKUP_MAX_GENERATIONS);
