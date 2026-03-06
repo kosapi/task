@@ -41,7 +41,12 @@ define('BASE_URL', get_base_url());
 
 // ============ セキュリティ設定 ============
 define('ADMIN_USERNAME', 'admin');
-define('ADMIN_PASSWORD', password_hash('admin123', PASSWORD_BCRYPT)); // 初回セットアップ後に変更してください
+define('ADMIN_PASSWORD', password_hash('admin4130', PASSWORD_BCRYPT)); // 初回セットアップ後に変更してください
+
+// 自動バックアップ用トークン（本番では環境変数 TASK_BACKUP_TOKEN を設定してください）
+define('BACKUP_CRON_TOKEN', getenv('TASK_BACKUP_TOKEN') ?: '');
+// バックアップ世代の上限（HTML/JSON共通）
+define('BACKUP_MAX_GENERATIONS', 5);
 
 // ============ ファイルパス設定 ============
 define('DATA_DIR', __DIR__ . '/data');

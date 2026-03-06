@@ -165,6 +165,11 @@ console.log('[CheckboxPersist] スクリプト読み込み開始');
     }, 100);
   });
 
+  // チェックボックス復元完了を通知するカスタムイベントを発火
+  var event = new Event('checkboxPersistReady');
+  document.dispatchEvent(event);
+  console.log('[CheckboxPersist] checkboxPersistReady イベントを発火');
+
   console.log('[CheckboxPersist] スクリプト初期化完了');
 })();
 

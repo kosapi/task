@@ -30,6 +30,3 @@ window.ENV = {
 // グローバル変数としてベースURLを設定
 window.BASE_URL = window.ENV.getBaseUrl();
 window.ENVIRONMENT = window.ENV.getEnvironment();
-
-console.log('📍 環境:', window.ENVIRONMENT);
-console.log('🔗 ベースURL:', window.BASE_URL);
