@@ -1,7 +1,10 @@
 <?php
 require_once __DIR__ . '/../config.php';
 require_once __DIR__ . '/../includes/functions.php';
-
+if (session_status() === PHP_SESSION_NONE) {
+    session_name(SESSION_NAME);
+    session_start();
+}
 $error = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -11,13 +14,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     if (!verify_csrf_token($csrf_token)) {
         $error = 'セキュリティエラーが発生しました。';
-    } elseif ($username === ADMIN_USERNAME && password_verify($password, ADMIN_PASSWORD)) {
+    } elseif ($username === ADMIN_USERNAME && $password === ADMIN_PASSWORD) {
         $_SESSION['logged_in'] = true;
         $_SESSION['username'] = $username;
         $_SESSION['login_time'] = time();
         
         // ログイン成功
-        header('Location: /task/admin/index.php');
+        header('Location: /task/admin/live_editor.php');
         exit;
     } else {
         $error = 'ユーザー名またはパスワードが正しくありません。';
@@ -75,7 +78,7 @@ $csrf_token = generate_csrf_token();
             </div>
         <?php endif; ?>
         
-        <form method="POST" action="">
+        <form method="POST" action="login.php">
             <input type="hidden" name="csrf_token" value="<?php echo h($csrf_token); ?>">
             
             <div class="mb-3">
