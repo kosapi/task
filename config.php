@@ -41,7 +41,7 @@ define('BASE_URL', get_base_url());
 
 // ============ セキュリティ設定 ============
 define('ADMIN_USERNAME', 'admin');
-define('ADMIN_PASSWORD', password_hash('admin4130', PASSWORD_BCRYPT)); // 初回セットアップ後に変更してください
+define('ADMIN_PASSWORD', 'admin4130'); // 初回セットアップ後に変更してください
 
 // 自動バックアップ用トークン（本番では環境変数 TASK_BACKUP_TOKEN を設定してください）
 define('BACKUP_CRON_TOKEN', getenv('TASK_BACKUP_TOKEN') ?: '');
@@ -66,13 +66,10 @@ define('ALLOWED_EXTENSIONS', ['jpg', 'jpeg', 'png', 'gif', 'svg', 'webp', 'pdf']
 date_default_timezone_set('Asia/Tokyo');
 
 // ============ エラー表示（環境に応じて） ============
-if (ENVIRONMENT === 'production') {
-    ini_set('display_errors', 0);
-    error_reporting(E_ALL);
-} else {
-    ini_set('display_errors', 1);
-    error_reporting(E_ALL);
-}
+// デバッグ強制: エラー表示を常に有効化
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 // ============ セッション開始 ============
 if (session_status() === PHP_SESSION_NONE) {

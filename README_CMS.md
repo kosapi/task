@@ -35,6 +35,42 @@ chmod 755 data/ uploads/
 define('ADMIN_PASSWORD', password_hash('新しいパスワード', PASSWORD_BCRYPT));
 ```
 
+## 管理画面でのHTML編集機能
+
+### 機能概要
+- admin/html_editor.php から index.html を直接編集可能
+- 編集前に自動バックアップを取得
+- 管理者ログイン必須
+
+### 操作手順
+1. 管理画面にログイン
+2. html_editor.php にアクセス（例: /admin/html_editor.php）
+3. index.htmlの内容を編集し、保存ボタンで反映
+4. バックアップファイルは index.html.backup_YYYYMMDD_HHMMSS 形式で保存
+
+### 注意事項
+- 誤編集防止のため、編集前に内容確認
+- バックアップファイルの管理
+
+---
+
+## VS Code Webによる編集運用
+
+### 運用手順
+1. 編集対象ファイル（例：index.html）をローカルPCに保存
+2. https://vscode.dev/ にアクセスし、ファイルをドラッグ＆ドロップで開く
+3. 編集後、保存してローカルPCに反映
+4. 必要に応じて、編集ファイルをサーバーにアップロード（FTP/SFTPやXAMPPのローカル環境で確認）
+
+### 補助スクリプト
+- backup_index_html.bat：編集前にindex.htmlのバックアップを作成
+- edit_history.txt：編集履歴を記録
+
+### 注意事項
+- 編集前にバックアップを取得
+- 編集履歴や変更内容を管理
+- サーバー反映時は動作確認を必ず行う
+
 ## ディレクトリ構造
 
 ```

@@ -1,4 +1,6 @@
-﻿<html lang="ja"><head></head><body>﻿
+﻿<!DOCTYPE html>
+
+  <head>
 
 
   <base href="/task/">
@@ -28,7 +30,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" integrity="sha385-l4UPAMHGzl7zwogLW4nOwaU2XTk6oiM1jhCRQstZEndoIiA2I5bg6fST3wzBSRBD" crossorigin="anonymous">
   
   <!-- Custom CSS -->
-  <link rel="stylesheet" href="css/main_v51.css?v=20260131_001">
+  <link rel="stylesheet" href="css/main_v55.css">
   <link rel="stylesheet" href="css/loader.css?v=20260131_001">
   <link rel="stylesheet" href="css/checklist-search.css?v=20260131_001">
   <link rel="stylesheet" href="css/modal-fix.css?v=20260131_001">
@@ -65,7 +67,7 @@
   <script src="js/init.js?v=20260131_001" defer=""></script>
   <script src="js/clear_v27.js?v=20260131_001" defer=""></script>
   <script src="js/checkbox-persist.js?v=20260131_001" defer=""></script>
-  <script src="js/check-count.js?v=20260313_001" defer></script>
+  <script src="js/check-count.js?v=20260315_001" defer></script>
   <script src="js/reload.js?v=20260131_001" defer=""></script>
   <script src="js/spek_v4.js?v=20260131_001" defer=""></script>
   <script src="js/cheke_v3.js?v=20260131_001" defer=""></script>
@@ -78,6 +80,8 @@
   <!-- QRコード生成ライブラリ -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer=""></script>
   <script src="js/qrcode-generator.js?v=20260131_001" defer=""></script>
+</head> 
+<body>
   <div class="kokuban">
     <h1>ワーク&nbsp; チェック&nbsp; リスト </h1><!-- 単一データソース: CMS連動 -->
     <script type="application/json" id="slogans-data">["読み込み中...","読み込み中...","読み込み中...","読み込み中...","読み込み中...","読み込み中...","読み込み中..."]</script>
@@ -117,45 +121,12 @@
       <div class="accordion-item">
         <h2 class="accordion-header" id="heading0">
           <button class="accordion-button collapsed shadow text-reset fw-bold " type="button" data-bs-toggle="collapse" data-bs-target="#collapse0" aria-expanded="false" aria-controls="collapse0">
-            <span class="accordion-title">基本ルール</span><span class="check-count" id="check-count0">✅0 / 5</span><span class="accordion-arrow"><svg viewBox="0 0 44 44"><polygon points="22,36 38,12 6,12"/></svg></span>
-          </button>
-        </h2>
+            <span class="accordion-title">基本ルール</span><span class="check-count" id="check-count0"></span><span class="accordion-arrow"><svg viewBox="0 0 44 44"><polygon points="22,36 38,12 6,12"/></svg></span>
           </button>
         </h2>
         <div id="collapse0" class="accordion-collapse collapse" aria-labelledby="heading0" data-bs-parent="#accordion">
           <div class="accordion-body">
             <div id="items0">
-              <div class="form-check">
-                <a href="#Modal0-0" class="link-primary" data-bs-toggle="modal" data-bs-target="#Modal0-0">サイト閲覧登録</a>
-              </div>
-              <div class="modal fade" id="Modal0-0" tabindex="-1" aria-labelledby="ModalLabel0-0" aria-hidden="true" data-original-parent="items0">
-                <div class="modal-dialog modal-dialog-scrollable">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title kokuban" id="ModalLabel0-0">サイト閲覧用リンク</h5>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body d-inline-block text-wrap">
-                      <a href="https://docs.google.com/forms/d/e/1FAIpQLScdzmN-V8GSI4M200A4ynxX-YmowkAe8d2Uef8dkf1qJ7eyBQ/viewform?usp=sharing/" target="_blank" rel="norefferrer">帝都板橋サイト閲覧申請フォーム</a>
-                      <ul class="list2">
-                        <li>Googleにログインしていないときはログインする</li>
-                        <li>Googleアカウントが無い場合は新規作成する</li>
-                        <li>メール欄の返信に使用するメールドレスチェックボックスにチェックを入れる</li>
-                        <li>翌日以降に下記の帝都板橋ポータルサイトリンクからサイトを開く</li>
-                      </ul>
-                      <a href="https://sites.google.com/view/teito?usp=sharing/" target="_blank" rel="norefferrer">帝都板橋サイト</a>
-                      <ul>
-                        <li>サイトが開けない場合は時間をおいて再度アクセスする</li>
-                        <li>サイトが開いたらホーム画面に追加する</li>
-                      </ul>
-                      <a href="https://www.google.com/maps/d/viewer?mid=1mFUsHyNbXHVWuzaUPdlbMWbUZpGLQjVZ&amp;usp=sharing/" target="_blank" rel="norefferrer">銀座乗禁地区・赤坂規制マップ</a><br>
-                      <ul>
-                        <li>マップを閉じる場合は上記のページからマップを選択し「地図の凡例を表示」のリンクを開き、「閉じる」のリンクで閉じる</li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
               <div class="form-check">
                 <input class="form-check-input" type="checkbox" value="" id="Check0-1" name="Check0-1">
                 <label class="form-check-label" for="Check0-1">
@@ -248,9 +219,7 @@
                     <div class="modal-body d-inline-block text-wrap d-inline-block text-wrap">
                       <ul>
                         <li>事故・違反・クレーム・タクセン指導・嘔吐案件・忘れ物やその他些細な事案でもその場で<a href="tel:03-3956-0750">営業所</a>に報告する。</li>
-                        <div class="alert alert-danger mt-3" role="alert">
-  未報告や報告遅れは懲戒処分の対象になることがあります。
-</div>
+                        <div class="alert alert-danger mt-3" role="alert">未報告や報告遅れは懲戒処分の対象になることがあります。</div>
                         <li>わからない事があったら自己判断せず遠慮なく周りの人や主任、職員に相談する</li>
                       </ul>
                     </div>
@@ -377,7 +346,6 @@
                           <li>お客様に対しては敬語を使う</li>
                           <li>帝都の看板を背負っていることを自覚する</li>
                           <li>お客様に不快な思いをさせない</li>
-                          
                         </ul>
                       </div>
                       <div>
@@ -438,7 +406,7 @@
                       </div>
                       <div>
                         <h5 class="kokuban sticky-top">月間最大拘束時間厳守</h5>
-                       <img src="img/image_001.jpg" alt="月間最大拘束時間" class="img-fluid" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button>
+                       <img src="img/bound_time2026.jpg" alt="月間最大拘束時間" class="img-fluid" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button>
                         <ul><li>月間最大拘束時間が262時間で13出番の月は注意する</li>
                        <li>262時間で13出番の月は1日当り20時間以内で調整する</li>
                           <li>会社が行政処分を受け他の乗務員にも迷惑をかける可能性があるので厳守</li>
@@ -480,7 +448,7 @@
         <div class="accordion-item">
           <h2 class="accordion-header" id="heading3">
             <button class="accordion-button collapsed shadow text-reset fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3" aria-expanded="false" aria-controls="collapse3">
-              <span class="accordion-title">事故防止</span><span class="check-count" id="check-count3">✅0 / 10</span><span class="accordion-arrow"><svg viewBox="0 0 44 44"><polygon points="22,36 38,12 6,12"/></svg></span>
+              <span class="accordion-title">事故防止</span><span class="check-count" id="check-count3"></span><span class="accordion-arrow"><svg viewBox="0 0 44 44"><polygon points="22,36 38,12 6,12"/></svg></span>
             </button>
         </h2>
             </button>
@@ -786,7 +754,7 @@
                           <li>死角にあるかもしれない低い障害物（石柱等）に十分注意する</li>
                           <li>心配な時は実車中や雨天であっても降車して障害物の確認をする</li>
                           <li>角を曲がる時には内輪差、バックで曲がる時は外輪差に注意する</li>
-                          <img src="img/image_002.jpg" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button>
+                          <img src="img/nairinsa.jpg" alt="内輪差と外輪差の注意点" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button>
                         </ul>
                       </div>
                     </div>
@@ -838,7 +806,7 @@
                           <li>横断歩道手前おおむね50メートルと30メートルの路面に標示</li>
                           <li>安全な速度で進入し歩行者や自転車が横断しようとしている場合は必ず譲る</li>
                           <li>特に見通しの悪い場所はいつでも止まれる速度で進入する</li>
-                          <img src="img/image_003.png" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button>
+                          <img src="img/daiya_v1.png" alt="ダイヤマークの注意点" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button>
                         </ul>
                       </div>
                     </div>
@@ -875,7 +843,7 @@
         <div class="accordion-item">
           <h2 class="accordion-header" id="heading1">
             <button class="accordion-button collapsed shadow text-reset fw-bold " type="button" data-bs-toggle="collapse" data-bs-target="#collapse1" aria-expanded="false" aria-controls="collapse1">
-              <span class="accordion-title">出勤～新人点呼</span><span class="check-count" id="check-count1">✅0 / 4</span><span class="accordion-arrow"><svg viewBox="0 0 44 44"><polygon points="22,36 38,12 6,12"/></svg></span>
+              <span class="accordion-title">出勤～新人点呼</span><span class="check-count" id="check-count1"></span><span class="accordion-arrow"><svg viewBox="0 0 44 44"><polygon points="22,36 38,12 6,12"/></svg></span>
             </button>
         </h2>
             </button>
@@ -903,7 +871,7 @@
                           <li>本日の自分の担当車を確認</li>
                         </ul>
                         <p>整備工場前の車両の停め方</p>
-                        <img src="img/image_004.png" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button>
+                        <img src="img/image_013.jpg" alt="整備工場前の車両の停め方" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button>
                       </div>
                     </div>
                   </div>
@@ -933,7 +901,7 @@
                           <li>配車板記載の整理番号から探す</li>
                           <li>表紙の上に本日の安全標語を記入</li>
                         </ul>
-                        <img src="img/image_005.jpg" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button><br>
+                        <img src="img/jyoumuhoukoku_002_v2.jpg" alt="業務前・後点検報告書の記入例" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button><br>
                       </div>
                     </div>
                   </div>
@@ -962,7 +930,7 @@
                         <h5 class="kokuban sticky-top">勉強会</h5>
                         <ul>
                           <li><span class="fblue">土</span><span class="fred">日</span>7:00～8:15</li>
-                          <li>スケジュールは掲示板または<a href="https://sites.google.com/view/teito/%E3%82%B9%E3%82%B1%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB?authuser=0" target="_blank">帝都板橋サイト</a>で確認する（毎回ではない）</li>
+                          <li>スケジュールは掲示板または営業ダッシュボードのシフトカレンダーで確認する（毎回ではない）</li>
                           <li>出番の日に出席する</li>
                           <li>土曜が明番で日曜が公休の場合は欠席で良い</li>
                         </ul>
@@ -986,7 +954,7 @@
         <div class="accordion-item">
           <h2 class="accordion-header" id="heading2">
             <button class="accordion-button collapsed shadow text-reset fw-bold " type="button" data-bs-toggle="collapse" data-bs-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
-              <span class="accordion-title">点呼～出庫</span><span class="check-count" id="check-count2">✅0 / 10</span><span class="accordion-arrow"><svg viewBox="0 0 44 44"><polygon points="22,36 38,12 6,12"/></svg></span>
+              <span class="accordion-title">点呼～出庫</span><span class="check-count" id="check-count2"></span><span class="accordion-arrow"><svg viewBox="0 0 44 44"><polygon points="22,36 38,12 6,12"/></svg></span>
             </button>
         </h2>
             </button>
@@ -1020,14 +988,14 @@
                           <ol>
                             <li>乗務員証を準備</li>
                             <li>本日の注意事項記入用紙を準備</li>
-                            <img src="img/chuijikou_v2.jpg" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button>
+                            <img src="img/chuijikou_v2.jpg" alt="注意事項記入用紙の例" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button>
                             <li>アルコールチェック</li>
                             <li>出力されたレシートを「業務前・後点検報告書」の指定位置ホチキスどめする
                               <ul>
                                 <li>点呼を受ける前にホチキスどめする</li>
                               </ul>
                             </li>
-                            <img src="img/image_007.png" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button>
+                            <img src="img/receipt_start_v2.jpg" alt="業務前・後点検報告書のレシート例" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button>
                             <li>点呼を受ける</li>
                             <li>本日の注意事項記入用紙の記入できる箇所を記入する</li>
                           </ol>
@@ -1239,7 +1207,7 @@
           <div class="accordion-item">
             <h2 class="accordion-header" id="heading4">
               <button class="accordion-button collapsed shadow text-reset fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4" aria-expanded="false" aria-controls="collapse4">
-                <span class="accordion-title">営業手順</span><span class="check-count" id="check-count4">✅0 / 7</span><span class="accordion-arrow"><svg viewBox="0 0 44 44"><polygon points="22,36 38,12 6,12"/></svg></span>
+                <span class="accordion-title">営業手順</span><span class="check-count" id="check-count4"></span><span class="accordion-arrow"><svg viewBox="0 0 44 44"><polygon points="22,36 38,12 6,12"/></svg></span>
               </button>
             </h2>
               </button>
@@ -1548,7 +1516,7 @@
         <div class="accordion-item">
           <h2 class="accordion-header" id="heading7">
             <button class="accordion-button shadow text-reset fw-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse7" aria-expanded="false" aria-controls="collapse7">
-              <span class="accordion-title">決済方法</span><span class="check-count" id="check-count7">✅0 / 7</span><span class="accordion-arrow"><svg viewBox="0 0 44 44"><polygon points="22,36 38,12 6,12"/></svg></span>
+              <span class="accordion-title">決済方法</span><span class="check-count" id="check-count7"></span><span class="accordion-arrow"><svg viewBox="0 0 44 44"><polygon points="22,36 38,12 6,12"/></svg></span>
             </button>
         </h2>
             </button>
@@ -1558,7 +1526,7 @@
               <div id="items7">
                 <div>
                   <h5 class="kokuban2">現金以外の決済種類</h5>
-                 <img src="img/image_008.png" alt="決済種類" class="img-fluid" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button>
+                 <img src="img/image_015.png" alt="決済種類" class="img-fluid" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button>
                 </div>
                 <div>
                   <h5 class="kokuban2 sticky-top ">決済方法詳細</h5>
@@ -1579,8 +1547,9 @@
                           <div>
                             <h5 class="kokuban sticky-top">GOPAY(GOチケット)決済方法</h5>
                             <ol>
-                              <li>メーターの<br><span class="bblack">支払</span><br>を押した後に<br><span class="by">合計</span><br>を押す
-                              </li>
+                              <li>メーターの<br><span class="bblack">支払</span><br>を押した後に<br><span class="by">合計</span><br>を押す</li>
+                              <li>GO端末の<span class="bb">決済実行</span>ボタンをタップする</li>
+                              <img src="img/%E6%B1%BA%E6%B8%88%E5%AE%9F%E8%A1%8C.png" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button>
                               <ul>
                                 <li>領収書は基本的には渡さずGOアプリで発行してもらう</li>
                                 <li>乗務員端末に表示される金額はアプリ手数料がふくまれていない</li>
@@ -1588,7 +1557,7 @@
                                 <li>発行されたレシートはインボイスに対応していない</li>
                                 <li>後席タブレットには料金が表示されないのでGOアプリで確認してもらう</li>
                                 <!-- <img src="img/GOPAY%E6%B1%BA%E6%B8%88.png"> -->
-                                <img src="img/%E6%B1%BA%E6%B8%88%E5%AE%9F%E8%A1%8C.png" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button>
+                                
                               </ul>
                               <li>安全確認してお客様を降ろす</li>
                               <li>領収書と加盟店控えが発行される</li>
@@ -1612,9 +1581,9 @@
                             </ul>
                         
                             <small><u>実車中に選択</u></small>
-                            <img src="img/image_009.jpg" alt="GOPAY実車中" class="img-fluid" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button>
+                            <img src="img/image_018.png" alt="GOPAY実車中" class="img-fluid" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button>
                             <small><u>降車時に選択</u></small>
-                           <img src="img/image_010.png" alt="GOPAY降車時" class="img-fluid" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button>
+                           <img src="img/image_019.png" alt="GOPAY降車時" class="img-fluid" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button>
                           </div>
 
                           <div>
@@ -1627,7 +1596,7 @@
                                 <li>電波状況が悪い場合にエラーになるがバックグランドでは処理されている</li>
                                 <li>現金扱いになっているので精算処理時に未収に手書きで変更する</li>
                               </ul>
-                              <li><span class="bb">決済実行</span><br>をタップせずにメーターの<br><span class="br">空車</span><br>を押すと現金扱いになり加盟店控えは発行されない</li>
+                              <li><span class="br">車内決済に切替</span><b>ボタンをタップせず</b>決済にメーターの<br><span class="br">空車</span><br>を押すと現金扱いになり加盟店控えは発行されない</b></li>
                               <li>バックグランドでは自動でGOPAY決済処理されている</li>
                               <li>現金扱いになっているので精算処理時に未収に手書きで変更する</li>
                             </ul>
@@ -1754,7 +1723,7 @@
                             <li>メーターの<br><span class="bblack">支払</span><br>を押した後に<br><span class="by">合計</span><br>を押す
                             </li>
                             <li>GO端末の<br><span class="bb">表示</span><br>ボタンをタップして後席タッチパネルを表示に切り替える</li>
-<img src="img/image_016.png" alt="クレジットタッチパネル" class="img-fluid" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button><li><span style="text-align: start;">お客様に後席タッチパネルでクレジット払いを選択してもらう</span></li>
+<img src="img/image_003.png" alt="決済画面表示" class="img-fluid" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button><li><span style="text-align: start;">お客様に後席タッチパネルでクレジット払いを選択してもらう</span></li>
                             <li>お客様に後席タッチパネルの案内に従ってカード読込操作をしてもらう</li>
                             <li>
 <div class="alert alert-danger mt-3" role="alert">
@@ -1767,7 +1736,7 @@
                           </ol>
                           <div>
                             <h5 class="kokuban sticky-top">タッチ決済について</h5>
-                    <img src="img/image_012.jpg" alt="タッチ決済" class="img-fluid" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button>     
+                    <img src="img/image_010.png" alt="タッチ決済" class="img-fluid" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button>     
                             <ul>
                               <li>15,000円まで可能</li>
                               <li>15,001円以上はICカードまたは磁気カード決済になり暗証番号が必要</li>
@@ -1779,7 +1748,7 @@
                               <li>ICカードでのクレジット決済15,001円以上で、暗証番号(PINコード)の入力が必要</li>
                               <li>暗証番号がわからない場合は<span class="fred">他の決済方法に変更</span>してもらう</li>
                               <li>磁気カードの場合はタブレットの画面にサインする</li>
-                            <img src="img/image_013.jpg" alt="高額決済" class="img-fluid" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button>
+                            <img src="img/image_011.png" alt="磁気カード" class="img-fluid" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button>
                             </ul>
                             <p>※一部のカード会社では金額にかかわらず
                               暗証番号やサインを要求される場合があり、<br>
@@ -1826,11 +1795,11 @@
                             <li>メーターの<br><span class="bblack">支払</span><br>を押した後に<br><span class="by">合計</span><br>を押す
                             </li>
                             <li>GO端末の<br><span class="bb">表示</span><br>ボタンをタップして後席タッチパネルを表示に切り替える</li>
-                  <img src="img/image_016.png" alt="クレジットタッチパネル" class="img-fluid" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button>
+                  <img src="img/image_003.png" alt="クレジットタッチパネル" class="img-fluid" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button>
                             <li>お客様に後席タッチパネルで支払方法を選択してもらう</li>
                             <li>お客様に後席タッチパネルの案内に従って決済の操作をしてもらう</li>
 <small>&lt;交通系IC・電子マネー&gt;</small>
-<img src="img/image_014.jpg" alt="交通系IC・電子マネー" class="img-fluid" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button>
+<img src="img/image_016.png" alt="交通系IC・電子マネー" class="img-fluid" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button>
 <hr>
 <img src="img/image_015.png" alt="QRコード" class="img-fluid" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button>
                             <li>領収書と加盟店控が出力される</li>
@@ -1903,12 +1872,11 @@
                               <li>出発地や到着地が違っていたら<br><span class="bg">手動</span><br>をタップし候補の中から選択して変更し<br><span class="bg">確定</span><br>をタップ</li>
                             </ul>
                             <li>GO端末の<br><span class="bb">表示</span><br>ボタンをタップして後席タッチパネルを表示に切り替える</li>
-<img src="img/image_011.png" alt="クレジットタッチパネル" class="img-fluid" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button>
+<img src="img/image_003.png" alt="決済画面表示" class="img-fluid" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button>
 
 <div class="alert alert-danger mt-3" role="alert">
   定額処理の前にお客様が決済しないように必ず定額処理が済んでから後席タブレッドを表示に切り替える
 </div>
-                           
 <div class="alert alert-warning mt-3" role="alert">
   GOPAY(GOチケット)支払いの場合は<span class="fred">定額処理後に</span>GO端末の<br><span class="bb">決済実行</span><br>をタップする&lt;
 </div>
@@ -1959,7 +1927,7 @@
                   </div>
                 </div>
               <h5 class="kokuban2">後席タブレットの実車時</h5>
-              <p>メーターを<span class="bn">実車</span>にすると画面が自動で変わる</p><p><img src="img/image_017.jpg" alt="実車画面" class="img-fluid" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button><br></p>
+              <p>メーターを<span class="bn">実車</span>にすると画面が自動で変わる</p><p><img src="img/image_007.png" alt="実車画面" class="img-fluid" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button><br></p>
               <br><div>
                 <h5 class="kokuban2 sticky-top">後席タブレット操作</h5>
                 <img src="img/image_018.png" alt="タブレットリセット" class="img-fluid" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button><br><table class="table table-bordered table-hover table-sm ">
@@ -2002,13 +1970,13 @@
                 </tbody></table>
 
                 <h5 class="kokuban2">後席タブレットが動かない場合</h5></div><p><small>新後席タブレットは裏のリセットボタンを3秒長押し</small></p>
-              <img src="img/image_018.png" alt="タブレットリセット" class="img-fluid" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button><br></div>
+              <img src="img/image_008.png" alt="タブレットリセット" class="img-fluid" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button><br></div>
           </div>
         </div>
         <div class="accordion-item">
           <h2 class="accordion-header" id="heading5">
             <button class="accordion-button shadow text-reset fw-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse5" aria-expanded="false" aria-controls="collapse5">
-              <span class="accordion-title">帰庫時の処理</span><span class="check-count" id="check-count5">✅0 / 8</span><span class="accordion-arrow"><svg viewBox="0 0 44 44"><polygon points="22,36 38,12 6,12"/></svg></span>
+              <span class="accordion-title">帰庫時の処理</span><span class="check-count" id="check-count5"></span><span class="accordion-arrow"><svg viewBox="0 0 44 44"><polygon points="22,36 38,12 6,12"/></svg></span>
             </button>
         </h2>
             </button>
@@ -2172,8 +2140,8 @@
         </div>
         <div class="accordion-item">
           <h2 class="accordion-header" id="heading6">
-            <button class="accordion-button collapsed shadow text-reset fw-bold ps-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapse6" aria-expanded="false" aria-controls="collapse6">
-              <span class="accordion-title" style="text-align:left;margin-left:0;padding-left:0;">精算処理</span><span class="check-count" id="check-count6">✅0 / 13</span><span class="accordion-arrow"><svg viewBox="0 0 44 44"><polygon points="22,36 38,12 6,12"/></svg></span>
+            <button class="accordion-button collapsed shadow text-reset fw-bold " type="button" data-bs-toggle="collapse" data-bs-target="#collapse6" aria-expanded="false" aria-controls="collapse6">
+              <span class="accordion-title">精算処理</span><span class="check-count" id="check-count6"></span><span class="accordion-arrow"><svg viewBox="0 0 44 44"><polygon points="22,36 38,12 6,12"/></svg></span>
             </button>
         </h2>
             </button>
@@ -2458,7 +2426,7 @@
                       <p>高速道路利用があり距離を減算できる場合は一覧表を参照して高速道路利用記録に記入する</p>
                       <p>高速道路利用記入欄に記載した距離を減算できる</p>
                       <p>首都高は含まないので記入しない</p>
-                      <img src="img/kyori_v4.jpg" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button>
+                      <img src="img/kori.png" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button>
                       <p>運転日報を参照して休憩時間と場所を記入</p>
                       <p>場所は運転日報に記載されている住所を記入</p>
                       <img src="img/untennipou2_002_v1.jpg" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button>
@@ -2533,7 +2501,7 @@
                         <img src="img/ect_v2.jpg" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button>
                       </ol>
                       <p>本日の注意事項記入用紙に記入してクリアファイルの書類と合わせて提出する</p>
-                            <img src="img/image_006.jpg" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button>
+                            <img src="img/chuijikou_v2.jpg" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button>
                     </div>
                   </div>
                 </div>
@@ -2939,7 +2907,39 @@
                       </div>
                     </div>
                   </div>
-                  <div style="padding-left: 1.5rem;">
+                   <div>
+                  <a href="#Modal8-2.5" class="link-primary" data-bs-toggle="modal" data-bs-target="#Modal8-2.5" id="M8-1">GOプレミアム手順（アルファード）</a>
+                </div>
+                <div class="modal fade" id="Modal8-2.5" tabindex="-1" aria-labelledby="ModalLabel8-2.5" aria-hidden="true" data-original-parent="items8">
+                  <div class="modal-dialog modal-dialog-scrollable">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title kokuban" id="ModalLabel8-2.5">GOプレミアム運用方法</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body d-inline-block text-wrap">
+                        <ol>
+                          <div class="alert alert-primary mt-3" role="alert">決済はGOPAYのみなので釣銭不要</div>
+                          <div class="alert alert-danger mt-3" role="alert">連続配車モードは絶対に使用しない</div>
+                          <li>7:59分までに必ず開局する</li>
+                          <li>GOアプリに通常コードの先頭に7を付けてログインする</li>
+                          <li>GO端末がなったら10秒以内に<br><span class="bb">了解</span><br>をタップして無線をとる</li>
+                          <li>無線を取ったら忘れずに<span class="bgsya">迎車</span>をタップする</li>
+                          <div class="alert alert-warning mt-3" role="alert"><span class="bgsya">迎車</span>を忘れて決済するとアプリ手数料100円が自己負担になる</div>
+                          <div class="alert alert-success mt-3" role="alert">プレミアム以外の普通の配車もある。但し支払方法はGOPAYのみ</div>
+                          <li>降車地に到着したらメーターの<br><span class="bblack">支払</span><br>を押した後に<br><span class="by">合計</span><br>を押す</li>
+                          <div class="alert alert-warning mt-3" role="alert">レシートは渡さない。アプリで発行してもらう。<br>レシートはアプリ手数料がふくまれていないのとインボイスに対応していない</div>
+                          <li>GO端末の<span class="bb">決済実行</span>ボタンをタップする</li>
+                          <li>お客様が2名以上の場合はメーターの<br><span class="bman">人員</span><br>を人数分押す</li>
+                          <li>メーターの<br><span class="br">空車</span><br>を押す</li>
+                          <div class="alert alert-danger mt-3" role="alert"><span class="bb">決済実行</span>ボタンをタップせずに<span class="br">空車</span><br>を押してしまったら<br>現金扱いになっているので精算時に手書きで修正する</div>
+                        <div class="alert alert-danger mt-3" role="alert">プレミアムの場合は基本的にドアサービスを行い特に丁寧な接客を心がける</div>
+                        </ol>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                  <div>
                     <a href="#Modal8-3" class="link-primary" data-bs-toggle="modal" data-bs-target="#Modal8-3" id="M8-3">帝都無線手順</a>
                   </div>
                   <div class="modal fade" id="Modal8-3" tabindex="-1" aria-labelledby="ModalLabel8-3" aria-hidden="true">
@@ -3113,8 +3113,7 @@
                               <li>無線センターからキャンセル受付の連絡が端末に表示されたらメーターの<br><span class="bblack">支払</span>ボタンを押した後<br><span class="by">合計</span>を押す</li>
                               <li>メーターの<br><span class="br">空車</span>ボタンを押す</li>
                               <li>領収書が発行されるので裏に「自分の名前・無線番号・営業回数・お客様名・帝都無線キャンセル」と記入する</li>
-                              <li>精算処理時に<a href="cancel_01_v2.jpg" target="_blank">納金明細書のキャンセル欄に「何回目金額」の書式で記入</a>する
-                              </li>
+                              <li>精算処理時に納金明細書のキャンセル欄に「何回目金額」の書式で記入する</li>
                               <li>納金額からキャンセル額合計を減算する</li>
                               <li>納金明細書に発行した領収書を添付する</li>
                             </ol>
@@ -3126,7 +3125,7 @@
                       </div>
                     </div>
                   </div>
-                  <div style="padding-left: 1.5rem;">
+                  <div>
                     <a href="#Modal8-4" class="link-primary" data-bs-toggle="modal" data-bs-target="#Modal8-4" id="M8-4">サンキューチケットの付与基準</a>
                   </div>
                   <div class="modal fade" id="Modal8-4" tabindex="-1" aria-labelledby="ModalLabel8-4" aria-hidden="true">
@@ -3848,7 +3847,7 @@
 
     <!-- フッター -->
     <footer class="container-fluid mt-2 mb-2 text-center">
-      <small>更新日: <time>2026年03月09日</time></small>
+      <small>更新日: <time>2026年03月14日</time></small>
     </footer>
 
 </div></body></html>

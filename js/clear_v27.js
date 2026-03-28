@@ -107,9 +107,12 @@
       console.log('[CLEAR_V27] プログレスバー更新完了');
       
       // 5. チェックデータ再保存を防ぎつつ再描画
-      setTimeout(function() {
-        window.location.reload();
-      }, 50);
+        // window.location.reload()は使わず、チェック数表示を更新
+        if (typeof window.updateCounts === 'function') {
+          window.updateCounts();
+        } else if (typeof updateCounts === 'function') {
+          updateCounts();
+        }
       
       return false;
     };

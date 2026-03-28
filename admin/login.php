@@ -14,16 +14,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     if (!verify_csrf_token($csrf_token)) {
         $error = 'セキュリティエラーが発生しました。';
-    } elseif ($username === ADMIN_USERNAME && $password === ADMIN_PASSWORD) {
-        $_SESSION['logged_in'] = true;
-        $_SESSION['username'] = $username;
-        $_SESSION['login_time'] = time();
-        
-        // ログイン成功
-        header('Location: /task/admin/live_editor.php');
-        exit;
     } else {
-        $error = 'ユーザー名またはパスワードが正しくありません。';
+        if ($username === ADMIN_USERNAME && $password === ADMIN_PASSWORD) {
+            $_SESSION['logged_in'] = true;
+            $_SESSION['username'] = $username;
+            $_SESSION['login_time'] = time();
+            // ログイン成功
+            header('Location: /task/admin/live_editor.php');
+            exit;
+        } else {
+            $error = 'ユーザー名またはパスワードが正しくありません。';
+        }
     }
 }
 

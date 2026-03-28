@@ -4,19 +4,19 @@
     return new Promise(function(res) { setTimeout(res, ms); });
   }
 
-  // 繧｢繧ｳ繝ｼ繝・ぅ繧ｪ繝ｳ繧帝幕縺城未謨ｰ
+  // アコーディオンを開く関数
   function openAccordion(collapseEl) {
     try {
-      console.log('竢ｳ Opening accordion:', collapseEl.id);
+      console.log('アコーディオンを開きます:', collapseEl.id);
       
-      // jQuery 縺悟茜逕ｨ蜿ｯ閭ｽ縺狗｢ｺ隱搾ｼ域耳螂ｨ・・
+      // jQueryが利用可能ならjQueryで開く
       if (typeof jQuery !== 'undefined') {
         jQuery(collapseEl).collapse('show');
         console.log('笨ｨ Accordion opened via jQuery');
         return;
       }
       
-      // Bootstrap API 繧定ｩｦ縺・
+      // Bootstrap APIが利用可能ならBootstrapで開く
       if (window.bootstrap && typeof bootstrap.Collapse === 'function') {
         try {
           const bsCollapse = new bootstrap.Collapse(collapseEl, { toggle: false });
@@ -28,17 +28,17 @@
         }
       }
       
-      // Fallback: 謇句虚縺ｧ show 繧ｯ繝ｩ繧ｹ繧定ｿｽ蜉
+      // Fallback: 手動でshowクラスを付与
       console.log('邃ｹ・・Using manual show method');
       collapseEl.classList.add('show');
       
-      // 隕ｪ縺ｮ繝懊ち繝ｳ繧よ峩譁ｰ
+      // ボタンのaria-expanded属性をtrueに
       const button = collapseEl.closest('.accordion-item')?.querySelector('[data-bs-toggle="collapse"]');
       if (button) {
         button.setAttribute('aria-expanded', 'true');
       }
     } catch (e) {
-      console.error('笶・Error opening accordion:', e);
+      console.error('アコーディオンを開く際のエラー:', e);
     }
   }
 
@@ -46,28 +46,28 @@
     try {
       const hash = window.location.hash.replace('#', '').trim();
       if (!hash) {
-        console.log('桃 No hash found in URL - all accordions will stay closed');
+        console.log('URLにハッシュがありません - 全てのアコーディオンは閉じたままです');
         return;
       }
 
-      console.log('桃 Processing hash:', hash);
+      console.log('ハッシュを処理中:', hash);
 
-      // 繧｢繧ｳ繝ｼ繝・ぅ繧ｪ繝ｳ ID 縺ｮ縺ｿ繧貞・逅・ｼ・ollapse0, collapse1, ... collapse8・・
+      // アコーディオンID（collapse0, collapse1, ... collapse8など）を判定
       const collapseMatch = hash.match(/^collapse\d+$/i);
       if (collapseMatch) {
         const collapseId = hash;
-        console.log('唐 Looking for accordion:', collapseId);
+        console.log('アコーディオンを探しています:', collapseId);
 
         // 繧｢繧ｳ繝ｼ繝・ぅ繧ｪ繝ｳ繧帝幕縺・
         const collapseEl = document.getElementById(collapseId);
         if (!collapseEl) {
-          console.warn('笶・Collapse element with ID "' + collapseId + '" not found');
+          console.warn('Collapse要素（ID: "' + collapseId + '"）が見つかりません');
           const allCollapses = document.querySelectorAll('[id^="collapse"]');
-          console.log('Available collapse elements:', Array.from(allCollapses).map(el => el.id));
+          console.log('利用可能なcollapse要素:', Array.from(allCollapses).map(el => el.id));
           return;
         }
 
-        console.log('笨・Found collapse element');
+        console.log('collapse要素が見つかりました');
         
         // 繧｢繧ｳ繝ｼ繝・ぅ繧ｪ繝ｳ繧帝幕縺・
         openAccordion(collapseEl);
@@ -76,80 +76,80 @@
         try {
           const accordionItem = collapseEl.closest('.accordion-item');
           if (accordionItem) {
-            console.log('糖 Scrolling to accordion item');
+            console.log('アコーディオンアイテムへスクロールします');
             setTimeout(() => {
               accordionItem.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }, 100);
           }
         } catch (e) {
-          console.warn('笞・・Scroll error:', e.message);
+          console.warn('スクロールエラー:', e.message);
         }
         return;
       }
 
-      // 繝｢繝ｼ繝繝ｫ繝上ャ繧ｷ繝･繧貞・逅・ｼ・odal0-3 縺ｪ縺ｩ縲…ollapse 縺ｧ縺ｯ縺ｪ縺・ID・・
+      // モーダルID（modal0-3など）を判定 collapseでなければIDで検索
       const modalEl = document.getElementById(hash);
       if (modalEl && modalEl.classList.contains('modal')) {
-        console.log('ｪ・Opening modal:', hash);
+        console.log('モーダルを開きます:', hash);
         openModal(modalEl);
         
-        // 繧ｹ繧ｯ繝ｭ繝ｼ繝ｫ
+        // スクロール
         try {
           setTimeout(() => {
             window.scrollTo({ top: 0, behavior: 'smooth' });
           }, 100);
         } catch (e) {}
       } else if (modalEl) {
-        // 繝｢繝ｼ繝繝ｫ縺ｧ縺ｯ縺ｪ縺・′隕∫ｴ縺ｯ蟄伜惠縺吶ｋ�ｼ郁ｦ句・ｺ縺ｪ縺ｩ�ｼ峨ｄ繧ｹ繧ｯ繝ｭ繝ｼ繝ｫ
-        console.log('繝ｻ Scrolling to element:', hash);
+        // モーダルでなければスクロールのみ
+        console.log('要素へスクロール:', hash);
         try {
           setTimeout(() => {
             modalEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
           }, 100);
         } catch (e) {
-          console.warn('笞・・Scroll error:', e.message);
+          console.warn('スクロールエラー:', e.message);
         }
       } else {
-        // 隕∫ｴ縺瑚ｦ九▽縺九ｉ縺ｪ縺・ｴ蜷医・縺ｿ險ｯ蜻
-        console.warn('笞・・Element with ID "' + hash + '" not found');
+        // 要素が見つからない場合
+        console.warn('ID "' + hash + '" の要素が見つかりません');
       }
 
     } catch (e) {
-      console.error('笶・Error in handleHashNavigation:', e);
+      console.error('handleHashNavigationのエラー:', e);
     }
   }
 
   function openModal(modalEl) {
     try {
-      console.log('竢ｳ Opening modal:', modalEl.id);
-      console.log('投 Modal element:', modalEl);
-      console.log('投 Modal classes before:', modalEl.className);
-      console.log('投 Modal display before:', modalEl.style.display);
+      console.log('モーダルを開きます:', modalEl.id);
+      console.log('モーダル要素:', modalEl);
+      console.log('モーダルのクラス（前）:', modalEl.className);
+      console.log('モーダルのdisplay（前）:', modalEl.style.display);
       
-      // **驥崎ｦ・*: 繝｢繝ｼ繝繝ｫ繧鍛ody縺ｫ遘ｻ蜍包ｼ医い繧ｳ繝ｼ繝・ぅ繧ｪ繝ｳ蜀・・鄂ｮ縺ｫ繧医ｋ髱櫁｡ｨ遉ｺ繧貞屓驕ｿ・・
+      // モーダルがbody直下でない場合はbodyに移動
       if (modalEl.parentElement.id !== 'modal-container' && modalEl.parentElement.tagName !== 'BODY') {
-        console.log('売 Moving modal to body (was in', modalEl.parentElement.id, ')');
-        // 蜈・・隕ｪ隕∫ｴ縺ｮID繧定ｨ倬鹸・・ive_editor縺ｧ蜈・・菴咲ｽｮ繧堤音螳壹☆繧九◆繧・ｼ・
+        console.log('モーダルをbodyに移動（元: ', modalEl.parentElement.id, '）');
+        // 元の親IDをdata-original-parentに保存
         if (!modalEl.hasAttribute('data-original-parent')) {
           modalEl.setAttribute('data-original-parent', modalEl.parentElement.id);
         }
         document.body.appendChild(modalEl);
       }
       
-      // 譁ｹ豕・: Bootstrap Modal API・域怙繧ら｢ｺ螳滂ｼ・
+      // Bootstrap Modal APIで開く
       if (window.bootstrap && typeof bootstrap.Modal === 'function') {
         try {
           const inst = bootstrap.Modal.getOrCreateInstance(modalEl);
-          console.log('逃 Bootstrap Modal instance:', inst);
+          console.log('Bootstrap Modalインスタンス:', inst);
           inst.show();
           
-          // Bootstrap CSS縺ｮ繝舌げ蝗樣∩: fade 繧ｯ繝ｩ繧ｹ繧貞炎髯､縲‥isplay 繧・block 縺ｫ險ｭ螳・
+            // Bootstrap CSSのfadeクラスを除去しdisplayをblockに
           setTimeout(() => {
-            // Bootstrap 縺ｮ fade 繧ｯ繝ｩ繧ｹ繧貞炎髯､・医い繝九Γ繝ｼ繧ｷ繝ｧ繝ｳ蜉ｹ譫懊′蟷ｲ貂峨＠縺ｦ縺・ｋ蜿ｯ閭ｽ諤ｧ・・
+            // fadeクラス除去後、スタイルを調整
             modalEl.classList.remove('fade');
             console.log('肌 Removed fade class');
             
-            // 繝｢繝ｼ繝繝ｫ閾ｪ菴薙・繧ｹ繧ｿ繧､繝ｫ繧貞ｼｷ蛻ｶ險ｭ螳夲ｼ・lock 縺ｧ邨ｱ荳・・
+            // モーダルのスタイルをblockに
             modalEl.style.display = 'block';
             modalEl.style.position = 'fixed';
             modalEl.style.top = '0';
@@ -160,13 +160,13 @@
             modalEl.style.overflow = 'auto';
             console.log('肌 Fixed modal styles (block display)');
             
-            // .modal-dialog 縺ｫ蝗ｺ螳壹し繧､繧ｺ繧定ｨｭ螳・
+            // .modal-dialogのスタイル調整
             const dialog = modalEl.querySelector('.modal-dialog');
             if (dialog) {
-              // Bootstrap 縺ｮ modal-dialog-scrollable 繧貞炎髯､
+              // modal-dialog-scrollableクラスを除去
               dialog.classList.remove('modal-dialog-scrollable');
               
-              // 蝗ｺ螳壹し繧､繧ｺ縺ｧ驟咲ｽｮ
+              // dialogのサイズ調整
               dialog.style.display = 'block';
               dialog.style.width = '500px';
               dialog.style.maxWidth = '90%';
@@ -175,7 +175,7 @@
               dialog.style.position = 'relative';
               console.log('肌 Fixed modal-dialog styles (block, fixed height 500px)');
               
-              // .modal-content 縺ｫ繧ゅせ繧ｿ繧､繝ｫ繧定ｨｭ螳・
+              // .modal-contentのスタイル調整
               const content = dialog.querySelector('.modal-content');
               if (content) {
                 content.style.display = 'flex';
@@ -186,7 +186,7 @@
                 console.log('肌 Fixed modal-content styles');
               }
               
-              // .modal-body 縺ｮ繧ｹ繧ｯ繝ｭ繝ｼ繝ｫ險ｭ螳・
+              // .modal-bodyのスタイル調整
               const body = dialog.querySelector('.modal-body');
               if (body) {
                 body.style.flex = '1';
@@ -195,23 +195,23 @@
                 console.log('肌 Fixed modal-body styles');
               }
               
-              // 繝ｬ繧､繧｢繧ｦ繝医・蜀崎ｨ育ｮ励ｒ蠑ｷ蛻ｶ
+              // レイアウト再計算
               void dialog.offsetHeight;
               void modalEl.offsetHeight;
               
-              // 繧ｵ繧､繧ｺ遒ｺ隱・
+              // dialogのサイズ確認
               const rect = dialog.getBoundingClientRect();
               console.log('剥 Dialog size:', {width: rect.width, height: rect.height});
               
               if (rect.width > 0 && rect.height > 0) {
-                console.log('笨・SUCCESS! Modal is now visible!');
+                console.log('SUCCESS! モーダルが表示されました');
               } else {
-                console.error('笶・Dialog still has 0 size');
+                console.error('Dialogのサイズが0です');
               }
             }
           }, 50);
           
-          // show() 螳溯｡悟ｾ後・迥ｶ諷九ｒ遒ｺ隱・
+          // show()後の状態確認
           setTimeout(() => {
             console.log('投 Modal classes after show():', modalEl.className);
             console.log('投 Modal display after show():', modalEl.style.display);
@@ -221,7 +221,7 @@
             const backdrop = document.querySelector('.modal-backdrop');
             console.log('投 Backdrop exists:', !!backdrop);
             
-            // 險育ｮ励＆繧後◆繧ｹ繧ｿ繧､繝ｫ繧堤｢ｺ隱・
+            // モーダルとBackdropのスタイル確認
             const modalStyles = window.getComputedStyle(modalEl);
             const backdropStyles = backdrop ? window.getComputedStyle(backdrop) : null;
             
@@ -242,7 +242,7 @@
               console.log('耳 Backdrop display:', backdropStyles.display);
             }
             
-            // 繝｢繝ｼ繝繝ｫ縺檎判髱｢荳翫↓隕九∴繧九°繝√ぉ繝・け
+            // モーダルの位置確認
             const rect = modalEl.getBoundingClientRect();
             console.log('棟 Modal position:', {
               top: rect.top,
@@ -252,7 +252,7 @@
               visible: rect.width > 0 && rect.height > 0
             });
             
-            // .modal-dialog 縺ｮ繧ｹ繧ｿ繧､繝ｫ繧堤｢ｺ隱・
+              // .modal-dialogのスタイル確認
             const dialog = modalEl.querySelector('.modal-dialog');
             if (dialog) {
               const dialogStyles = window.getComputedStyle(dialog);
@@ -269,7 +269,7 @@
                 height: dialogRect.height
               });
               
-              // .modal-content 縺ｮ繧ｹ繧ｿ繧､繝ｫ繧堤｢ｺ隱・
+              // .modal-contentのスタイル確認
               const content = dialog.querySelector('.modal-content');
               if (content) {
                 const contentStyles = window.getComputedStyle(content);
@@ -282,7 +282,7 @@
                   height: contentRect.height
                 });
                 
-                // modal-header 縺ｨ modal-body 縺ｮ繧ｵ繧､繧ｺ繧堤｢ｺ隱・
+                // modal-headerとmodal-bodyのサイズ確認
                 const header = content.querySelector('.modal-header');
                 const body = content.querySelector('.modal-body');
                 if (header) {
@@ -302,31 +302,31 @@
                 }
               }
               
-              // 繝｢繝ｼ繝繝ｫ譛ｬ菴薙・flex繧ｹ繧ｿ繧､繝ｫ繧堤｢ｺ隱・
+              // モーダルのflexスタイル確認
               console.log('耳 Modal display:', modalStyles.display);
               console.log('耳 Modal align-items:', modalStyles.alignItems);
               console.log('耳 Modal justify-content:', modalStyles.justifyContent);
               
             } else {
-              console.error('笶・.modal-dialog not found inside modal!');
+              console.error('.modal-dialogがモーダル内に見つかりません!');
             }
           }, 100);
           
-          console.log('笨ｨ Modal opened via Bootstrap Modal API');
+          console.log('Bootstrap Modal APIでモーダルを開きました');
           return;
         } catch (e) {
-          console.warn('笞・・Bootstrap Modal error:', e.message);
+          console.warn('Bootstrap Modalエラー:', e.message);
         }
       }
       
-      // 譁ｹ豕・: jQuery 繧剃ｽｿ縺｣縺滓婿豕・
+      // jQueryでモーダルを開く
       if (typeof jQuery !== 'undefined' && jQuery.fn.modal) {
         jQuery(modalEl).modal('show');
         console.log('笨ｨ Modal opened via jQuery .modal("show")');
         return;
       }
       
-      // 譁ｹ豕・: 繝｢繝ｼ繝繝ｫ繧帝幕縺上・繧ｿ繝ｳ繧呈爾縺励※繧ｯ繝ｪ繝・け
+      // ボタンでモーダルを開く
       const modalButton = document.querySelector(`[data-bs-target="#${modalEl.id}"]`);
       if (modalButton) {
         console.log('笨・Found modal button, clicking it');
@@ -335,7 +335,7 @@
         return;
       }
 
-      // 譁ｹ豕・: 謇句虚縺ｧ繝｢繝ｼ繝繝ｫ繧定｡ｨ遉ｺ
+      // Fallback: 手動でモーダルを表示
       console.log('邃ｹ・・Using manual modal display method');
       
       if (!document.querySelector('.modal-backdrop')) {
@@ -350,25 +350,25 @@
       modalEl.setAttribute('aria-modal', 'true');
       modalEl.removeAttribute('aria-hidden');
 
-      // 繝輔か繝ｼ繧ｫ繧ｹ
+      // フォーカスを設定
       const focusTarget = modalEl.querySelector('button, [tabindex], a') || modalEl;
       if (focusTarget && focusTarget.focus) {
         focusTarget.focus();
       }
 
-      console.log('笨ｨ Modal opened via fallback method');
+      console.log('Fallbackでモーダルを開きました');
     } catch (e) {
-      console.error('笶・Error opening modal:', e);
+      console.error('モーダルを開く際のエラー:', e);
     }
   }
 
-  // 繝壹・繧ｸ隱ｭ縺ｿ霎ｼ縺ｿ螳御ｺ・ｾ後↓繝上ャ繧ｷ繝･繝翫ン繧ｲ繝ｼ繧ｷ繝ｧ繝ｳ繧貞・逅・
+  // ハッシュナビゲーション初期化
   function initHashNavigation() {
     console.log('噫 Initializing hash navigation...');
     console.log('搭 Current hash:', window.location.hash);
     console.log('塘 Document ready state:', document.readyState);
     
-    // 縺吶∋縺ｦ縺ｮ繝｢繝ｼ繝繝ｫ縺ｮ蜈・・隕ｪ隕∫ｴ繧定ｨ倬鹸・・ive_editor逕ｨ・・
+    // モーダルの元親IDを記録
     function recordModalOriginalParents() {
       const allModals = document.querySelectorAll('.modal');
       console.log(`統 Recording original parents for ${allModals.length} modals`);
@@ -383,23 +383,23 @@
       });
     }
     
-    // 繝上ャ繧ｷ繝･縺後≠繧後・縲．OM縺ｮ貅門ｙ螳御ｺ・ｒ蠕・◆縺壹↓蜃ｦ逅・幕蟋・
+    // ページロード状態によって処理を分岐
     if (document.readyState === 'loading') {
       console.log('塘 Page still loading, waiting for DOMContentLoaded...');
       document.addEventListener('DOMContentLoaded', function() {
         console.log('笨・DOMContentLoaded fired');
         recordModalOriginalParents();
-        // Bootstrap 縺悟ｮ悟・縺ｫ蛻晄悄蛹悶＆繧後ｋ縺ｾ縺ｧ蠕・▽
+        // Bootstrapの初期化待ち
         setTimeout(handleHashNavigation, 800);
       });
     } else {
       console.log('笨・Page already loaded, processing hash immediately');
       recordModalOriginalParents();
-      // 繝壹・繧ｸ縺梧里縺ｫ隱ｭ縺ｿ霎ｼ縺ｾ繧後※縺・ｋ蝣ｴ蜷・
+      // ページロード済みなら即時処理
       setTimeout(handleHashNavigation, 300);
     }
     
-    // 繝壹・繧ｸ隱ｭ縺ｿ霎ｼ縺ｿ螳御ｺ・ｾ後↓繧ゅ≧荳蠎ｦ蜃ｦ逅・ｼ亥ｿｵ縺ｮ縺溘ａ・・
+    // window loadイベントで再処理
     window.addEventListener('load', function() {
       console.log('塘 Window load event fired');
       setTimeout(() => {
@@ -412,10 +412,10 @@
     });
   }
 
-  // 蛻晄悄蛹門ｮ溯｡・
+  // 初期化実行
   initHashNavigation();
 
-  // 繝悶Λ繧ｦ繧ｶ縺ｮ謌ｻ繧・騾ｲ繧譎ゅ↓繧ゅワ繝・す繝･螟画峩繧貞・逅・
+  // hashchangeイベントで再処理
   window.addEventListener('hashchange', function(e) {
     console.log('売 Hash changed:', window.location.hash);
     
@@ -440,7 +440,7 @@
     setTimeout(handleHashNavigation, 100);
   });
 
-  // Escape 繧ｭ繝ｼ縺ｧ繝｢繝ｼ繝繝ｫ繧帝哩縺倥ｋ
+  // Escapeキーでモーダルを閉じる
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
       const openModal = document.querySelector('.modal.show');
@@ -460,7 +460,7 @@
     }
   });
 
-  // 繧ｰ繝ｭ繝ｼ繝舌Ν髢｢謨ｰ縺ｨ縺励※蜈ｬ髢具ｼ医ョ繝舌ャ繧ｰ逕ｨ・・
+  // デバッグ用関数
   window.debugHashNav = function() {
     console.log('剥 Debug Hash Navigation');
     console.log('Current hash:', window.location.hash);
@@ -471,7 +471,7 @@
     handleHashNavigation();
   };
   
-  // 繧ｨ繧ｯ繧ｹ繝昴・繝茨ｼ亥挨縺ｮ蝣ｴ謇縺九ｉ繧ょ他縺ｳ蜃ｺ縺帙ｋ繧医≧縺ｫ・・
+  // 外部から操作するためのAPI
   window.HashNav = {
     process: handleHashNavigation,
     openAccordion: openAccordion,
