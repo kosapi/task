@@ -448,8 +448,16 @@
         console.log('爆 Closing modal with Escape key');
         openModal.classList.remove('show');
         openModal.style.display = 'none';
-        openModal.removeAttribute('aria-modal');
-        openModal.setAttribute('aria-hidden', 'true');
+          // move focus out of modal to avoid aria-hidden focus warnings
+          try {
+            var active = document.activeElement;
+            if (openModal.contains(active)) {
+              // focus body so descendant won't retain focus
+              document.body.focus && document.body.focus();
+            }
+          } catch (e) {}
+          openModal.removeAttribute('aria-modal');
+          openModal.setAttribute('aria-hidden', 'true');
         
         const backdrop = document.querySelector('.modal-backdrop');
         if (backdrop) {
@@ -481,6 +489,12 @@
       modals.forEach(modal => {
         modal.classList.remove('show');
         modal.style.display = 'none';
+        try {
+          var active = document.activeElement;
+          if (modal.contains(active)) {
+            document.body.focus && document.body.focus();
+          }
+        } catch (e) {}
         modal.removeAttribute('aria-modal');
         modal.setAttribute('aria-hidden', 'true');
       });

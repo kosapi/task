@@ -16,28 +16,13 @@
    * フッターの更新日をAPIから取得して反映する
    */
   function updateFooterDateFromApi() {
-    return fetch('/task/api/get-content.php?_t=' + Date.now(), { cache: 'no-store' })
-      .then(function(response) {
-        if (!response.ok) {
-          throw new Error('API error');
-        }
-        return response.json();
-      })
-      .then(function(data) {
-        if (data && typeof data.updated_at === 'string' && data.updated_at.trim() !== '') {
-          setFooterDateText(data.updated_at.trim());
-          return;
-        }
-
-        // 後方互換: updated_at が無い場合は既存表示を維持
-        const timeElement = document.querySelector('footer time');
-        if (timeElement && timeElement.textContent) {
-          setFooterDateText(timeElement.textContent.trim());
-        }
-      })
-      .catch(function(err) {
-        console.warn('Footer date API load failed:', err);
-      });
+    // Static mode: API is not available after static conversion.
+    // Keep existing footer time if present; avoid runtime API fetch to prevent console errors.
+    const timeElement = document.querySelector('footer time');
+    if (timeElement && timeElement.textContent) {
+      setFooterDateText(timeElement.textContent.trim());
+    }
+    return Promise.resolve();
   }
 
   /**

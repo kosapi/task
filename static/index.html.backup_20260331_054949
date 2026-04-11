@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 
   <head>
 
@@ -61,7 +61,6 @@
   <script src="js/debug-config.js" defer=""></script>
   
   <!-- ハッシュナビゲーション（他のスクリプトより前に読み込む） -->
-  <script src="js/disable-console.js" defer></script>
   <script src="js/modal-autoshow.js" defer=""></script>
   
   <!-- Custom Scripts -->
@@ -74,6 +73,7 @@
   <script src="js/cheke_v3.js?v=20260131_001" defer=""></script>
   <script src="js/popup-helper.js?v=20260131_001" defer=""></script>
   <script src="js/slogans.js?v=20260305_002" defer=""></script>
+  <script src="js/update-footer-date.js?v=20260131_001" defer=""></script>
   <script src="js/hash-navigation.js?v=20260131_001" defer=""></script>
   <!-- deployment-checklist.js は本番では不要のため除外 -->
   <script src="js/nested-modals.js?v=20260131_001" defer=""></script>
@@ -106,7 +106,7 @@
         <span class="bp">&nbsp;本日の安全標語（木）&nbsp;</span>
         <p class="text-center">後ろ側 見えてなければ 降りて見る</p>
       </div>
-      <div id="Fri" class="weekday-hidden" style="display: none;">
+      <div id="Fri" class="weekday-hidden" style="display: block;">
         <span class="bp">&nbsp;本日の安全標語（金）&nbsp;</span>
         <p class="text-center">駐停車 まずは確認 Pレンジ</p>
       </div>
@@ -1432,78 +1432,78 @@
                           <p id="m1">どうぞお乗りください </p>
                           <p>Please get in</p>
                           <p>（プリーズゲットイン）</p>
-                          ?<a class="btn btn-warning rounded-circle" href="javascript:void(0)" onclick="readAloud1()"><img src="img/%E3%82%B9%E3%83%94%E3%83%BC%E3%82%AB%E3%83%BC.png" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button></a>
+                           <a class="btn btn-warning rounded-circle" href="javascript:void(0)" onclick="readAloud1()"><img src="img/%E3%82%B9%E3%83%94%E3%83%BC%E3%82%AB%E3%83%BC.png" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button></a>
                           <hr>
                           <p id="m2">ドアを閉めます</p>
                           <p>Let me close the door</p>
                           <p>（レットミークローズザドア）</p>
-                          ?<a class="btn btn-warning rounded-circle" href="javascript:void(0)" onclick="readAloud2()"><img src="img/%E3%82%B9%E3%83%94%E3%83%BC%E3%82%AB%E3%83%BC.png" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button></a>
+                           <a class="btn btn-warning rounded-circle" href="javascript:void(0)" onclick="readAloud2()"><img src="img/%E3%82%B9%E3%83%94%E3%83%BC%E3%82%AB%E3%83%BC.png" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button></a>
                           <hr>
                           <p id="m3">シートベルトをお締めください</p>
                           <p> Please fasten your seatbelt</p>
                           <p>（プリーズファーステンユアーシートベルト）</p>
-                          ?<a class="btn btn-warning rounded-circle" href="javascript:void(0)" onclick="readAloud3()"><img src="img/%E3%82%B9%E3%83%94%E3%83%BC%E3%82%AB%E3%83%BC.png" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button></a>
+                           <a class="btn btn-warning rounded-circle" href="javascript:void(0)" onclick="readAloud3()"><img src="img/%E3%82%B9%E3%83%94%E3%83%BC%E3%82%AB%E3%83%BC.png" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button></a>
                           <hr>
                           <p id="m4">どちらまで行かれますか？</p>
                           <p>Where are you going</p>
                           <p>（ウエアーユーゴーイング）</p>
-                          ?<a class="btn btn-warning rounded-circle" href="javascript:void(0)" onclick="readAloud4()"><img src="img/%E3%82%B9%E3%83%94%E3%83%BC%E3%82%AB%E3%83%BC.png" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button></a>
+                           <a class="btn btn-warning rounded-circle" href="javascript:void(0)" onclick="readAloud4()"><img src="img/%E3%82%B9%E3%83%94%E3%83%BC%E3%82%AB%E3%83%BC.png" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button></a>
                           <hr>
                           <p id="m5">行き先の住所はわかりますか？</p>
                           <p>Do you have the address</p>
                           <p>（ドゥユハブザアドレス）</p>
-                          ?<a class="btn btn-warning rounded-circle" href="javascript:void(0)" onclick="readAloud5()"><img src="img/%E3%82%B9%E3%83%94%E3%83%BC%E3%82%AB%E3%83%BC.png" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button></a>
+                           <a class="btn btn-warning rounded-circle" href="javascript:void(0)" onclick="readAloud5()"><img src="img/%E3%82%B9%E3%83%94%E3%83%BC%E3%82%AB%E3%83%BC.png" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button></a>
                           <hr>
                           <p id="m6">有料道路を使用してよろしいですか？</p>
                           <p>Would you like to take a toll road</p>
                           <p>（ウジュライクトゥテイクアトールロード）</p>
-                          ?<a class="btn btn-warning rounded-circle" href="javascript:void(0)" onclick="readAloud6()"><img src="img/%E3%82%B9%E3%83%94%E3%83%BC%E3%82%AB%E3%83%BC.png" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button></a>
+                           <a class="btn btn-warning rounded-circle" href="javascript:void(0)" onclick="readAloud6()"><img src="img/%E3%82%B9%E3%83%94%E3%83%BC%E3%82%AB%E3%83%BC.png" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button></a>
                           <hr>
                           <p id="m7">こちらでよろしいですか？</p>
                           <p>Is this okay</p>
                           <p>（イズディスオケイ）</p>
-                          ?<a class="btn btn-warning rounded-circle" href="javascript:void(0)" onclick="readAloud7()"><img src="img/%E3%82%B9%E3%83%94%E3%83%BC%E3%82%AB%E3%83%BC.png" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button></a>
+                           <a class="btn btn-warning rounded-circle" href="javascript:void(0)" onclick="readAloud7()"><img src="img/%E3%82%B9%E3%83%94%E3%83%BC%E3%82%AB%E3%83%BC.png" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button></a>
                           <hr>
                           <p id="m8">運賃はディスプレイに表示された料金です</p>
                           <p>The fare is the one shown on the display</p>
                           <p>（ザフェアイズザワンショーオンザディスプレイ）</p>
-                          ?<a class="btn btn-warning rounded-circle" href="javascript:void(0)" onclick="readAloud8()"><img src="img/%E3%82%B9%E3%83%94%E3%83%BC%E3%82%AB%E3%83%BC.png" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button></a>
+                           <a class="btn btn-warning rounded-circle" href="javascript:void(0)" onclick="readAloud8()"><img src="img/%E3%82%B9%E3%83%94%E3%83%BC%E3%82%AB%E3%83%BC.png" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button></a>
                           <hr>
                           <p id="m9">忘れ物ないように</p>
                           <p>Don't forget anything</p>
                           <p>（ドントフォーゲットエニシング）</p>
-                          ?<a class="btn btn-warning rounded-circle" href="javascript:void(0)" onclick="readAloud9()"><img src="img/%E3%82%B9%E3%83%94%E3%83%BC%E3%82%AB%E3%83%BC.png" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button></a>
+                           <a class="btn btn-warning rounded-circle" href="javascript:void(0)" onclick="readAloud9()"><img src="img/%E3%82%B9%E3%83%94%E3%83%BC%E3%82%AB%E3%83%BC.png" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button></a>
                           <hr>
                           <p id="m10">ご乗車ありがとうございます</p>
                           <p>Thank you for riding</p>
                           <p>（サンキューフォーライディング）</p>
-                          ?<a class="btn btn-warning rounded-circle" href="javascript:void(0)" onclick="readAloud10()"><img src="img/%E3%82%B9%E3%83%94%E3%83%BC%E3%82%AB%E3%83%BC.png" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button></a>
+                           <a class="btn btn-warning rounded-circle" href="javascript:void(0)" onclick="readAloud10()"><img src="img/%E3%82%B9%E3%83%94%E3%83%BC%E3%82%AB%E3%83%BC.png" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button></a>
                           <hr>
                           <h5 class="kokuban" id="m11">お客様からの質問</h5>
                           <p>費用はいくらくいかかりますか？</p>
                           <p>How much will it cost</p>
                           <p>(ハウマッチウィルイッツコスト) </p>
-                          ?<a class="btn btn-warning rounded-circle" href="javascript:void(0)" onclick="readAloud11()"><img src="img/%E3%82%B9%E3%83%94%E3%83%BC%E3%82%AB%E3%83%BC.png" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button></a>
+                           <a class="btn btn-warning rounded-circle" href="javascript:void(0)" onclick="readAloud11()"><img src="img/%E3%82%B9%E3%83%94%E3%83%BC%E3%82%AB%E3%83%BC.png" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button></a>
                           <h5 class="kokuban">返答方法</h5>
                           <small>※金額を入力して黄色ボタンをタップする</small>
-                          <p><input class="form-control" type="number" id="yen" placeholder="金額を入力" autocomplete="off" onkeydown="if (event.keyCode == 13) { return false; }"> ?円くらいです。</p>
-                          ?<a class="btn btn-warning rounded-circle mt-2" href="javascript:void(0)" onclick="readAloud11_1()"><img src="img/%E3%82%B9%E3%83%94%E3%83%BC%E3%82%AB%E3%83%BC.png" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button></a>
+                          <p><input class="form-control" type="number" id="yen" placeholder="金額を入力" autocomplete="off" onkeydown="if (event.keyCode == 13) { return false; }">  円くらいです。</p>
+                           <a class="btn btn-warning rounded-circle mt-2" href="javascript:void(0)" onclick="readAloud11_1()"><img src="img/%E3%82%B9%E3%83%94%E3%83%BC%E3%82%AB%E3%83%BC.png" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button></a>
                           <hr>
                           <h5 class="kokuban" id="m12">お客様からの質問</h5>
                           <p>時間はどれくらいかかりますか？</p>
                           <p>How long will it take</p>
                           <p>(ハウ ロング ウィル イッツ テイク) </p>
-                          ?<a class="btn btn-warning rounded-circle" href="javascript:void(0)" onclick="readAloud12()"><img src="img/%E3%82%B9%E3%83%94%E3%83%BC%E3%82%AB%E3%83%BC.png" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button></a>
+                           <a class="btn btn-warning rounded-circle" href="javascript:void(0)" onclick="readAloud12()"><img src="img/%E3%82%B9%E3%83%94%E3%83%BC%E3%82%AB%E3%83%BC.png" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button></a>
                           <h5 class="kokuban">返答方法</h5>
                           <p><small>※時間を入力して黄色ボタンをタップする</small></p>
                           <p><input class="form-control" type="number" id="time1" min="1" max="24" placeholder=" 時間を入力" autocomplete="off" onkeydown="if (event.keyCode == 13) { return false; }"> 時間くらいです。</p>
-                          ?<a class="btn btn-warning rounded-circle mt-2 mb-2" href="javascript:void(0)" onclick="readAloud12_1()"><img src="img/%E3%82%B9%E3%83%94%E3%83%BC%E3%82%AB%E3%83%BC.png" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button></a>
+                           <a class="btn btn-warning rounded-circle mt-2 mb-2" href="javascript:void(0)" onclick="readAloud12_1()"><img src="img/%E3%82%B9%E3%83%94%E3%83%BC%E3%82%AB%E3%83%BC.png" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button></a>
                           <p><small>※分を入力して黄色ボタンをタップする</small></p>
                           <p><input class="form-control" type="number" id="time2" min="1" max="60" placeholder=" 分を入力" autocomplete="off" onkeydown="if (event.keyCode == 13) { return false; }">分くらいです。</p>
-                          ?<a class="btn btn-warning rounded-circle mt-2 mb-2" href="javascript:void(0)" onclick="readAloud12_2()"><img src="img/%E3%82%B9%E3%83%94%E3%83%BC%E3%82%AB%E3%83%BC.png" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button></a>
+                           <a class="btn btn-warning rounded-circle mt-2 mb-2" href="javascript:void(0)" onclick="readAloud12_2()"><img src="img/%E3%82%B9%E3%83%94%E3%83%BC%E3%82%AB%E3%83%BC.png" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button></a>
                           <p>1時間30分の場合は時間と分をandで繋げる</p>
                           <p>(例)It takes about 1 hour<span class="fred">and </span> 30 minutes</p>
-                          ?<a class="btn btn-warning rounded-circle mt-2 mb-2" href="javascript:void(0)" onclick="readAloud12_3()"><img src="img/%E3%82%B9%E3%83%94%E3%83%BC%E3%82%AB%E3%83%BC.png" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button></a>
+                           <a class="btn btn-warning rounded-circle mt-2 mb-2" href="javascript:void(0)" onclick="readAloud12_3()"><img src="img/%E3%82%B9%E3%83%94%E3%83%BC%E3%82%AB%E3%83%BC.png" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button></a>
                         </div>
                       </div>
                     </div>
@@ -2267,9 +2267,9 @@
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body d-inline-block text-wrap bg-light ">
-                      <p><span class="bnumber">1</span>?未収の売上票を種類毎に分けてまとめ「日計レシート」の順番に並べる</p>
+                      <p><span class="bnumber">1</span> 未収の売上票を種類毎に分けてまとめ「日計レシート」の順番に並べる</p>
                       <img src="img/uriagehyou_01_v2.jpg" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button>
-                      <p><span class="bnumber">2</span>?まとめた売上票の先頭に「日計レシート」をのせクリップどめする</p>
+                      <p><span class="bnumber">2</span> まとめた売上票の先頭に「日計レシート」をのせクリップどめする</p>
                       <img src="img/uriagehyou_02_v2.jpg" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button>
                       <hr>
                       <div>
@@ -2291,7 +2291,7 @@
                         <button type="button" class="btn btn-outline-primary d-block w-100 my-2" data-bs-toggle="modal" data-bs-target="#modal-meter-mistake">メーターの押し間違い</button>
                         <hr>
                         <hr>
-                        <p><span class="bnumber">3</span>?下段の【運報納金額】欄に右上欄の【納金額】を記入</p>
+                        <p><span class="bnumber">3</span> 下段の【運報納金額】欄に右上欄の【納金額】を記入</p>
                         <img src="img/noukin_05_v2.jpg" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button>
                         <hr>
                         <div>
@@ -2299,15 +2299,15 @@
                         </div>
                         <hr>
                         <hr>
-                        <p><span class="bnumber">4</span>?【運報納金額】に【プレート利用金額】を加算し【高速道路現金支払分】を減算した金額を【最終納金金額】欄に記入</p>
+                        <p><span class="bnumber">4</span> 【運報納金額】に【プレート利用金額】を加算し【高速道路現金支払分】を減算した金額を【最終納金金額】欄に記入</p>
                         <img src="img/noukin_07_v2.jpg" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button>
                         <hr>
-                        <p><span class="bnumber">5</span>?最終納金額にGOアプリ手数料を加算し【最終納金額】記入欄下の空きスペースに記入する</p>
+                        <p><span class="bnumber">5</span> 最終納金額にGOアプリ手数料を加算し【最終納金額】記入欄下の空きスペースに記入する</p>
                         <p><u>GOアプリ手数料が発生していない場合</u>でも「最終納金額+0=入金額」の書式で空きスペースに記入する</p>
                         <img src="img/noukin_09_v2.jpg" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button>
                         <img src="img/noukin_10_v2.jpg" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button>
                         <hr>
-                        <p><span class="bnumber">6</span>?【プレート番号】欄に（整理番号ー車番 フルネーム）の書式で記入する</p>
+                        <p><span class="bnumber">6</span> 【プレート番号】欄に（整理番号ー車番 フルネーム）の書式で記入する</p>
                         <img src="img/noukin_08_v2.jpg" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button>
                       </div>
                     </div>
@@ -2605,7 +2605,7 @@
                     </div>
                     <div class="modal-body d-inline-block text-wrap">
                       <div>
-                        <h5 class="kokuban sticky-top">駐車ルール（3時～7時の間）</h5>
+                        <h5 class="kokuban sticky-top">駐車ルール（4時～7時の間）</h5>
                         <ul>
                           <li>隅に停める場合はできるだけ隅に寄せて停める</li>
                           <ul>
@@ -2616,10 +2616,10 @@
 <img src="img/image_002.jpg" alt="image_003" class="img-fluid" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button>
 <img src="img/image_006.jpg" alt="image_004" class="img-fluid" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button>
                           <li>リフト番号が指定されている車両は洗車後その番号のリフトに移動する（キーはつけたまま）</li>
-                          <li>外で洗車してきたリフト番号がある車両は精算処理前にリフトにいれる</li>
-                          <li>外で洗車してきた時はリフト番号が無い場合も精算処理前に空いているリフトに入れ配車板にリフト番号札をかける</li>
-                          <li>リフト指定がある車両で指定のリフトに車両がある場合は空いているリフトがある場合はそこに入れて配車板にリフト番号札をかける</li>
-                          <li>リフト番号が指定されていない車両は洗車した後、空いているリフトに入れて配車板にリフト番号札をかける</li>
+                          <li>外で洗車してきたリフト番号がある車両は下に駐車しないで直ぐにリフトにいれる</li>
+                          <li>外で洗車してきた時はリフト番号が無い場合も下に駐車しないで直ぐに空いているリフトに入れ配車板にリフト番号札をかける</li>
+                          <li>指定のリフトに車両がある場合は前日または当日休車車両なのでそのままにしリフトに入れなくて良い</li>
+                          <li>リフト番号が指定されていない車両は洗車した後、できれば洗車の邪魔にならない場所に移動する（キーはつけたまま）</li>
                           <li>当日整備の予定がある車両は整備工場の前に停める</li>
                           <br>
                           <img src="img/image_013.jpg" alt="image_001" class="img-fluid" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button>
@@ -2631,7 +2631,7 @@
                             <li>建物側に車両があるので出庫時に時間がかかるため</li>
                           </ul>
                           <img src="img/image_014.jpg" alt="image_014" class="img-fluid" style="cursor: pointer;"><button class="cms-image-delete-btn" title="画像を削除" style="position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;"><i class="bi bi-trash"></i></button><br></li><li>急速充電器が設置されている場所はEV専用</li>
-                          <li>普通充電器が設置されている場所は3時～7時の間はEV専用</li>
+                          <li>普通充電器が設置されている場所は4時～7時の間はEV専用</li>
                           <li>喫煙所の前2台分は充電待ちEVが優先だがアルファードが帰庫する前は邪魔になるので駐車しない。また、出庫する時間帯も邪魔になるので駐車しない</li>
                           <li>4時～7時の間は所内が混雑しているので隔勤遅番車両は緊急時以外は営業所に戻らない</li>
                         </ul>
@@ -3447,7 +3447,7 @@
                             </tr>
                             <tr>
                               <th class="table-info"><small>時間帯</small></th>
-                              <td><!--?金曜日?<br>
+                              <td><!-- 金曜日 <br>
                                 8時台<br>
                               --></td>
                               <td><br>
@@ -3669,7 +3669,9 @@
           <a class="carousel-button" id="bc5" href="https://www.google.com/maps/d/u/0/edit?mid=1mFUsHyNbXHVWuzaUPdlbMWbUZpGLQjVZ&amp;usp=sharing">銀座乗禁地図</a>
           <a class="carousel-button" id="bc6" href="https://teito.link/maps/">地図とストリートビュー</a>
           <a class="carousel-button" id="bc7" href="https://teito.link/road/">道路名地図</a>
+          <a class="carousel-button" id="bc8" href="https://teito.link/violation_points">交通違反一覧</a>
           <a class="carousel-button" id="bc9" href="https://sites.google.com/view/teito">帝都板橋サイト</a>
+          <a class="carousel-button" id="bc10" href="https://www.tokyo-tc.or.jp/driver">タクセン</a>
         </div>
       </div>
       <div class="modal fade" id="Modal16" tabindex="-1" aria-labelledby="ModalLabe16" aria-hidden="true" data-original-parent="accordion">
@@ -3845,7 +3847,7 @@
 
     <!-- フッター -->
     <footer class="container-fluid mt-2 mb-2 text-center">
-      <small>更新日: <time>2026年04月12日</time></small>
+      <small>更新日: <time>2026年03月14日</time></small>
     </footer>
 
 </div></body></html>

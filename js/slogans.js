@@ -42,20 +42,8 @@
 
     updateAllSlogans(initialSlogans);
 
-    fetch('/task/api/get-content.php?_t=' + Date.now(), { cache: 'no-store' })
-      .then(function(response) {
-        if (!response.ok) throw new Error('API error');
-        return response.json();
-      })
-      .then(function(data) {
-        if (data.slogans && Array.isArray(data.slogans) && data.slogans.length > 0) {
-          dataEl.textContent = JSON.stringify(data.slogans);
-          updateAllSlogans(data.slogans);
-        }
-      })
-      .catch(function(err) {
-        console.warn('CMS data load failed, using inline slogans-data:', err);
-      });
+    // Static mode: do not fetch CMS API when using pre-rendered slogans-data
+    // If you want runtime updates, remove this guard and re-enable fetch.
   }
 
   if (document.readyState === 'loading') {
