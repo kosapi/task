@@ -23,11 +23,8 @@ AddType application/x-httpd-php .html
 
 # ========== ファイルアクセス制限 ==========
 
-# data/ディレクトリへの直接アクセスを禁止
-<FilesMatch "\.(json)$">
-    Order Allow,Deny
-    Deny from all
-</FilesMatch>
+# config.php やその他秘密ファイルへのアクセス制限
+# checklist.json はフロントエンド描画のためアクセス許可
 
 # config.php への直接アクセスを禁止
 <FilesMatch "^config\.php$">

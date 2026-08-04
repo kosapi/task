@@ -170,6 +170,11 @@ console.log('[CheckboxPersist] スクリプト読み込み開始');
   document.dispatchEvent(event);
   console.log('[CheckboxPersist] checkboxPersistReady イベントを発火');
 
+  document.addEventListener('checklistRendered', function() {
+    console.log('[CheckboxPersist] checklistRendered イベントを受信、チェックボックス初期化');
+    initializeCheckboxes();
+  });
+
   console.log('[CheckboxPersist] スクリプト初期化完了');
 })();
 

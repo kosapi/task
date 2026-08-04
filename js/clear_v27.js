@@ -25,7 +25,7 @@
     console.log('[CLEAR_V27] clear ボタン検索:', clearBtn ? '✅ 見つかり' : '❌ 見つからず');
     
     if (!clearBtn) {
-      console.error('[CLEAR_V27] #clear ボタンが見つかりません');
+      console.log('[CLEAR_V27] #clear ボタンは現在配置されていません');
       return;
     }
     
