@@ -1,5 +1,5 @@
 <?php
-$orig = file_get_contents('c:/xampp/htdocs/task/index_backup_original.html');
+$orig = file_get_contents('c:/xampp/htdocs/task/dev_tools/index_backup_original.html');
 
 $scriptTag = '<script src="js/checklist-render.js?v=20260329_001" defer=""></script>' . "\n";
 if (strpos($orig, 'js/checklist-render.js') === false) {
@@ -17,7 +17,48 @@ if ($startPos !== false && $endPos !== false) {
     $todayStr = date('Y年m月d日');
     $after = preg_replace('/(<small>更新日:\s*<time>)(.*?)(<\/time><\/small>)/u', '${1}' . $todayStr . '${3}', $after);
 
-    $newHtml = $before . '<div class="accordion" id="accordion"></div>' . "\n\n      " . $after;
+    $carouselHtml = <<<HTML
+
+      <button type="button" id="clear" class="btn btn-primary rounded-circle p-0 position-absolute start-0" style="width:4rem;height:4rem; margin: 15px;"><i class="bi bi-eraser"></i></button>
+      <a href="#Modal16" role="button" id="saveButton" data-bs-toggle="modal" data-bs-target="#Modal16" class="btn btn-success rounded-circle position-absolute start-50" style="width:3.5rem;height:3.5rem; margin: 15px 0 0 0; display: flex; align-items: center; justify-content: center;" title="シェア"><i class="bi bi-share" style="font-size: 1.5rem;"></i></a>
+
+      <!-- 横スクロールリンクボタン群 -->
+      <div class="button-carousel-container">
+        <div class="button-carousel-track">
+          <a class="carousel-button" id="bc1" href="https://teito.link/ruby">23区地名読み方</a>
+          <a class="carousel-button" id="bc11" href="https://teito.link/sale">営&nbsp;収&nbsp;管&nbsp;理</a>
+          <a class="carousel-button" id="bc12" href="https://teito.link/sales_data">営業ダッシュボード</a>
+          <a class="carousel-button" id="bc2" href="https://teito.link/time">経過時間集計</a>
+          <a class="carousel-button" id="bc3" href="https://teito.link/working">月間拘束時間集計</a>
+          <a class="carousel-button" id="bc1_1" href="https://teito.link/kind/#section0">在高計算機</a>
+          <a class="carousel-button" id="bc2_1" href="https://teito.link/tip">チェップ集計</a>
+          <a class="carousel-button" id="bc4" href="https://www.google.com/maps/d/edit?mid=1D92qhMO-dhPBB2wqwdAs_RusJ6Av9iI&amp;usp=sharing">LPスタンド地図</a>
+          <a class="carousel-button" id="bc5" href="https://www.google.com/maps/d/u/0/edit?mid=1mFUsHyNbXHVWuzaUPdlbMWbUZpGLQjVZ&amp;usp=sharing">銀座乗禁地図</a>
+          <a class="carousel-button" id="bc6" href="https://teito.link/maps/">地図とストリートビュー</a>
+          <a class="carousel-button" id="bc7" href="https://teito.link/road/">道路名地図</a>
+          <a class="carousel-button" id="bc9" href="https://sites.google.com/view/teito">帝都板橋サイト</a>
+        </div>
+      </div>
+
+      <div class="modal fade" id="Modal16" tabindex="-1" aria-labelledby="ModalLabe16" aria-hidden="true" data-original-parent="accordion">
+        <div class="modal-dialog modal-dialog-scrollable">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="ModalLabe16">シェア用QRコード</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body d-inline-block text-wrap text-center">
+              <p class="mb-3">このページをシェアするためのQRコード</p>
+              <div id="qrcode-container" style="display: inline-block;"></div>
+              <p class="mt-3 small text-muted">スマートフォンのカメラでQRコードを読み取ってください</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+HTML;
+
+    $newHtml = $before . '<div class="accordion" id="accordion"></div>' . "\n" . $carouselHtml . "\n      " . $after;
     file_put_contents('c:/xampp/htdocs/task/index.html', $newHtml);
-    echo "index.html clean build complete! Date updated to {$todayStr}\n";
+    echo "index.html clean build with button-carousel complete! Date updated to {$todayStr}\n";
 }
