@@ -6,6 +6,10 @@ if (strpos($orig, 'js/checklist-render.js') === false) {
     $orig = str_replace('<script src="js/init.js', $scriptTag . '  <script src="js/init.js', $orig);
 }
 
+// modal-fix.css のキャッシュ回避
+$orig = str_replace('css/modal-fix.css?v=20260131_001', 'css/modal-fix.css?v=20260805_full100', $orig);
+$orig = str_replace('css/modal-fix.css', 'css/modal-fix.css?v=20260805_full100', $orig);
+
 $startPos = strpos($orig, '<div class="accordion" id="accordion">');
 $endPos = strrpos($orig, '<!-- フッター -->');
 
