@@ -962,3 +962,71 @@ details {
   border-radius: 100%;
   background-color: #00000080;
 }
+
+/* アプリ画面のボタン・バッジ風装飾用クラス */
+.app-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  font-size: 0.9em;
+  font-weight: bold;
+  line-height: 1.4;
+  border-radius: 7px;
+  margin: 3px 4px;
+  vertical-align: middle;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.12);
+  white-space: nowrap;
+}
+/* 丸青ボタン (了解、ナビ案内を確認 など) */
+.app-badge-pill-blue,
+.app-badge-blue {
+  background-color: #5897E6 !important;
+  color: #ffffff !important;
+  border: 1px solid #4a86ce;
+  border-radius: 20px !important;
+  padding: 4px 14px !important;
+}
+.app-badge-yellow {
+  background-color: #EBD671 !important;
+  color: #111111 !important;
+  border: 1.5px solid #111111;
+  border-radius: 7px !important;
+}
+.app-badge-black {
+  background-color: #1a1a1a !important;
+  color: #EE7A55 !important;
+  border: 1px solid #333333;
+  border-radius: 7px !important;
+}
+.app-badge-green {
+  background-color: #4CAF50 !important;
+  color: #ffffff !important;
+  border: 1px solid #3d8b40;
+  border-radius: 20px !important;
+  padding: 4px 14px !important;
+}
+.app-badge-red {
+  background-color: #E53935 !important;
+  color: #ffffff !important;
+  border: 1px solid #c62828;
+  border-radius: 20px !important;
+  padding: 4px 14px !important;
+}
+
+/* 丸青ナンバリングアイコン (画像内の ①, ② など) */
+.circle-num-blue {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  background-color: #6897E6 !important;
+  color: #ffffff !important;
+  border-radius: 50% !important;
+  font-size: 0.9em;
+  font-weight: bold;
+  line-height: 1;
+  margin: 2px 4px;
+  vertical-align: middle;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+  text-align: center;
+}

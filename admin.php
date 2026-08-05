@@ -36,8 +36,48 @@ $is_logged_in = !empty($_SESSION['admin_logged_in']);
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
   <link href="https://fonts.googleapis.com/css2?family=Kosugi+Maru&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main_v55.css">
 
   <style>
+    /* アプリ画面のボタン・バッジ風装飾用クラス */
+    .app-badge {
+      display: inline-block;
+      padding: 3px 10px;
+      font-size: 0.9em;
+      font-weight: bold;
+      line-height: 1.4;
+      border-radius: 7px;
+      margin: 3px 4px;
+      vertical-align: middle;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.12);
+      white-space: nowrap;
+    }
+    .app-badge-blue {
+      background-color: #5897E6 !important;
+      color: #ffffff !important;
+      border: 1px solid #4a86ce;
+    }
+    .app-badge-yellow {
+      background-color: #EBD671 !important;
+      color: #111111 !important;
+      border: 1.5px solid #111111;
+    }
+    .app-badge-black {
+      background-color: #1a1a1a !important;
+      color: #EE7A55 !important;
+      border: 1px solid #333333;
+    }
+    .app-badge-green {
+      background-color: #4CAF50 !important;
+      color: #ffffff !important;
+      border: 1px solid #3d8b40;
+    }
+    .app-badge-red {
+      background-color: #E53935 !important;
+      color: #ffffff !important;
+      border: 1px solid #c62828;
+    }
+
     body {
       background-color: #f4f6f9;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -114,10 +154,14 @@ $is_logged_in = !empty($_SESSION['admin_logged_in']);
       border-bottom: none;
       border-top-left-radius: 6px;
       border-top-right-radius: 6px;
-      padding: 6px;
+      padding: 8px;
       overflow-x: auto;
       white-space: nowrap;
       -webkit-overflow-scrolling: touch;
+      position: sticky;
+      top: -1rem;
+      z-index: 1020;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.08);
     }
     .editor-toolbar .btn {
       padding: 6px 10px;
@@ -131,12 +175,40 @@ $is_logged_in = !empty($_SESSION['admin_logged_in']);
       border: 1px solid #ced4da;
       border-bottom-left-radius: 6px;
       border-bottom-right-radius: 6px;
-      padding: 12px;
+      padding: 16px 20px;
       background: #fff;
-      font-size: 1rem;
+      font-size: 1.05rem;
+      line-height: 1.75;
     }
     #editor-body:focus {
       outline: 2px solid #1b3a2f;
+    }
+    /* エディター本文要素の上下余白（本番表示の見た目に合わせる） */
+    #editor-body p {
+      margin-top: 0.4rem;
+      margin-bottom: 0.8rem;
+      line-height: 1.75;
+    }
+    #editor-body div {
+      margin-bottom: 0.8rem;
+    }
+    #editor-body ul, #editor-body ol {
+      margin-top: 0.4rem;
+      margin-bottom: 0.8rem;
+      padding-left: 1.6rem;
+    }
+    #editor-body li {
+      margin-bottom: 0.5rem;
+      line-height: 1.7;
+    }
+    #editor-body h5 {
+      margin-top: 1.2rem;
+      margin-bottom: 0.6rem;
+      font-weight: bold;
+    }
+    #editor-body .alert {
+      margin-top: 0.8rem;
+      margin-bottom: 0.8rem;
     }
     #editorModal .modal-dialog {
       max-width: 800px;
@@ -248,87 +320,14 @@ $is_logged_in = !empty($_SESSION['admin_logged_in']);
     </div>
   </div>
 
-  <!-- 項目編集・追加モーダル -->
-  <div class="modal fade" id="editorModal" tabindex="-1" aria-labelledby="editorModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-scrollable">
-      <div class="modal-content">
-        <div class="modal-header bg-dark text-white">
-          <h5 class="modal-title" id="editorModalLabel"><i class="bi bi-pencil-square"></i> 項目の編集</h5>
-          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <form id="editorForm" onsubmit="return false;">
-            <input type="hidden" id="edit-cat-id">
-            <input type="hidden" id="edit-item-index">
-
-            <!-- 項目名 -->
-            <div class="mb-3">
-              <label for="edit-label" class="form-label fw-bold">チェックボックスの表示名（例: 本採用について）</label>
-              <input type="text" class="form-control form-control-lg" id="edit-label" required placeholder="例：本採用について">
-            </div>
-
-            <!-- モーダルタイトル -->
-            <div class="mb-3">
-              <label for="edit-modal-title" class="form-label fw-bold">ポップアップ（モーダル）のタイトル</label>
-              <input type="text" class="form-control" id="edit-modal-title" required placeholder="例：本採用に向けて気をつけること">
-            </div>
-
-            <!-- 堅牢なノーコードビジュアルエディター -->
-            <div class="mb-3">
-              <label class="form-label fw-bold">モーダルの説明本文（Wordのように編集できます）</label>
-              <div class="editor-toolbar d-flex flex-wrap gap-1 align-items-center">
-                <button type="button" class="btn btn-outline-secondary border" onclick="execCmd('undo')" title="元に戻す (Ctrl+Z)"><i class="bi bi-arrow-counterclockwise"></i> 元に戻す</button>
-                <button type="button" class="btn btn-outline-secondary border" onclick="execCmd('redo')" title="やり直す (Ctrl+Y)"><i class="bi bi-arrow-clockwise"></i> やり直し</button>
-                <div class="vr mx-1"></div>
-                <button type="button" class="btn btn-light border" onclick="execCmd('bold')" title="太字"><i class="bi bi-type-bold"></i></button>
-                <button type="button" class="btn btn-light border" onclick="execCmd('italic')" title="斜体"><i class="bi bi-type-italic"></i></button>
-                <button type="button" class="btn btn-light border" onclick="execCmd('underline')" title="下線"><i class="bi bi-type-underline"></i></button>
-                <div class="vr mx-1"></div>
-                <button type="button" class="btn btn-light border" onclick="execCmd('insertUnorderedList')" title="箇条書きリスト"><i class="bi bi-list-ul"></i></button>
-                <button type="button" class="btn btn-light border" onclick="execCmd('insertOrderedList')" title="番号付きリスト"><i class="bi bi-list-ol"></i></button>
-                <div class="vr mx-1"></div>
-                <button type="button" class="btn btn-light border" onclick="execCmd('formatBlock', 'h5')" title="見出し"><i class="bi bi-type-h1"></i> 見出し</button>
-                <button type="button" class="btn btn-light border" onclick="execCmd('formatBlock', 'p')" title="標準テキスト"><i class="bi bi-text-paragraph"></i> 標準</button>
-                <div class="vr mx-1"></div>
-                <button type="button" class="btn btn-outline-primary border" onclick="insertLink()" title="リンク（Webサイト・電話番号など）を挿入・修正"><i class="bi bi-link-45deg"></i> リンク追加/修正</button>
-                <button type="button" class="btn btn-outline-primary border" onclick="insertTable()" title="表（テーブル）を作成"><i class="bi bi-table"></i> 表を追加</button>
-                <button type="button" class="btn btn-outline-danger border" onclick="insertAlertBox('danger')" title="警告枠（赤）を追加"><i class="bi bi-exclamation-triangle"></i> 赤枠バナー</button>
-                <button type="button" class="btn btn-outline-success border text-dark" onclick="insertAlertBox('success')" title="完了・成功枠（緑）を追加"><i class="bi bi-check-circle"></i> 緑枠バナー</button>
-                <button type="button" class="btn btn-outline-info border text-dark" onclick="insertAlertBox('info')" title="補足枠（青）を追加"><i class="bi bi-info-circle"></i> 青枠バナー</button>
-                <div class="vr mx-1"></div>
-                <button type="button" class="btn btn-secondary border text-white fw-bold" onclick="triggerImgUpload()"><i class="bi bi-image"></i> 写真を追加</button>
-                <input type="file" id="native-img-upload" accept="image/*" style="display:none;" onchange="handleNativeImgUpload(this)">
-              </div>
-              <div id="editor-body" contenteditable="true"></div>
-            </div>
-
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
-          <button type="button" class="btn btn-success fw-bold px-4" id="btn-save-item">
-            <i class="bi bi-check-circle-fill"></i> この項目を保存して一覧に戻る
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <!-- JavaScript Libraries -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
   <script>
     let checklistData = [];
     let activeCatId = 0;
-    let editorModalInstance = null;
 
     document.addEventListener('DOMContentLoaded', function() {
-      try {
-        editorModalInstance = new bootstrap.Modal(document.getElementById('editorModal'));
-      } catch(e) {
-        console.warn('Bootstrap modal init error:', e);
-      }
-
       const searchInput = document.getElementById('search-input');
       if (searchInput) {
         searchInput.addEventListener('input', function() {
@@ -339,10 +338,20 @@ $is_logged_in = !empty($_SESSION['admin_logged_in']);
 
       document.getElementById('btn-save-all').addEventListener('click', saveAllData);
       document.getElementById('btn-add-item').addEventListener('click', openAddItemModal);
-      document.getElementById('btn-save-item').addEventListener('click', saveItemFromModal);
 
       loadChecklist();
     });
+
+    // HTMLエスケープヘルパー
+    window.escapeHtml = function(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    };
 
     // ツールバーコマンド実行（太字・リスト等）
     window.execCmd = function(command, value = null) {
@@ -401,6 +410,41 @@ $is_logged_in = !empty($_SESSION['admin_logged_in']);
 
       const alertHtml = `<div class="alert alert-${type} my-2" role="alert">${defaultText}</div><p><br></p>`;
       execCmd('insertHTML', alertHtml);
+    };
+
+    // アプリボタン風バッジの挿入
+    window.insertBadge = function(badgeClass, defaultText) {
+      const selection = window.getSelection();
+      const selectedText = selection.toString().trim();
+      const text = selectedText || defaultText;
+      const badgeHtml = `<span class="app-badge ${badgeClass}">${escapeHtml(text)}</span>&nbsp;`;
+      execCmd('insertHTML', badgeHtml);
+    };
+
+    // 選択テキストのバッジ化
+    window.makeSelectionBadge = function(badgeClass) {
+      const selection = window.getSelection();
+      const selectedText = selection.toString().trim();
+      if (!selectedText) {
+        alert('エディター内でバッジ装飾したい文字を選択してください。');
+        return;
+      }
+      const badgeHtml = `<span class="app-badge ${badgeClass}">${escapeHtml(selectedText)}</span>&nbsp;`;
+      execCmd('insertHTML', badgeHtml);
+    };
+
+    // カスタムバッジ作成
+    window.insertCustomBadge = function() {
+      const text = prompt('バッジにする文字を入力してください:', '了解');
+      if (!text) return;
+      const color = prompt('色を選択してください:\n1: 青（了解・ナビ案内など）\n2: 黄・黒枠（迎車など）\n3: 黒・オレンジ文字（迎車警告など）\n4: 緑\n5: 赤', '1');
+      let badgeClass = 'app-badge-blue';
+      if (color === '2') badgeClass = 'app-badge-yellow';
+      if (color === '3') badgeClass = 'app-badge-black';
+      if (color === '4') badgeClass = 'app-badge-green';
+      if (color === '5') badgeClass = 'app-badge-red';
+      
+      insertBadge(badgeClass, text);
     };
 
     // 写真追加ボタンのトリガー
@@ -653,52 +697,14 @@ $is_logged_in = !empty($_SESSION['admin_logged_in']);
       }
     };
 
-    // 編集モーダルを開く
+    // 編集ページへ遷移
     window.editItem = function(index) {
-      const currentCat = checklistData.find(c => c.categoryId === activeCatId);
-      if (!currentCat) return;
-
-      const item = currentCat.items[index];
-      document.getElementById('edit-cat-id').value = activeCatId;
-      document.getElementById('edit-item-index').value = index;
-
-      document.getElementById('editorModalLabel').innerHTML = '<i class="bi bi-pencil-square"></i> 項目の編集';
-      document.getElementById('edit-label').value = item.labelHtml.replace(/<[^>]*>/g, '') || '';
-      
-      let modalTitle = '';
-      let modalBodyHtml = item.modalContentHtml || '';
-
-      const match = modalBodyHtml.match(/<h5 class="modal-title[^">]*>(.*?)<\/h5>/s);
-      if (match) {
-        modalTitle = match[1].replace(/<button.*$/s, '').replace(/<[^>]*>/g, '').trim();
-      }
-
-      document.getElementById('edit-modal-title').value = modalTitle || item.labelHtml.replace(/<[^>]*>/g, '');
-      
-      let bodyOnlyHtml = modalBodyHtml;
-      const bodyMatch = modalBodyHtml.match(/<div class="modal-body[^">]*>(.*?)<\/div>\s*$/s);
-      if (bodyMatch) {
-        bodyOnlyHtml = bodyMatch[1];
-      }
-
-      document.getElementById('editor-body').innerHTML = bodyOnlyHtml;
-      if (editorModalInstance) editorModalInstance.show();
+      window.location.href = `edit.php?cat_id=${activeCatId}&item_index=${index}`;
     };
 
-    // 新規項目追加モーダルを開く
+    // 新規項目追加ページへ遷移
     function openAddItemModal() {
-      const currentCat = checklistData.find(c => c.categoryId === activeCatId);
-      if (!currentCat) return;
-
-      document.getElementById('edit-cat-id').value = activeCatId;
-      document.getElementById('edit-item-index').value = -1;
-
-      document.getElementById('editorModalLabel').innerHTML = '<i class="bi bi-plus-circle-fill"></i> 新規項目の追加';
-      document.getElementById('edit-label').value = '';
-      document.getElementById('edit-modal-title').value = '';
-      
-      document.getElementById('editor-body').innerHTML = '';
-      if (editorModalInstance) editorModalInstance.show();
+      window.location.href = `edit.php?cat_id=${activeCatId}&item_index=-1`;
     }
 
     // 保存（項目確定）
@@ -763,10 +769,14 @@ $is_logged_in = !empty($_SESSION['admin_logged_in']);
       btn.disabled = true;
       btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> 保存中...';
 
+      const jsonString = JSON.stringify(checklistData);
+      const b64Data = window.btoa(unescape(encodeURIComponent(jsonString)));
+
       fetch('api/save_checklist.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(checklistData)
+        credentials: 'same-origin',
+        body: JSON.stringify({ data_b64: b64Data })
       })
       .then(res => res.json())
       .then(data => {
