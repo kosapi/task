@@ -1,61 +1,71 @@
-// ネストされたモーダル管理スクリプト
+/**
+ * モーダル間リンク（ネストモーダル）完全連携スクリプト
+ * モーダル内のリンクボタンをクリックした際に親モーダルを閉じ、目的の子モーダルを正確に開く
+ * 子モーダルを閉じると、自動的に元の親モーダルへ復帰します
+ */
 
 document.addEventListener('DOMContentLoaded', function() {
-  
-  // 親モーダルに戻る子モーダルのリスト
-  const childModalsWithParent = [
-    { childId: 'modal-ticket-welfare', parentId: 'Modal6-3' },
-    { childId: 'modal-welfare-many', parentId: 'Modal6-3' },
-    { childId: 'modal-additional-uncollected', parentId: 'Modal6-3' },
-    { childId: 'modal-teito-cancel', parentId: 'Modal6-3' },
-    { childId: 'modal-go-app-cancel', parentId: 'Modal6-3' },
-    { childId: 'modal-meter-mistake', parentId: 'Modal6-3' },
-    { childId: 'modal-etc-statement', parentId: 'Modal6-3' }
-  ];
+  'use strict';
 
-  // 各子モーダルに親モーダル復帰イベントを設定
-  childModalsWithParent.forEach(function(config) {
-    const childModal = document.getElementById(config.childId);
-    if (childModal) {
-      childModal.addEventListener('hidden.bs.modal', function() {
-        const parentModal = new bootstrap.Modal(document.getElementById(config.parentId));
-        parentModal.show();
-      });
+  // グローバルクリック委譲リスナー
+  document.addEventListener('click', function(e) {
+    // モーダル内部のリンクまたはボタンかを判定
+    const targetBtn = e.target.closest('.modal-body a[data-bs-toggle="modal"], .modal-body button[data-bs-toggle="modal"], .modal-body a[href^="#Modal"], .modal-body a[href^="#modal"]');
+    
+    if (!targetBtn) return;
+
+    // 目的のモーダルIDを取得
+    let targetModalId = targetBtn.getAttribute('data-bs-target');
+    if (!targetModalId || targetModalId === '#') {
+      targetModalId = targetBtn.getAttribute('href');
     }
-  });
 
-  // data-nested-modal-target属性を持つボタンの処理（汎用）
-  const nestedModalButtons = document.querySelectorAll('[data-nested-modal-target]');
-  
-  nestedModalButtons.forEach(function(button) {
-    button.addEventListener('click', function() {
-      const targetModalId = this.getAttribute('data-nested-modal-target').substring(1);
+    if (!targetModalId || !targetModalId.startsWith('#')) return;
+    
+    targetModalId = targetModalId.substring(1);
+    const targetModalElem = document.getElementById(targetModalId);
+    
+    if (!targetModalElem) {
+      console.warn('[NestedModal] Target modal not found:', targetModalId);
+      return;
+    }
+
+    e.preventDefault();
+    e.stopPropagation();
+
+    // 現在開いている親モーダルを取得
+    const parentModalElem = targetBtn.closest('.modal');
+    
+    if (parentModalElem) {
+      const parentModalId = parentModalElem.id;
+
+      // Bootstrapのインスタンスを取得して親モーダルを閉じる
+      const parentInstance = bootstrap.Modal.getInstance(parentModalElem) || new bootstrap.Modal(parentModalElem);
       
-      // 最も近い親モーダルを探す
-      const parentModalElement = this.closest('.modal');
-      
-      if (parentModalElement) {
-        const parentModalId = parentModalElement.id;
-        
-        // 親モーダルを非表示
-        const parentModal = bootstrap.Modal.getInstance(parentModalElement);
-        if (parentModal) {
-          parentModal.hide();
-        }
-        
-        // 対象モーダルを表示
-        const targetModalElement = document.getElementById(targetModalId);
-        if (targetModalElement) {
-          const targetModal = new bootstrap.Modal(targetModalElement);
-          targetModal.show();
-          
-          // 対象モーダルが閉じられたら親モーダルを再表示
-          targetModalElement.addEventListener('hidden.bs.modal', function() {
-            const parentModal = new bootstrap.Modal(document.getElementById(parentModalId));
-            parentModal.show();
-          }, { once: true });
-        }
-      }
-    });
-  });
+      // 親モーダルが閉じ終わるのを待って子モーダルを開く
+      const onParentHidden = function() {
+        parentModalElem.removeEventListener('hidden.bs.modal', onParentHidden);
+
+        const childInstance = bootstrap.Modal.getInstance(targetModalElem) || new bootstrap.Modal(targetModalElem);
+        childInstance.show();
+
+        // 子モーダルが閉じられたら元の親モーダルに自動復帰
+        const onChildHidden = function() {
+          targetModalElem.removeEventListener('hidden.bs.modal', onChildHidden);
+          const restoreParent = bootstrap.Modal.getInstance(parentModalElem) || new bootstrap.Modal(parentModalElem);
+          restoreParent.show();
+        };
+
+        targetModalElem.addEventListener('hidden.bs.modal', onChildHidden, { once: true });
+      };
+
+      parentModalElem.addEventListener('hidden.bs.modal', onParentHidden, { once: true });
+      parentInstance.hide();
+
+    } else {
+      // 単体で開く場合
+      const childInstance = bootstrap.Modal.getInstance(targetModalElem) || new bootstrap.Modal(targetModalElem);
+      childInstance.show();
+    }
+  }, true);
 });
