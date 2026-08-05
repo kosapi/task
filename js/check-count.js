@@ -30,6 +30,13 @@
   }
 
   $(document).ready(initCheckCount);
-  document.addEventListener('checklistRendered', initCheckCount);
+  document.addEventListener('checklistRendered', function() {
+    initCheckCount();
+    // チェックボックス復元処理タイミングに配慮して遅延実行
+    setTimeout(updateCounts, 100);
+    setTimeout(updateCounts, 500);
+  });
+  document.addEventListener('checkboxPersistReady', updateCounts);
 })();
+
 
