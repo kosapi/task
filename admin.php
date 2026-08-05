@@ -539,8 +539,9 @@ $is_logged_in = !empty($_SESSION['admin_logged_in']);
         infoDiv.style.flex = '1';
         infoDiv.style.minWidth = '300px';
         infoDiv.innerHTML = `
-          <div class="d-flex align-items-center gap-2 mb-1">
+          <div class="d-flex align-items-center gap-2 mb-1 flex-wrap">
             <span class="badge bg-secondary">${searchQuery ? escapeHtml(categoryTitle) : '#' + (index + 1)}</span>
+            ${item.parentLabel ? `<span class="badge bg-info text-dark"><i class="bi bi-link-45deg"></i> 親項目: ${escapeHtml(item.parentLabel)}</span>` : ''}
             <h5 class="m-0 fw-bold">${item.labelHtml}</h5>
           </div>
           <div class="preview-modal-body mt-2">
