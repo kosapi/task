@@ -1,5 +1,6 @@
 <?php
 $orig = file_get_contents('c:/xampp/htdocs/task/dev_tools/index_backup_original.html');
+$subModals = file_get_contents('c:/xampp/htdocs/task/dev_tools/scratch/extracted_sub_modals.html');
 
 $scriptTag = '<script src="js/checklist-render.js?v=20260329_001" defer=""></script>' . "\n";
 if (strpos($orig, 'js/checklist-render.js') === false) {
@@ -62,9 +63,12 @@ if ($startPos !== false && $endPos !== false) {
         </div>
       </div>
 
+      <!-- 独立サブモーダル群（チケット/福祉券、キャンセル処理、ETC明細書等） -->
+      {$subModals}
+
 HTML;
 
     $newHtml = $before . '<div class="accordion" id="accordion"></div>' . "\n" . $carouselHtml . "\n      " . $after;
     file_put_contents('c:/xampp/htdocs/task/index.html', $newHtml);
-    echo "index.html clean build with button-carousel complete! Date updated to {$todayStr}\n";
+    echo "index.html rebuild with sub-modals complete! Date updated to {$todayStr}\n";
 }
