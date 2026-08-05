@@ -9,7 +9,8 @@ if (strpos($orig, 'js/checklist-render.js') === false) {
 // modal-fix.css のキャッシュ回避
 $orig = str_replace('css/modal-fix.css?v=20260131_001', 'css/modal-fix.css?v=20260805_full100', $orig);
 $orig = str_replace('css/modal-fix.css', 'css/modal-fix.css?v=20260805_full100', $orig);
-$orig = str_replace('js/nested-modals.js?v=20260131_001', 'js/nested-modals.js?v=20260805_nest001', $orig);
+$orig = str_replace('js/nested-modals.js?v=20260131_001', 'js/nested-modals.js?v=20260805_nest002', $orig);
+$orig = str_replace('js/nested-modals.js?v=20260805_nest001', 'js/nested-modals.js?v=20260805_nest002', $orig);
 
 $startPos = strpos($orig, '<div class="accordion" id="accordion">');
 $endPos = strrpos($orig, '<!-- フッター -->');
