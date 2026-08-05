@@ -5,9 +5,27 @@
     var accordionContainer = document.getElementById('accordion');
     if (!accordionContainer) return;
 
+    window.checklistData = data;
     var accordionHtml = '';
+    var subModalsHtml = '';
 
     data.forEach(function (cat) {
+      // categoryId 99 の場合は独立サブモーダルとして処理（アコーディオンには追加しない）
+      if (cat.categoryId === 99) {
+        cat.items.forEach(function(item) {
+          if (item.modalContentHtml) {
+            subModalsHtml += '<div class="modal fade" id="' + escapeHtml(item.targetModalId || item.id) + '" tabindex="-1" aria-hidden="true">';
+            subModalsHtml += '  <div class="modal-dialog modal-dialog-scrollable">';
+            subModalsHtml += '    <div class="modal-content">';
+            subModalsHtml +=        item.modalContentHtml;
+            subModalsHtml += '    </div>';
+            subModalsHtml += '  </div>';
+            subModalsHtml += '</div>';
+          }
+        });
+        return;
+      }
+
       accordionHtml += '<div class="accordion-item">';
       accordionHtml += '  <h2 class="accordion-header" id="' + escapeHtml(cat.headingId) + '">';
       accordionHtml += '    <button class="accordion-button collapsed shadow text-reset fw-bold" type="button" data-bs-toggle="collapse"';
@@ -49,7 +67,16 @@
 
     accordionContainer.innerHTML = accordionHtml;
 
-    // カスタムイベント発行（既存JSが初期化できるよう同期させる）
+    // 独立サブモーダルの描画先
+    var extraContainer = document.getElementById('extra-submodals-container');
+    if (!extraContainer) {
+      extraContainer = document.createElement('div');
+      extraContainer.id = 'extra-submodals-container';
+      document.body.appendChild(extraContainer);
+    }
+    extraContainer.innerHTML = subModalsHtml;
+
+    // カスタムイベント発行
     document.dispatchEvent(new CustomEvent('checklistRendered'));
   }
 

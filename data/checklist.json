@@ -552,5 +552,351 @@
                 "modalContentHtml": "<div class=\"modal-header\">\r\n                          <h5 class=\"modal-title kokuban\" id=\"ModalLabel8-4-1\">キャンペーン内容について<\/h5>\r\n                          <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\" aria-label=\"Close\"><\/button>\r\n                        <\/div>\r\n                        <div class=\"modal-body d-inline-block text-wrap\">\r\n                          <div>\r\n                            <h5 class=\"kokuban sticky-top\">ポイント進呈基準概要<\/h5>\r\n                            <ul>\r\n                              <li>1ポイント1円換算で受け取れる<\/li>\r\n                              <li>GOアプリのお客様チップポイントに合算される<\/li>\r\n                              <li>ポイントは実車が完了(支払完了)で進呈される<\/li>\r\n                              <li>キャンペーンと繁忙期ボーナスが<ruby>重複<rt>ちょうふく<\/rt><\/ruby>しても1回300pt<\/li>\r\n                            <\/ul>\r\n                            <table class=\"table table-bordered table-hover table-sm align-middle text-center\">\r\n                              <thead class=\"table-primary sticky-top align-middle text-center\">\r\n                                <tr>\r\n                                  <th class=\"table-info\"><\/th>\r\n                                  <th><!--&#29305;&#21029;<br>&#12461;&#12515;&#12531;&#12506;&#12540;&#12531;<br>&#26399;&#38480;&#26410;&#23450;--><\/th>\r\n                                  <th><ruby>繁忙期<rt>はんぼうき<\/rt><\/ruby><br>ボーナス<\/th>\r\n                                  <th>AI予約<\/th>\r\n                                <\/tr>\r\n                              <\/thead>\r\n                              <tbody>\r\n                                <tr>\r\n                                  <th class=\"table-info\"><small>対象<\/small><\/th>\r\n                                  <td><!--&#36899;&#32154;&#37197;&#36554;--><\/td>\r\n                                  <td>連続配車<\/td>\r\n                                  <td>通常<small>モード<\/small><br>連続配車<\/td>\r\n                                <\/tr>\r\n                                <tr>\r\n                                  <th class=\"table-info\"><small>時間帯<\/small><\/th>\r\n                                  <td><!--?&#37329;&#26332;&#26085;?<br>\r\n                                8&#26178;&#21488;<br>\r\n                              --><\/td>\r\n                                  <td><br>\r\n                                    実<br>施<br>時<br>は<br>端<br>末<br>に<br>表<br>示<\/td>\r\n                                  <td>全<br>時<br>間<br>帯<\/td>\r\n                                <\/tr>\r\n                                <tr>\r\n                                  <th class=\"table-info\"><small>条件<br><ruby>進呈<rt>しんてい<\/rt><\/ruby><br>ポイント<\/small><\/th>\r\n                                  <td><!--1&#22238;300pt--><\/td>\r\n                                  <td>1回300pt<\/td>\r\n                                  <td>1回100pt<\/td>\r\n                                <\/tr>\r\n                              <\/tbody>\r\n                            <\/table>\r\n                          <\/div>\r\n\r\n                          <h5 class=\"kokuban sticky-top\">繁忙期ボーナス詳細<\/h5>\r\n                          <ul>\r\n                            <li>連続配車モードが対象<\/li>\r\n                            <li>実施時間は1回当たり2時間以上が目安<\/li>\r\n                            <li>雨天でも需給状況により実施されない場合あり<\/li>\r\n                            <li>他のキャンペーンと<ruby>重複<rt>ちょうふく<\/rt><\/ruby>しても1回300pt<\/li>\r\n                          <\/ul>\r\n\r\n                          <table class=\"table table-bordered table-hover table-sm align-middle text-center\">\r\n                            <tbody>\r\n                            <\/tbody>\r\n                            <thead class=\"table-primary sticky-top align-middle text-center\">\r\n                              <tr>\r\n                                <th>項目<\/th>\r\n                                <th>内容<\/th>\r\n                              <\/tr>\r\n                            <\/thead>\r\n                            <tbody>\r\n                              <tr>\r\n                                <td>実施<br>時期<\/td>\r\n                                <td>天候や需給バランス等を元にGOが判定<\/td>\r\n                              <\/tr>\r\n                              <tr>\r\n                                <td>実施<br>時間<\/td>\r\n                                <td>状況次第で都度決定<\/td>\r\n                              <\/tr>\r\n                              <tr>\r\n                                <td>進呈<br><small>ポイント<\/small><\/td>\r\n                                <td>1実車当たり100～300pt<\/td>\r\n                              <\/tr>\r\n                              <tr>\r\n                                <td>案内<br>方法<\/td>\r\n                                <td>端末にお知らせ<\/td>\r\n                              <\/tr>\r\n                            <\/tbody>\r\n                          <\/table>\r\n                          <img src=\"img\/%E7%B9%81%E5%BF%99%E6%9C%9F%E7%94%BB%E9%9D%A2.jpg\" style=\"cursor: pointer;\"><button class=\"cms-image-delete-btn\" title=\"画像を削除\" style=\"position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;\"><i class=\"bi bi-trash\"><\/i><\/button>\r\n                        <\/div>"
             }
         ]
+    },
+    {
+        "categoryId": 99,
+        "headingId": "headingSubModals",
+        "collapseId": "collapseSubModals",
+        "checkCountId": "check-countSubModals",
+        "itemsDivId": "itemsSubModals",
+        "categoryTitle": "サブモーダル（共通ポップアップ）",
+        "items": [
+            {
+                "id": "modal-ticket-welfare",
+                "name": "modal-ticket-welfare",
+                "linkId": "sublink-modal-ticket-welfare",
+                "targetModalId": "modal-ticket-welfare",
+                "labelHtml": "チケット\/福祉券がある場合",
+                "modalContentHtml": "<div class=\"modal-header\">\r\n              <h5 class=\"modal-title kokuban\" id=\"label-ticket-welfare\">チケット\/福祉券がある場合<\/h5>\r\n              <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\" aria-label=\"Close\"><\/button>\r\n            <\/div>\r\n            <div class=\"modal-body d-inline-block text-wrap\">\r\n              <p>「未収伝票」欄の空欄の得意先名に使用者名またはチケット名や福祉券名を記入<\/p>\r\n              <img src=\"img\/noukin_02_v2.jpg\" style=\"max-width: 100%; height: auto; cursor: pointer;\"><button class=\"cms-image-delete-btn\" title=\"画像を削除\" style=\"position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;\"><i class=\"bi bi-trash\"><\/i><\/button>\r\n            <\/div>\r\n            <div class=\"modal-footer\">\r\n              <button type=\"button\" class=\"btn btn-secondary\" data-bs-dismiss=\"modal\">閉じる<\/button>\r\n            <\/div>"
+            },
+            {
+                "id": "",
+                "name": "",
+                "linkId": "sublink-",
+                "targetModalId": "",
+                "labelHtml": "チケット\/福祉券がある場合",
+                "modalContentHtml": "<div class=\"modal-header\">\r\n              <h5 class=\"modal-title kokuban\" id=\"label-ticket-welfare\">チケット\/福祉券がある場合<\/h5>\r\n              <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\" aria-label=\"Close\"><\/button>\r\n            <\/div>\r\n            <div class=\"modal-body d-inline-block text-wrap\">\r\n              <p>「未収伝票」欄の空欄の得意先名に使用者名またはチケット名や福祉券名を記入<\/p>\r\n              <img src=\"img\/noukin_02_v2.jpg\" style=\"max-width: 100%; height: auto; cursor: pointer;\"><button class=\"cms-image-delete-btn\" title=\"画像を削除\" style=\"position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;\"><i class=\"bi bi-trash\"><\/i><\/button>\r\n            <\/div>\r\n            <div class=\"modal-footer\">\r\n              <button type=\"button\" class=\"btn btn-secondary\" data-bs-dismiss=\"modal\">閉じる<\/button>\r\n            <\/div>"
+            },
+            {
+                "id": "",
+                "name": "",
+                "linkId": "sublink-",
+                "targetModalId": "",
+                "labelHtml": "チケット\/福祉券がある場合",
+                "modalContentHtml": ""
+            },
+            {
+                "id": "",
+                "name": "",
+                "linkId": "sublink-",
+                "targetModalId": "",
+                "labelHtml": "チケット\/福祉券がある場合",
+                "modalContentHtml": ""
+            },
+            {
+                "id": "",
+                "name": "",
+                "linkId": "sublink-",
+                "targetModalId": "",
+                "labelHtml": "",
+                "modalContentHtml": ""
+            },
+            {
+                "id": "",
+                "name": "",
+                "linkId": "sublink-",
+                "targetModalId": "",
+                "labelHtml": "",
+                "modalContentHtml": ""
+            },
+            {
+                "id": "modal-welfare-many",
+                "name": "modal-welfare-many",
+                "linkId": "sublink-modal-welfare-many",
+                "targetModalId": "modal-welfare-many",
+                "labelHtml": "福祉券を多くもらった場合",
+                "modalContentHtml": "<div class=\"modal-header\">\r\n              <h5 class=\"modal-title kokuban\" id=\"label-welfare-many\">福祉券を多くもらった場合<\/h5>\r\n              <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\" aria-label=\"Close\"><\/button>\r\n            <\/div>\r\n            <div class=\"modal-body d-inline-block text-wrap\">\r\n              <p>「未収伝票」欄の金額をもらった金額に訂正し【合計】【未収】【納金額】も訂正する<\/p>\r\n              <img src=\"img\/noukin_03_v2.jpg\" style=\"max-width: 100%; height: auto; cursor: pointer;\"><button class=\"cms-image-delete-btn\" title=\"画像を削除\" style=\"position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;\"><i class=\"bi bi-trash\"><\/i><\/button>\r\n            <\/div>\r\n            <div class=\"modal-footer\">\r\n              <button type=\"button\" class=\"btn btn-secondary\" data-bs-dismiss=\"modal\">閉じる<\/button>\r\n            <\/div>"
+            },
+            {
+                "id": "",
+                "name": "",
+                "linkId": "sublink-",
+                "targetModalId": "",
+                "labelHtml": "福祉券を多くもらった場合",
+                "modalContentHtml": "<div class=\"modal-header\">\r\n              <h5 class=\"modal-title kokuban\" id=\"label-welfare-many\">福祉券を多くもらった場合<\/h5>\r\n              <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\" aria-label=\"Close\"><\/button>\r\n            <\/div>\r\n            <div class=\"modal-body d-inline-block text-wrap\">\r\n              <p>「未収伝票」欄の金額をもらった金額に訂正し【合計】【未収】【納金額】も訂正する<\/p>\r\n              <img src=\"img\/noukin_03_v2.jpg\" style=\"max-width: 100%; height: auto; cursor: pointer;\"><button class=\"cms-image-delete-btn\" title=\"画像を削除\" style=\"position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;\"><i class=\"bi bi-trash\"><\/i><\/button>\r\n            <\/div>\r\n            <div class=\"modal-footer\">\r\n              <button type=\"button\" class=\"btn btn-secondary\" data-bs-dismiss=\"modal\">閉じる<\/button>\r\n            <\/div>"
+            },
+            {
+                "id": "",
+                "name": "",
+                "linkId": "sublink-",
+                "targetModalId": "",
+                "labelHtml": "福祉券を多くもらった場合",
+                "modalContentHtml": ""
+            },
+            {
+                "id": "",
+                "name": "",
+                "linkId": "sublink-",
+                "targetModalId": "",
+                "labelHtml": "福祉券を多くもらった場合",
+                "modalContentHtml": ""
+            },
+            {
+                "id": "",
+                "name": "",
+                "linkId": "sublink-",
+                "targetModalId": "",
+                "labelHtml": "",
+                "modalContentHtml": ""
+            },
+            {
+                "id": "",
+                "name": "",
+                "linkId": "sublink-",
+                "targetModalId": "",
+                "labelHtml": "",
+                "modalContentHtml": ""
+            },
+            {
+                "id": "modal-additional-uncollected",
+                "name": "modal-additional-uncollected",
+                "linkId": "sublink-modal-additional-uncollected",
+                "targetModalId": "modal-additional-uncollected",
+                "labelHtml": "追加未収処理がある場合",
+                "modalContentHtml": "<div class=\"modal-header\">\r\n              <h5 class=\"modal-title kokuban\" id=\"label-additional-uncollected\">追加未収処理がある場合<\/h5>\r\n              <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\" aria-label=\"Close\"><\/button>\r\n            <\/div>\r\n            <div class=\"modal-body d-inline-block text-wrap\">\r\n              <p>「未収伝票」空欄に手書きで追記し【合計】【未収】【納金額】も訂正する<\/p>\r\n              <img src=\"img\/noukin_04_v2.jpg\" style=\"max-width: 100%; height: auto; cursor: pointer;\"><button class=\"cms-image-delete-btn\" title=\"画像を削除\" style=\"position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;\"><i class=\"bi bi-trash\"><\/i><\/button>\r\n            <\/div>\r\n            <div class=\"modal-footer\">\r\n              <button type=\"button\" class=\"btn btn-secondary\" data-bs-dismiss=\"modal\">閉じる<\/button>\r\n            <\/div>"
+            },
+            {
+                "id": "",
+                "name": "",
+                "linkId": "sublink-",
+                "targetModalId": "",
+                "labelHtml": "追加未収処理がある場合",
+                "modalContentHtml": "<div class=\"modal-header\">\r\n              <h5 class=\"modal-title kokuban\" id=\"label-additional-uncollected\">追加未収処理がある場合<\/h5>\r\n              <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\" aria-label=\"Close\"><\/button>\r\n            <\/div>\r\n            <div class=\"modal-body d-inline-block text-wrap\">\r\n              <p>「未収伝票」空欄に手書きで追記し【合計】【未収】【納金額】も訂正する<\/p>\r\n              <img src=\"img\/noukin_04_v2.jpg\" style=\"max-width: 100%; height: auto; cursor: pointer;\"><button class=\"cms-image-delete-btn\" title=\"画像を削除\" style=\"position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;\"><i class=\"bi bi-trash\"><\/i><\/button>\r\n            <\/div>\r\n            <div class=\"modal-footer\">\r\n              <button type=\"button\" class=\"btn btn-secondary\" data-bs-dismiss=\"modal\">閉じる<\/button>\r\n            <\/div>"
+            },
+            {
+                "id": "",
+                "name": "",
+                "linkId": "sublink-",
+                "targetModalId": "",
+                "labelHtml": "追加未収処理がある場合",
+                "modalContentHtml": ""
+            },
+            {
+                "id": "",
+                "name": "",
+                "linkId": "sublink-",
+                "targetModalId": "",
+                "labelHtml": "追加未収処理がある場合",
+                "modalContentHtml": ""
+            },
+            {
+                "id": "",
+                "name": "",
+                "linkId": "sublink-",
+                "targetModalId": "",
+                "labelHtml": "",
+                "modalContentHtml": ""
+            },
+            {
+                "id": "",
+                "name": "",
+                "linkId": "sublink-",
+                "targetModalId": "",
+                "labelHtml": "",
+                "modalContentHtml": ""
+            },
+            {
+                "id": "modal-teito-cancel",
+                "name": "modal-teito-cancel",
+                "linkId": "sublink-modal-teito-cancel",
+                "targetModalId": "modal-teito-cancel",
+                "labelHtml": "帝都無線キャンセル処理",
+                "modalContentHtml": "<div class=\"modal-header\">\r\n              <h5 class=\"modal-title kokuban\" id=\"label-teito-cancel\">帝都無線キャンセル処理<\/h5>\r\n              <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\" aria-label=\"Close\"><\/button>\r\n            <\/div>\r\n            <div class=\"modal-body d-inline-block text-wrap\">\r\n              <p>手書きでキャンセル欄に【営業回数（〇で囲む）】【400（迎車料金）】の書式で記入<\/p>\r\n              <p>【納金額】を訂正する<\/p>\r\n              <img src=\"img\/cancel_01_v2.jpg\" style=\"max-width: 100%; height: auto; cursor: pointer;\"><button class=\"cms-image-delete-btn\" title=\"画像を削除\" style=\"position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;\"><i class=\"bi bi-trash\"><\/i><\/button>\r\n            <\/div>\r\n            <div class=\"modal-footer\">\r\n              <button type=\"button\" class=\"btn btn-secondary\" data-bs-dismiss=\"modal\">閉じる<\/button>\r\n            <\/div>"
+            },
+            {
+                "id": "",
+                "name": "",
+                "linkId": "sublink-",
+                "targetModalId": "",
+                "labelHtml": "帝都無線キャンセル処理",
+                "modalContentHtml": "<div class=\"modal-header\">\r\n              <h5 class=\"modal-title kokuban\" id=\"label-teito-cancel\">帝都無線キャンセル処理<\/h5>\r\n              <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\" aria-label=\"Close\"><\/button>\r\n            <\/div>\r\n            <div class=\"modal-body d-inline-block text-wrap\">\r\n              <p>手書きでキャンセル欄に【営業回数（〇で囲む）】【400（迎車料金）】の書式で記入<\/p>\r\n              <p>【納金額】を訂正する<\/p>\r\n              <img src=\"img\/cancel_01_v2.jpg\" style=\"max-width: 100%; height: auto; cursor: pointer;\"><button class=\"cms-image-delete-btn\" title=\"画像を削除\" style=\"position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;\"><i class=\"bi bi-trash\"><\/i><\/button>\r\n            <\/div>\r\n            <div class=\"modal-footer\">\r\n              <button type=\"button\" class=\"btn btn-secondary\" data-bs-dismiss=\"modal\">閉じる<\/button>\r\n            <\/div>"
+            },
+            {
+                "id": "",
+                "name": "",
+                "linkId": "sublink-",
+                "targetModalId": "",
+                "labelHtml": "帝都無線キャンセル処理",
+                "modalContentHtml": ""
+            },
+            {
+                "id": "",
+                "name": "",
+                "linkId": "sublink-",
+                "targetModalId": "",
+                "labelHtml": "帝都無線キャンセル処理",
+                "modalContentHtml": ""
+            },
+            {
+                "id": "",
+                "name": "",
+                "linkId": "sublink-",
+                "targetModalId": "",
+                "labelHtml": "",
+                "modalContentHtml": ""
+            },
+            {
+                "id": "",
+                "name": "",
+                "linkId": "sublink-",
+                "targetModalId": "",
+                "labelHtml": "",
+                "modalContentHtml": ""
+            },
+            {
+                "id": "modal-go-app-cancel",
+                "name": "modal-go-app-cancel",
+                "linkId": "sublink-modal-go-app-cancel",
+                "targetModalId": "modal-go-app-cancel",
+                "labelHtml": "GOアプリキャンセル処理",
+                "modalContentHtml": "<div class=\"modal-header\">\r\n              <h5 class=\"modal-title kokuban\" id=\"label-go-app-cancel\">GOアプリキャンセル処理<\/h5>\r\n              <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\" aria-label=\"Close\"><\/button>\r\n            <\/div>\r\n            <div class=\"modal-body d-inline-block text-wrap\">\r\n              <p>GOアプリ関連はすべて空転処理をする<\/p>\r\n              <p>キャンセル処理は不正<\/p>\r\n              <img src=\"img\/kuten_v2_20260107043001_3e93b7d6.jpg\" alt=\"kuten_v2_20260107043001_3e93b7d6\" class=\"img-fluid\"><button class=\"cms-image-delete-btn\" title=\"画像を削除\" style=\"position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;\"><i class=\"bi bi-trash\"><\/i><\/button>\r\n            <\/div>\r\n            <div class=\"modal-footer\">\r\n              <button type=\"button\" class=\"btn btn-secondary\" data-bs-dismiss=\"modal\">閉じる<\/button>\r\n            <\/div>"
+            },
+            {
+                "id": "",
+                "name": "",
+                "linkId": "sublink-",
+                "targetModalId": "",
+                "labelHtml": "GOアプリキャンセル処理",
+                "modalContentHtml": "<div class=\"modal-header\">\r\n              <h5 class=\"modal-title kokuban\" id=\"label-go-app-cancel\">GOアプリキャンセル処理<\/h5>\r\n              <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\" aria-label=\"Close\"><\/button>\r\n            <\/div>\r\n            <div class=\"modal-body d-inline-block text-wrap\">\r\n              <p>GOアプリ関連はすべて空転処理をする<\/p>\r\n              <p>キャンセル処理は不正<\/p>\r\n              <img src=\"img\/kuten_v2_20260107043001_3e93b7d6.jpg\" alt=\"kuten_v2_20260107043001_3e93b7d6\" class=\"img-fluid\"><button class=\"cms-image-delete-btn\" title=\"画像を削除\" style=\"position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;\"><i class=\"bi bi-trash\"><\/i><\/button>\r\n            <\/div>\r\n            <div class=\"modal-footer\">\r\n              <button type=\"button\" class=\"btn btn-secondary\" data-bs-dismiss=\"modal\">閉じる<\/button>\r\n            <\/div>"
+            },
+            {
+                "id": "",
+                "name": "",
+                "linkId": "sublink-",
+                "targetModalId": "",
+                "labelHtml": "GOアプリキャンセル処理",
+                "modalContentHtml": ""
+            },
+            {
+                "id": "",
+                "name": "",
+                "linkId": "sublink-",
+                "targetModalId": "",
+                "labelHtml": "GOアプリキャンセル処理",
+                "modalContentHtml": ""
+            },
+            {
+                "id": "",
+                "name": "",
+                "linkId": "sublink-",
+                "targetModalId": "",
+                "labelHtml": "",
+                "modalContentHtml": ""
+            },
+            {
+                "id": "",
+                "name": "",
+                "linkId": "sublink-",
+                "targetModalId": "",
+                "labelHtml": "",
+                "modalContentHtml": ""
+            },
+            {
+                "id": "modal-meter-mistake",
+                "name": "modal-meter-mistake",
+                "linkId": "sublink-modal-meter-mistake",
+                "targetModalId": "modal-meter-mistake",
+                "labelHtml": "メーターの押し間違い",
+                "modalContentHtml": "<div class=\"modal-header\">\r\n              <h5 class=\"modal-title kokuban\" id=\"label-meter-mistake\">メーターの押し間違い<\/h5>\r\n              <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\" aria-label=\"Close\"><\/button>\r\n            <\/div>\r\n            <div class=\"modal-body d-inline-block text-wrap\">\r\n              <p>メーターの押し間違いはすべて自己負担<\/p>\r\n              <p>慎重なメーター操作が必須<\/p>\r\n              <p>キャンセルまたは空転処理は不正<\/p>\r\n            <\/div>\r\n            <div class=\"modal-footer\">\r\n              <button type=\"button\" class=\"btn btn-secondary\" data-bs-dismiss=\"modal\">閉じる<\/button>\r\n            <\/div>"
+            },
+            {
+                "id": "",
+                "name": "",
+                "linkId": "sublink-",
+                "targetModalId": "",
+                "labelHtml": "メーターの押し間違い",
+                "modalContentHtml": "<div class=\"modal-header\">\r\n              <h5 class=\"modal-title kokuban\" id=\"label-meter-mistake\">メーターの押し間違い<\/h5>\r\n              <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\" aria-label=\"Close\"><\/button>\r\n            <\/div>\r\n            <div class=\"modal-body d-inline-block text-wrap\">\r\n              <p>メーターの押し間違いはすべて自己負担<\/p>\r\n              <p>慎重なメーター操作が必須<\/p>\r\n              <p>キャンセルまたは空転処理は不正<\/p>\r\n            <\/div>\r\n            <div class=\"modal-footer\">\r\n              <button type=\"button\" class=\"btn btn-secondary\" data-bs-dismiss=\"modal\">閉じる<\/button>\r\n            <\/div>"
+            },
+            {
+                "id": "",
+                "name": "",
+                "linkId": "sublink-",
+                "targetModalId": "",
+                "labelHtml": "メーターの押し間違い",
+                "modalContentHtml": ""
+            },
+            {
+                "id": "",
+                "name": "",
+                "linkId": "sublink-",
+                "targetModalId": "",
+                "labelHtml": "メーターの押し間違い",
+                "modalContentHtml": ""
+            },
+            {
+                "id": "",
+                "name": "",
+                "linkId": "sublink-",
+                "targetModalId": "",
+                "labelHtml": "",
+                "modalContentHtml": ""
+            },
+            {
+                "id": "",
+                "name": "",
+                "linkId": "sublink-",
+                "targetModalId": "",
+                "labelHtml": "",
+                "modalContentHtml": ""
+            },
+            {
+                "id": "modal-etc-statement",
+                "name": "modal-etc-statement",
+                "linkId": "sublink-modal-etc-statement",
+                "targetModalId": "modal-etc-statement",
+                "labelHtml": "ETC利用明細書がある場",
+                "modalContentHtml": "<div class=\"modal-header\">\r\n              <h5 class=\"modal-title kokuban\" id=\"label-etc-statement\">ETC利用明細書がある場<\/h5>\r\n              <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\" aria-label=\"Close\"><\/button>\r\n            <\/div>\r\n            <div class=\"modal-body d-inline-block text-wrap\">\r\n              <p>ETC利用明細書の自己負担分に首都高速会社負担分一覧表を参照し対象が含まれているか確認する <\/p>\r\n              <img src=\"img\/hutan_v5.jpg\" style=\"max-width: 100%; height: auto; cursor: pointer;\"><button class=\"cms-image-delete-btn\" title=\"画像を削除\" style=\"position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;\"><i class=\"bi bi-trash\"><\/i><\/button>\r\n              <p>\r\n                首都高速会社負担分が含まれている場合は専用の申請書で会社負担分を計算して記入<br>\r\n                <span class=\"smale\">（売上条件がある、中央道接続・三郷、川口線と売上条件が無いその他の三種類の申請書がある）<\/span>\r\n              <\/p>\r\n              <div class=\"container\">\r\n                <img src=\"img\/syutokoseisan_ilttpan_v2.jpg\" style=\"max-width: 100%; height: auto; cursor: pointer;\"><button class=\"cms-image-delete-btn\" title=\"画像を削除\" style=\"position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;\"><i class=\"bi bi-trash\"><\/i><\/button>\r\n                <img src=\"img\/syutokoseisan_chuou_v2.jpg\" style=\"max-width: 100%; height: auto; cursor: pointer;\"><button class=\"cms-image-delete-btn\" title=\"画像を削除\" style=\"position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;\"><i class=\"bi bi-trash\"><\/i><\/button>\r\n                <img src=\"img\/syutokoseisan_kawaguti_v2.jpg\" style=\"max-width: 100%; height: auto; cursor: pointer;\"><button class=\"cms-image-delete-btn\" title=\"画像を削除\" style=\"position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;\"><i class=\"bi bi-trash\"><\/i><\/button>\r\n              <\/div>\r\n              <p>その際ETC利用明細書は訂正しないで利用した際のレシートと申請書をクリップでETC利用明細書に添付する<\/p>\r\n              <img src=\"img\/etcmeisai_v2.jpg\" style=\"max-width: 100%; height: auto; cursor: pointer;\"><button class=\"cms-image-delete-btn\" title=\"画像を削除\" style=\"position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;\"><i class=\"bi bi-trash\"><\/i><\/button>\r\n              <p>\r\n                ETC利用明細書を参照し【高速道路利用明細】の【合計】欄のAとCの合計を納金明細書の下段【プレート利用納金額】欄に(A+C)=合計金額の書式で記入、会社負担分がある場合は【高速道路現金支払分】欄に額を記入する\r\n              <\/p>\r\n              <img src=\"img\/noukin_06_v2.jpg\" style=\"max-width: 100%; height: auto; cursor: pointer;\"><button class=\"cms-image-delete-btn\" title=\"画像を削除\" style=\"position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;\"><i class=\"bi bi-trash\"><\/i><\/button>\r\n            <\/div>\r\n            <div class=\"modal-footer\">\r\n              <button type=\"button\" class=\"btn btn-secondary\" data-bs-dismiss=\"modal\">閉じる<\/button>\r\n            <\/div>"
+            },
+            {
+                "id": "",
+                "name": "",
+                "linkId": "sublink-",
+                "targetModalId": "",
+                "labelHtml": "ETC利用明細書がある場",
+                "modalContentHtml": "<div class=\"modal-header\">\r\n              <h5 class=\"modal-title kokuban\" id=\"label-etc-statement\">ETC利用明細書がある場<\/h5>\r\n              <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\" aria-label=\"Close\"><\/button>\r\n            <\/div>\r\n            <div class=\"modal-body d-inline-block text-wrap\">\r\n              <p>ETC利用明細書の自己負担分に首都高速会社負担分一覧表を参照し対象が含まれているか確認する <\/p>\r\n              <img src=\"img\/hutan_v5.jpg\" style=\"max-width: 100%; height: auto; cursor: pointer;\"><button class=\"cms-image-delete-btn\" title=\"画像を削除\" style=\"position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;\"><i class=\"bi bi-trash\"><\/i><\/button>\r\n              <p>\r\n                首都高速会社負担分が含まれている場合は専用の申請書で会社負担分を計算して記入<br>\r\n                <span class=\"smale\">（売上条件がある、中央道接続・三郷、川口線と売上条件が無いその他の三種類の申請書がある）<\/span>\r\n              <\/p>\r\n              <div class=\"container\">\r\n                <img src=\"img\/syutokoseisan_ilttpan_v2.jpg\" style=\"max-width: 100%; height: auto; cursor: pointer;\"><button class=\"cms-image-delete-btn\" title=\"画像を削除\" style=\"position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;\"><i class=\"bi bi-trash\"><\/i><\/button>\r\n                <img src=\"img\/syutokoseisan_chuou_v2.jpg\" style=\"max-width: 100%; height: auto; cursor: pointer;\"><button class=\"cms-image-delete-btn\" title=\"画像を削除\" style=\"position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;\"><i class=\"bi bi-trash\"><\/i><\/button>\r\n                <img src=\"img\/syutokoseisan_kawaguti_v2.jpg\" style=\"max-width: 100%; height: auto; cursor: pointer;\"><button class=\"cms-image-delete-btn\" title=\"画像を削除\" style=\"position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;\"><i class=\"bi bi-trash\"><\/i><\/button>\r\n              <\/div>\r\n              <p>その際ETC利用明細書は訂正しないで利用した際のレシートと申請書をクリップでETC利用明細書に添付する<\/p>\r\n              <img src=\"img\/etcmeisai_v2.jpg\" style=\"max-width: 100%; height: auto; cursor: pointer;\"><button class=\"cms-image-delete-btn\" title=\"画像を削除\" style=\"position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;\"><i class=\"bi bi-trash\"><\/i><\/button>\r\n              <p>\r\n                ETC利用明細書を参照し【高速道路利用明細】の【合計】欄のAとCの合計を納金明細書の下段【プレート利用納金額】欄に(A+C)=合計金額の書式で記入、会社負担分がある場合は【高速道路現金支払分】欄に額を記入する\r\n              <\/p>\r\n              <img src=\"img\/noukin_06_v2.jpg\" style=\"max-width: 100%; height: auto; cursor: pointer;\"><button class=\"cms-image-delete-btn\" title=\"画像を削除\" style=\"position: absolute; background: rgb(220, 53, 69); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 14px; margin-left: -40px; margin-top: 5px; z-index: 1000; opacity: 0; transition: opacity 0.2s;\"><i class=\"bi bi-trash\"><\/i><\/button>\r\n            <\/div>\r\n            <div class=\"modal-footer\">\r\n              <button type=\"button\" class=\"btn btn-secondary\" data-bs-dismiss=\"modal\">閉じる<\/button>\r\n            <\/div>"
+            },
+            {
+                "id": "",
+                "name": "",
+                "linkId": "sublink-",
+                "targetModalId": "",
+                "labelHtml": "ETC利用明細書がある場",
+                "modalContentHtml": ""
+            },
+            {
+                "id": "",
+                "name": "",
+                "linkId": "sublink-",
+                "targetModalId": "",
+                "labelHtml": "ETC利用明細書がある場",
+                "modalContentHtml": ""
+            },
+            {
+                "id": "",
+                "name": "",
+                "linkId": "sublink-",
+                "targetModalId": "",
+                "labelHtml": "",
+                "modalContentHtml": ""
+            },
+            {
+                "id": "",
+                "name": "",
+                "linkId": "sublink-",
+                "targetModalId": "",
+                "labelHtml": "",
+                "modalContentHtml": ""
+            }
+        ]
     }
 ]
