@@ -49,13 +49,13 @@
         accordionHtml += '        </div>';
 
         if (item.modalContentHtml) {
-          accordionHtml += '        <div class="modal fade" id="' + escapeHtml(item.targetModalId) + '" tabindex="-1" aria-labelledby="ModalLabel' + escapeHtml(item.id.replace('Check', '')) + '" aria-hidden="true" data-original-parent="' + escapeHtml(cat.itemsDivId) + '">';
-          accordionHtml += '          <div class="modal-dialog modal-dialog-scrollable">';
-          accordionHtml += '            <div class="modal-content">';
-          accordionHtml +=                item.modalContentHtml;
-          accordionHtml += '            </div>';
-          accordionHtml += '          </div>';
-          accordionHtml += '        </div>';
+          subModalsHtml += '        <div class="modal fade" id="' + escapeHtml(item.targetModalId) + '" tabindex="-1" aria-labelledby="ModalLabel' + escapeHtml(item.id.replace('Check', '')) + '" aria-hidden="true" data-original-parent="' + escapeHtml(cat.itemsDivId) + '">';
+          subModalsHtml += '          <div class="modal-dialog modal-dialog-scrollable">';
+          subModalsHtml += '            <div class="modal-content">';
+          subModalsHtml +=                item.modalContentHtml;
+          subModalsHtml += '            </div>';
+          subModalsHtml += '          </div>';
+          subModalsHtml += '        </div>';
         }
       });
 

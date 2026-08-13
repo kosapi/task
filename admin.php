@@ -339,6 +339,15 @@ $is_logged_in = !empty($_SESSION['admin_logged_in']);
       document.getElementById('btn-save-all').addEventListener('click', saveAllData);
       document.getElementById('btn-add-item').addEventListener('click', openAddItemModal);
 
+      document.addEventListener('keyup', saveSelection);
+      document.addEventListener('mouseup', saveSelection);
+      document.addEventListener('touchend', saveSelection);
+      document.addEventListener('selectionchange', function() {
+        if (document.activeElement && document.activeElement.id === 'editor-body') {
+          saveSelection();
+        }
+      });
+
       loadChecklist();
     });
 
@@ -353,16 +362,117 @@ $is_logged_in = !empty($_SESSION['admin_logged_in']);
         .replace(/'/g, '&#039;');
     };
 
+    // エディター領域の選択範囲（Range）管理
+    let savedRange = null;
+
+    window.saveSelection = function() {
+      const sel = window.getSelection();
+      if (sel && sel.rangeCount > 0) {
+        const range = sel.getRangeAt(0);
+        const editor = document.getElementById('editor-body');
+        if (editor && editor.contains(range.commonAncestorContainer)) {
+          savedRange = range.cloneRange();
+        }
+      }
+    };
+
+    window.restoreSelection = function() {
+      const editor = document.getElementById('editor-body');
+      if (!editor) return;
+      editor.focus();
+      if (savedRange) {
+        const sel = window.getSelection();
+        if (sel) {
+          sel.removeAllRanges();
+          sel.addRange(savedRange);
+        }
+      }
+    };
+
+    window.getSelectedTextFromEditor = function() {
+      const sel = window.getSelection();
+      let text = (sel ? sel.toString().trim() : '');
+      if (!text && savedRange) {
+        text = savedRange.toString().trim();
+      }
+      return text;
+    };
+
+    // カーソル位置 / 選択テキスト部分へ確実にHTMLを挿入・置換
+    window.insertHTMLAtCursor = function(html) {
+      const editor = document.getElementById('editor-body');
+      if (!editor) return;
+
+      editor.focus();
+      restoreSelection();
+
+      const sel = window.getSelection();
+      let inserted = false;
+
+      let range = null;
+      if (sel && sel.rangeCount > 0) {
+        const currentRange = sel.getRangeAt(0);
+        if (editor.contains(currentRange.commonAncestorContainer)) {
+          range = currentRange;
+        }
+      }
+      if (!range && savedRange && editor.contains(savedRange.commonAncestorContainer)) {
+        range = savedRange.cloneRange();
+      }
+
+      if (range) {
+        try {
+          range.deleteContents();
+          const tempDiv = document.createElement('div');
+          tempDiv.innerHTML = html;
+          const frag = document.createDocumentFragment();
+          let lastNode = null;
+          while (tempDiv.firstChild) {
+            lastNode = tempDiv.firstChild;
+            frag.appendChild(lastNode);
+          }
+          range.insertNode(frag);
+
+          if (lastNode && sel) {
+            range.setStartAfter(lastNode);
+            range.collapse(true);
+            sel.removeAllRanges();
+            sel.addRange(range);
+          }
+          inserted = true;
+        } catch (e) {
+          console.error('Range API insertion error:', e);
+        }
+      }
+
+      if (!inserted) {
+        try {
+          inserted = document.execCommand('insertHTML', false, html);
+        } catch (e) {}
+      }
+
+      if (!inserted) {
+        editor.innerHTML += html;
+      }
+
+      saveSelection();
+    };
+
     // ツールバーコマンド実行（太字・リスト等）
     window.execCmd = function(command, value = null) {
+      if (command === 'insertHTML') {
+        insertHTMLAtCursor(value);
+        return;
+      }
+      restoreSelection();
       document.execCommand(command, false, value);
-      document.getElementById('editor-body').focus();
+      saveSelection();
     };
 
     // リンクの挿入・修正
     window.insertLink = function() {
-      const selection = window.getSelection();
-      const selectedText = selection.toString();
+      restoreSelection();
+      const selectedText = getSelectedTextFromEditor();
 
       const url = prompt('リンク先のURLまたは電話番号（tel:03-...）を入力してください:', 'https://');
       if (!url) return;
@@ -373,7 +483,7 @@ $is_logged_in = !empty($_SESSION['admin_logged_in']);
         const linkText = prompt('リンクとして表示する文字を入力してください:', 'リンク');
         if (!linkText) return;
         const linkHtml = `<a href="${escapeHtml(url)}" target="_blank" rel="noopener">${escapeHtml(linkText)}</a>`;
-        execCmd('insertHTML', linkHtml);
+        insertHTMLAtCursor(linkHtml);
       }
     };
 
@@ -398,7 +508,7 @@ $is_logged_in = !empty($_SESSION['admin_logged_in']);
       }
       html += '</tbody></table><p><br></p>';
 
-      execCmd('insertHTML', html);
+      insertHTMLAtCursor(html);
     };
 
     // インフォボックス（注意書き・バナー）の挿入
@@ -409,33 +519,33 @@ $is_logged_in = !empty($_SESSION['admin_logged_in']);
       if (type === 'info') defaultText = 'ここに補足・お知らせ事項を入力してください';
 
       const alertHtml = `<div class="alert alert-${type} my-2" role="alert">${defaultText}</div><p><br></p>`;
-      execCmd('insertHTML', alertHtml);
+      insertHTMLAtCursor(alertHtml);
     };
 
     // アプリボタン風バッジの挿入
     window.insertBadge = function(badgeClass, defaultText) {
-      const selection = window.getSelection();
-      const selectedText = selection.toString().trim();
+      const selectedText = getSelectedTextFromEditor();
       const text = selectedText || defaultText;
       const badgeHtml = `<span class="app-badge ${badgeClass}">${escapeHtml(text)}</span>&nbsp;`;
-      execCmd('insertHTML', badgeHtml);
+      insertHTMLAtCursor(badgeHtml);
     };
 
     // 選択テキストのバッジ化
     window.makeSelectionBadge = function(badgeClass) {
-      const selection = window.getSelection();
-      const selectedText = selection.toString().trim();
+      let selectedText = getSelectedTextFromEditor();
       if (!selectedText) {
-        alert('エディター内でバッジ装飾したい文字を選択してください。');
-        return;
+        selectedText = prompt('バッジ装飾する文字を入力してください:', '了解');
+        if (!selectedText) return;
       }
       const badgeHtml = `<span class="app-badge ${badgeClass}">${escapeHtml(selectedText)}</span>&nbsp;`;
-      execCmd('insertHTML', badgeHtml);
+      insertHTMLAtCursor(badgeHtml);
     };
 
     // カスタムバッジ作成
     window.insertCustomBadge = function() {
-      const text = prompt('バッジにする文字を入力してください:', '了解');
+      const selectedText = getSelectedTextFromEditor();
+      const initialText = selectedText || '了解';
+      const text = prompt('バッジにする文字を入力してください:', initialText);
       if (!text) return;
       const color = prompt('色を選択してください:\n1: 青（了解・ナビ案内など）\n2: 黄・黒枠（迎車など）\n3: 黒・オレンジ文字（迎車警告など）\n4: 緑\n5: 赤', '1');
       let badgeClass = 'app-badge-blue';
@@ -444,7 +554,8 @@ $is_logged_in = !empty($_SESSION['admin_logged_in']);
       if (color === '4') badgeClass = 'app-badge-green';
       if (color === '5') badgeClass = 'app-badge-red';
       
-      insertBadge(badgeClass, text);
+      const badgeHtml = `<span class="app-badge ${badgeClass}">${escapeHtml(text)}</span>&nbsp;`;
+      insertHTMLAtCursor(badgeHtml);
     };
 
     // 写真追加ボタンのトリガー
@@ -727,12 +838,15 @@ $is_logged_in = !empty($_SESSION['admin_logged_in']);
       const itemNum = index === -1 ? currentCat.items.length + 1 : (index + 1);
       const modalLabelId = `ModalLabel${catId}-${itemNum}`;
 
+      // bodyHtml から万が一混入した modal-header を完全に一掃
+      let cleanBody = bodyHtml.replace(/<div class="modal-header[^">]*>.*?<\/div>\s*/gs, '');
+
       const fullModalHtml = `<div class="modal-header">
   <h5 class="modal-title kokuban" id="${modalLabelId}">${escapeHtml(modalTitle || label)}</h5>
   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 </div>
 <div class="modal-body d-inline-block text-wrap">
-  ${bodyHtml}
+  ${cleanBody.trim()}
 </div>`;
 
       if (index === -1) {
