@@ -79,11 +79,12 @@ php_value session.use_strict_mode 1
     # 短期キャッシュ（スタティックファイル）
     ExpiresByType text/css "access plus 1 month"
     ExpiresByType application/javascript "access plus 1 month"
-    ExpiresByType image/jpeg "access plus 3 months"
-    ExpiresByType image/png "access plus 3 months"
-    ExpiresByType image/gif "access plus 3 months"
-    ExpiresByType image/svg+xml "access plus 3 months"
-    ExpiresByType image/webp "access plus 3 months"
+    # 画像キャッシュ設定（即時更新対応）
+    ExpiresByType image/jpeg "now"
+    ExpiresByType image/png "now"
+    ExpiresByType image/gif "now"
+    ExpiresByType image/svg+xml "now"
+    ExpiresByType image/webp "now"
 </IfModule>
 
 # ========== MIME タイプ設定 ==========

@@ -1,6 +1,13 @@
-// Slogan rendering extracted from index.html
 (function() {
-  var defaultSlogans = ['', '', '', '', '', '', ''];
+  var defaultSlogans = [
+    "横たわる 命を照らす ハイビーム",
+    "事故防止 一人一人が 責任者",
+    "シートベルト 命を守る お声掛け",
+    "見て、待って、自転車、二輪車、譲って防げ事故防止",
+    "後ろ側 見えてなければ 降りて見る",
+    "駐停車 まずは確認 Pレンジ",
+    "交差点 減速確認 再確認"
+  ];
 
   function showTodaySlogan(dayIndex) {
     var weekdayIds = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];

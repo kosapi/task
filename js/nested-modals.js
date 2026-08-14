@@ -8,11 +8,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
   document.addEventListener('click', function(e) {
     // モーダル内部のリンクまたはボタンかを判定
-    const targetBtn = e.target.closest('.modal-body a[data-bs-toggle="modal"], .modal-body button[data-bs-toggle="modal"], .modal-body a[href^="#"], .modal-body button[href^="#"]');
+    const targetBtn = e.target.closest('.modal-body a[data-bs-toggle="modal"], .modal-body button[data-bs-toggle="modal"], .modal-body a[href^="#"], .modal-body button[href^="#"], .modal-body [data-nested-modal-target]');
     
     if (!targetBtn) return;
 
-    let href = targetBtn.getAttribute('data-bs-target') || targetBtn.getAttribute('href') || '';
+    let href = targetBtn.getAttribute('data-bs-target') || targetBtn.getAttribute('data-nested-modal-target') || targetBtn.getAttribute('href') || '';
     if (!href || href === '#') return;
 
     const rawId = href.replace(/^#/, '');

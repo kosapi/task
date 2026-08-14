@@ -89,20 +89,43 @@
       .replace(/"/g, '&quot;');
   }
 
-  // Fetch checklist.json
+  // 1. インライン埋め込みデータがあればネットワーク通信待ち 0ms（即時）で超爆速描画！
+  function tryPreloadedRender() {
+    var preloadScript = document.getElementById('checklist-preloaded-data');
+    if (preloadScript && preloadScript.textContent.trim()) {
+      try {
+        var data = JSON.parse(preloadScript.textContent);
+        if (Array.isArray(data) && data.length > 0) {
+          renderChecklist(data);
+          return true;
+        }
+      } catch (e) {
+        console.warn('Preload parse error:', e);
+      }
+    }
+    return false;
+  }
+
+  // スクリプト読み込み時点で即時実行
+  tryPreloadedRender();
+
+  // 画面ロード完了時にサーバー上の最新 checklist.json を即時読み込んで描画
   document.addEventListener('DOMContentLoaded', function () {
-    var jsonUrl = 'data/checklist.json?v=' + new Date().getTime();
-    fetch(jsonUrl)
+    var cacheBuster = new Date().getTime();
+    var jsonUrl = 'data/checklist.json?nocache=' + cacheBuster;
+
+    fetch(jsonUrl, { cache: 'no-store' })
       .then(function (response) {
         if (!response.ok) throw new Error('HTTP error ' + response.status);
         return response.json();
       })
       .then(function (data) {
+        // 本番サーバー上の最新データで100%確実に表示更新
         renderChecklist(data);
       })
       .catch(function (err) {
         console.warn('Failed to load checklist data from relative path, trying API fallback...', err);
-        fetch('api/get_checklist.php?v=' + new Date().getTime())
+        fetch('api/get_checklist.php?nocache=' + cacheBuster, { cache: 'no-store' })
           .then(function (res) { return res.json(); })
           .then(function (data) { renderChecklist(data); })
           .catch(function (err2) {

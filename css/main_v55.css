@@ -457,6 +457,32 @@ p {
   color: navy;
 }
 
+/* 中身が空のバッジ・装飾枠は非表示（縦長空枠の発生を完全防止） */
+.bn:empty,
+.bman:empty,
+.bnumber:empty,
+.bnumber2:empty,
+.bgsya:empty,
+.circle:empty,
+.bblack:empty,
+.borange:empty,
+.borange2:empty,
+.bred:empty,
+.bbn:empty,
+.bgreen:empty,
+.bwhite:empty,
+.bm:empty,
+.bb:empty,
+.bg:empty,
+.by:empty,
+.mark_g:empty,
+.mark_b:empty,
+.mark_r:empty,
+.app-badge:empty,
+.circle-num-blue:empty {
+  display: none !important;
+}
+
 .bman {
   border: solid 1px black;
   padding: 3px;
@@ -1029,4 +1055,299 @@ details {
   vertical-align: middle;
   box-shadow: 0 1px 2px rgba(0,0,0,0.15);
   text-align: center;
+}
+
+/* =============================================================
+   🏛️ Clean Material Design 3 (クリーン・マテリアルデザイン)
+   ============================================================= */
+
+/* 1. 全体ベース：編集がしやすく明るくシンプルなクリーン背景 */
+body {
+  font-family: 'Plus Jakarta Sans', 'Kosugi Maru', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: #f8fafc;
+  color: #1e293b;
+}
+
+/* 2. ヘッダー：クリーンな白ベースとマテリアル影 (Elevation 1) */
+.header-bar, .hyogoaria {
+  background: #ffffff !important;
+  color: #0f172a !important;
+  border-bottom: 1px solid #e2e8f0 !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) !important;
+}
+
+.header-bar h1 {
+  color: #0f172a !important;
+  font-weight: 700 !important;
+}
+
+/* 3. オリジナル本物の木枠黒板デザイン (100% 完全忠実復元) */
+.kokuban, .kokuban2, h5.kokuban, .modal-title.kokuban {
+  color: #fff !important;
+  background-color: #114400 !important;
+  margin: 3px 0 0 0 !important;
+  padding: 4px 10px !important;
+  border: 5px solid #a60 !important;
+  border-radius: 3px !important;
+  box-shadow: 2px 2px 4px #666, 2px 2px 2px #111 inset !important;
+  text-shadow: 0px 0px 2px #000 !important;
+  line-height: 1.5 !important;
+}
+
+/* 本日の安全標語エリア（タイトルの下が白くなる不具合の完全防止） */
+.hyogoaria,
+.hyogoaria div,
+.hyogoaria p {
+  background: transparent !important;
+  background-color: transparent !important;
+  color: #ffffff !important;
+  text-shadow: 0px 0px 2px #000 !important;
+}
+
+/* 本日の安全標語ピンクバッジ */
+.hyogoaria span.bp {
+  background-color: #ff99ff !important;
+  color: #000000 !important;
+  border-radius: 10px !important;
+  padding: 2px 10px !important;
+  display: inline-block !important;
+  font-weight: bold !important;
+  text-shadow: none !important;
+  margin-bottom: 4px !important;
+}
+
+/* モーダルヘッダー背景も元の黒板背景と統一 */
+.modal-header {
+  background-color: #114400 !important;
+  border-bottom: 2px solid #a60 !important;
+}
+
+.modal-header .btn-close {
+  filter: invert(1) grayscale(100%) brightness(200%) !important;
+  opacity: 0.85 !important;
+}
+
+.modal-header .btn-close:hover {
+  opacity: 1 !important;
+}
+
+/* =============================================================
+   チェックボックス・文字マージン・リンク文字の大粒化＆押しやすさ強化
+   ============================================================= */
+
+/* 1. チェックボックス本体のビッグサイズ化 (22px〜24px) ＆ 右マージン拡大 (12px) */
+input[type="checkbox"].form-check-input,
+.form-check-input {
+  width: 22px !important;
+  height: 22px !important;
+  min-width: 22px !important;
+  min-height: 22px !important;
+  margin-right: 12px !important; /* チェックボックスと文字の間隔をしっかり開ける */
+  cursor: pointer !important;
+  vertical-align: middle !important;
+  border-radius: 6px !important;
+  border: 2px solid #666666 !important;
+  flex-shrink: 0 !important;
+}
+
+input[type="checkbox"].form-check-input:checked,
+.form-check-input:checked {
+  background-color: #114400 !important;
+  border-color: #114400 !important;
+}
+
+/* 2. チェックボックスラベル（項目タイトル文字）の拡大・太字・マージン確保 (17.5px〜18px) */
+.form-check-label,
+.form-check label,
+.item-card label,
+.item-label {
+  font-size: 17.5px !important;
+  font-weight: 700 !important;
+  line-height: 1.5 !important;
+  color: #111111 !important;
+  padding: 4px 2px !important;
+  cursor: pointer !important;
+}
+
+/* 3. モーダル本文内および項目内のリンク文字（aタグ）の文字拡大 ＆ パディング・マージン拡大 */
+.modal-body a:not(.btn):not(.dropdown-item):not(.nav-link),
+.form-check-label a:not(.btn) {
+  font-size: 16.5px !important;
+  font-weight: 700 !important;
+  color: #0056b3 !important;
+  text-decoration: underline !important;
+  text-underline-offset: 3px !important;
+  padding: 2px 6px !important;
+  margin: 1px 4px !important; /* リンク文字の前後に押しやすいマージンを確保 */
+  border-radius: 4px !important;
+  display: inline-block !important;
+}
+
+.modal-body a:not(.btn):not(.dropdown-item):not(.nav-link):hover,
+.form-check-label a:not(.btn):hover {
+  background-color: #e6f0ff !important;
+  color: #003399 !important;
+}
+
+/* スマホ表示時（768px以下）のタッチターゲットさらに拡大 */
+@media (max-width: 768px) {
+  input[type="checkbox"].form-check-input,
+  .form-check-input {
+    width: 24px !important;
+    height: 24px !important;
+    min-width: 24px !important;
+    min-height: 24px !important;
+    margin-right: 14px !important; /* スマホではマージンを14pxに拡大 */
+  }
+
+  .form-check-label,
+  .form-check label,
+  .item-card label {
+    font-size: 18px !important;
+  }
+
+  .modal-body a:not(.btn):not(.dropdown-item):not(.nav-link) {
+    font-size: 17px !important;
+    padding: 3px 8px !important;
+    margin: 2px 4px !important;
+  }
+}
+
+/* モーダル本文・エディター本文内の全テキストから不必要な文字影 (text-shadow) を完全消去 */
+.modal-body p,
+.modal-body li,
+.modal-body span,
+.modal-body div:not(.kokuban),
+.modal-body a,
+.modal-body td,
+.modal-body th,
+.modal-body label,
+#editor-body p,
+#editor-body li,
+#editor-body span,
+#editor-body div:not(.kokuban),
+#editor-body a,
+#editor-body td,
+#editor-body th,
+#editor-body label {
+  text-shadow: none !important;
+}
+
+/* 青枠・赤枠・緑枠・補足バナー (.alert) 内の全子要素から変なインライン文字背景色を完全消去 */
+.modal-body .alert *,
+#editor-body .alert * {
+  background-color: transparent !important;
+  background: transparent !important;
+}
+
+/* =============================================================
+   💻 PC閲覧時（769px以上）の本番画面幅制限 ＆ 中央表示（管理画面・編集画面は全幅フル表示）
+   ============================================================= */
+@media (min-width: 769px) {
+  /* 本番閲覧画面 (index.html) のみ背景をライトグレー＆幅768pxに制限 */
+  body:not(.admin-body):not(.edit-body) {
+    background-color: #e5e9ec !important;
+  }
+
+  /* 本番画面のメイン要素のみを 768px制限 & 中央寄せ（管理画面 admin.php や edit.php には影響させない） */
+  body:not(.admin-body):not(.edit-body) > div,
+  body:not(.admin-body):not(.edit-body) .accordion,
+  body:not(.admin-body):not(.edit-body) .button-carousel-container,
+  body:not(.admin-body):not(.edit-body) div[method="POST"] {
+    max-width: 768px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15) !important;
+  }
+
+  body:not(.admin-body):not(.edit-body) div[method="POST"] {
+    position: relative !important;
+  }
+
+  body:not(.admin-body):not(.edit-body) #clear {
+    position: absolute !important;
+    left: 15px !important;
+    right: auto !important;
+    transform: none !important;
+  }
+
+  body:not(.admin-body):not(.edit-body) #saveButton {
+    position: absolute !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+  }
+}
+
+/* 4. チェックボックス本体の押しやすさ (22px) とマテリアル影 */
+input[type="checkbox"].form-check-input,
+.form-check-input {
+  width: 22px !important;
+  height: 22px !important;
+  min-width: 22px !important;
+  min-height: 22px !important;
+  border-radius: 6px !important;
+  border: 2px solid #94a3b8 !important;
+  cursor: pointer !important;
+}
+
+input[type="checkbox"].form-check-input:checked,
+.form-check-input:checked {
+  background-color: #2d6a4f !important;
+  border-color: #2d6a4f !important;
+  box-shadow: 0 2px 4px rgba(45, 106, 79, 0.25) !important;
+}
+
+/* 5. 本文内のリンク文字（誤タップ防止＆読みやすさ） */
+.modal-body a:not(.btn):not(.dropdown-item):not(.nav-link),
+.form-check-label a:not(.btn) {
+  font-size: 16.5px;
+  font-weight: 700;
+  color: #1e40af;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  padding: 1px 4px;
+}
+
+.modal-body a:not(.btn):not(.dropdown-item):not(.nav-link):hover,
+.form-check-label a:not(.btn):hover {
+  background-color: #eff6ff;
+  color: #1d4ed8;
+}
+
+/* 6. 赤・緑・青枠バナーのマテリアル 3 パステルコンテナ (濃い色を使わない) */
+/* 赤枠バナー (警告) */
+.modal-body .alert-danger, .alert-danger {
+  background: #ffedea !important;
+  border: 1px solid #ffcdd2 !important;
+  color: #b71c1c !important;
+  border-radius: 10px !important;
+  box-shadow: 0 2px 6px rgba(183, 28, 28, 0.05) !important;
+}
+
+/* 緑枠バナー (完了) */
+.modal-body .alert-success, .alert-success {
+  background: #e8f5e9 !important;
+  border: 1px solid #c8e6c9 !important;
+  color: #1b5e20 !important;
+  border-radius: 10px !important;
+  box-shadow: 0 2px 6px rgba(27, 94, 32, 0.05) !important;
+}
+
+/* 青枠バナー (補足) */
+.modal-body .alert-info, .alert-info {
+  background: #e8f0fe !important;
+  border: 1px solid #c6dafc !important;
+  color: #1a73e8 !important;
+  border-radius: 10px !important;
+  box-shadow: 0 2px 6px rgba(26, 115, 232, 0.05) !important;
+}
+
+/* 7. エディターツールバーのシンプル・マテリアル浮遊カード */
+.sticky-editor-toolbar {
+  background: #ffffff !important;
+  border-radius: 12px !important;
+  padding: 8px 12px !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06) !important;
+  margin-bottom: 1rem !important;
 }
