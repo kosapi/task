@@ -1,44 +1,43 @@
 /**
  * フッターの更新日を自動更新するスクリプト
- * APIの updated_at を表示して、内容変更時のみ更新日を反映する
+ * サイトのファイル最終更新日（document.lastModified）や最新の更新情報を取得し、
+ * フッターの <time> タグに自動反映します。
  */
 
 (function() {
   'use strict';
 
-  function setFooterDateText(dateText) {
-    const timeElement = document.querySelector('footer time');
-    if (!timeElement || !dateText) return;
-    timeElement.textContent = dateText;
+  function formatJapaneseDate(date) {
+    if (!date || isNaN(date.getTime())) return null;
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}年${month}月${day}日`;
   }
 
   /**
-   * フッターの更新日をAPIから取得して反映する
+   * フッターの更新日を反映する
    */
-  function updateFooterDateFromApi() {
-    // Static mode: API is not available after static conversion.
-    // Keep existing footer time if present; avoid runtime API fetch to prevent console errors.
+  function updateFooterDate() {
     const timeElement = document.querySelector('footer time');
-    if (timeElement && timeElement.textContent) {
-      setFooterDateText(timeElement.textContent.trim());
+    if (!timeElement) return;
+
+    // document.lastModified からファイルの最終更新日時を取得して反映
+    if (document.lastModified) {
+      const lastModDate = new Date(document.lastModified);
+      const formatted = formatJapaneseDate(lastModDate);
+      if (formatted) {
+        timeElement.textContent = formatted;
+      }
     }
-    return Promise.resolve();
-  }
-
-  /**
-   * 初期化：ページ読み込み時にAPIの更新日を反映
-   */
-  function initializeFooterDate() {
-    updateFooterDateFromApi();
   }
 
   // ページ読み込み時に初期化
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initializeFooterDate);
+    document.addEventListener('DOMContentLoaded', updateFooterDate);
   } else {
-    initializeFooterDate();
+    updateFooterDate();
   }
 
-  window.refreshFooterDateFromApi = updateFooterDateFromApi;
-
+  window.updateFooterDate = updateFooterDate;
 })();

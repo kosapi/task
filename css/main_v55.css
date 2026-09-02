@@ -1351,3 +1351,24 @@ input[type="checkbox"].form-check-input:checked,
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06) !important;
   margin-bottom: 1rem !important;
 }
+
+/* =============================================================
+   📱 Android 3ボタンナビゲーションバー ＆ セーフエリア完全対応
+   ============================================================= */
+body {
+  /* システムのナビゲーションバー（戻る・ホーム・履歴）にコンテンツが潜り込まないよう下部パディングを確保 */
+  padding-bottom: calc(75px + env(safe-area-inset-bottom, 0px)) !important;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+footer {
+  /* フッターの更新日や最下部テキストが隠れないようにマージン・パディングを確保 */
+  margin-top: 1.5rem !important;
+  padding-bottom: calc(30px + env(safe-area-inset-bottom, 0px)) !important;
+}
+
+.button-carousel-container {
+  /* カルーセルボタン群が操作しやすいよう下部に余白を確保 */
+  margin-bottom: 1.5rem !important;
+}

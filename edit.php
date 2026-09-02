@@ -36,7 +36,10 @@ if (empty($initial_json) || json_decode($initial_json) === null) {
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
   <link href="https://fonts.googleapis.com/css2?family=Kosugi+Maru&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/main_v55.css?v=20260813_FINAL_SUPER_CACHEBUST_1786630246">
+  <link rel="stylesheet" href="css/main_v55.css?v=20260902_ANDROID_NAVBAR_FIX_01">
+  <link rel="stylesheet" href="css/loader.css?v=20260131_001">
+  <link rel="stylesheet" href="css/checklist-search.css?v=20260131_001">
+  <link rel="stylesheet" href="css/modal-fix.css?v=20260902_ANDROID_NAVBAR_FIX_01">
 
   <style>
     body {
@@ -264,6 +267,9 @@ if (empty($initial_json) || json_decode($initial_json) === null) {
       <h1 id="page-title"><i class="bi bi-pencil-square"></i> 項目の編集</h1>
     </div>
     <div class="d-flex gap-2">
+      <a href="media.php" target="_blank" class="btn btn-outline-light btn-sm fw-bold">
+        <i class="bi bi-images me-1"></i> メディア一覧
+      </a>
       <a href="index.html" target="_blank" class="btn btn-outline-light btn-sm">
         <i class="bi bi-box-arrow-up-right"></i> 本番画面を表示
       </a>
@@ -363,7 +369,8 @@ if (empty($initial_json) || json_decode($initial_json) === null) {
           </ul>
         </div>
         <div class="vr mx-1"></div>
-        <button type="button" class="btn btn-secondary border text-white fw-bold" onclick="triggerImgUpload()"><i class="bi bi-image"></i> 写真を追加</button>
+        <button type="button" class="btn btn-secondary border text-white fw-bold" onclick="triggerImgUpload()"><i class="bi bi-upload"></i> 写真アップロード</button>
+        <button type="button" class="btn btn-outline-secondary border fw-bold" onclick="openMediaPickerModal()"><i class="bi bi-images text-primary"></i> メディアから選ぶ</button>
         <input type="file" id="native-img-upload" accept="image/*" style="display:none;" onchange="handleNativeImgUpload(this)">
         <div class="vr mx-1"></div>
         <button type="button" class="btn btn-outline-danger border fw-bold" onclick="cleanAllEmptyTags(true); return false;" title="エディター内の文字が入っていない不要な空枠・空タグを一括削除"><i class="bi bi-trash3-fill me-1"></i> 空枠一括削除</button>
@@ -1298,6 +1305,98 @@ if (empty($initial_json) || json_decode($initial_json) === null) {
         input.value = '';
       });
     };
+
+    // メディアライブラリから選択してエディターに挿入
+    window.openMediaPickerModal = function() {
+      saveSelection();
+      const modal = new bootstrap.Modal(document.getElementById('mediaPickerModal'));
+      modal.show();
+      loadPickerImages();
+    };
+
+    let pickerImages = [];
+    window.loadPickerImages = function() {
+      const grid = document.getElementById('picker-media-grid');
+      grid.innerHTML = '<div class="col-12 text-center py-4"><div class="spinner-border text-primary" role="status"></div><div class="text-muted mt-2 small">画像一覧を読み込み中...</div></div>';
+
+      fetch('api/media_manager.php?action=list')
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            pickerImages = data.images;
+            renderPickerGrid();
+          } else {
+            grid.innerHTML = '<div class="col-12 text-center py-4 text-danger">読み込みに失敗しました</div>';
+          }
+        })
+        .catch(err => {
+          grid.innerHTML = '<div class="col-12 text-center py-4 text-danger">通信エラーが発生しました</div>';
+        });
+    };
+
+    window.renderPickerGrid = function() {
+      const query = document.getElementById('picker-search-input').value.trim().toLowerCase();
+      const grid = document.getElementById('picker-media-grid');
+
+      let filtered = pickerImages.filter(img => {
+        if (query) {
+          const matchName = img.name.toLowerCase().includes(query);
+          const matchUsage = img.usedIn.some(u => u.label.toLowerCase().includes(query) || u.category.toLowerCase().includes(query));
+          return matchName || matchUsage;
+        }
+        return true;
+      });
+
+      if (filtered.length === 0) {
+        grid.innerHTML = '<div class="col-12 text-center py-4 text-muted">該当する画像がありません</div>';
+        return;
+      }
+
+      grid.innerHTML = filtered.map(img => `
+        <div class="col-md-3 col-sm-4 col-6">
+          <div class="card h-100 border shadow-sm p-2 text-center position-relative" style="cursor: pointer; transition: transform 0.2s;" onclick="insertSelectedImage('${escapeHtml(img.url)}', '${escapeHtml(img.name)}')" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'">
+            <div style="height: 110px; display: flex; align-items: center; justify-content: center; background: #f8fafc; border-radius: 6px; overflow: hidden; margin-bottom: 6px;">
+              <img src="${img.url}" alt="${escapeHtml(img.name)}" style="max-height: 100%; max-width: 100%; object-fit: contain;">
+            </div>
+            <div class="small fw-bold text-truncate" title="${escapeHtml(img.name)}">${escapeHtml(img.name)}</div>
+            <div class="text-muted" style="font-size: 11px;">${img.sizeFormatted}</div>
+          </div>
+        </div>
+      `).join('');
+    };
+
+    window.insertSelectedImage = function(url, name) {
+      restoreSelection();
+      const imgHtml = `<p><br></p><div class="my-3 text-center"><img src="${escapeHtml(url)}" class="img-fluid rounded shadow-sm" alt="${escapeHtml(name)}" style="max-width:100%; height:auto;"></div><p><br></p>`;
+      insertHTMLAtCursor(imgHtml);
+      const modalEl = document.getElementById('mediaPickerModal');
+      const modal = bootstrap.Modal.getInstance(modalEl);
+      if (modal) modal.hide();
+    };
   </script>
+
+  <!-- メディア選択モーダル -->
+  <div class="modal fade" id="mediaPickerModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content rounded-4 border-0 shadow">
+        <div class="modal-header bg-dark text-white py-3">
+          <h5 class="modal-title fw-bold"><i class="bi bi-images me-2"></i>メディアから画像を選択して挿入</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-4">
+          <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+            <input type="text" id="picker-search-input" class="form-control" placeholder="🔍 画像を検索..." style="max-width: 320px;" oninput="renderPickerGrid()">
+            <a href="media.php" target="_blank" class="btn btn-outline-primary btn-sm">
+              <i class="bi bi-box-arrow-up-right me-1"></i> メディア管理画面を別タブで開く
+            </a>
+          </div>
+          <div class="row g-3" id="picker-media-grid" style="max-height: 60vh; overflow-y: auto;">
+            <!-- JSで動的生成 -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </body>
 </html>

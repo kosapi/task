@@ -50,7 +50,7 @@ if (empty($initial_json) || json_decode($initial_json) === null) {
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
   <link href="https://fonts.googleapis.com/css2?family=Kosugi+Maru&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/main_v55.css?v=20260813_FINAL_SUPER_CACHEBUST_1786630246">
+  <link rel="stylesheet" href="css/main_v55.css?v=20260902_ANDROID_NAVBAR_FIX_01">
 
   <style>
     /* アプリ画面のボタン・バッジ風装飾用クラス */
@@ -314,6 +314,9 @@ if (empty($initial_json) || json_decode($initial_json) === null) {
       <span class="badge bg-success" id="save-status">保存済み</span>
     </div>
     <div class="d-flex gap-2">
+      <a href="media.php" class="btn btn-light btn-sm text-dark fw-bold shadow-sm px-3">
+        <i class="bi bi-images me-1 text-primary"></i> メディア一覧・画像管理
+      </a>
       <a href="index.html" target="_blank" class="btn btn-light btn-sm text-dark fw-bold shadow-sm px-3">
         <i class="bi bi-box-arrow-up-right me-1"></i> 本番画面を表示
       </a>

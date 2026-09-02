@@ -1,9 +1,11 @@
 (function () {
   'use strict';
 
+  var isRendered = false;
+
   function renderChecklist(data) {
     var accordionContainer = document.getElementById('accordion');
-    if (!accordionContainer) return;
+    if (!accordionContainer) return false;
 
     window.checklistData = data;
     var accordionHtml = '';
@@ -76,8 +78,11 @@
     }
     extraContainer.innerHTML = subModalsHtml;
 
+    isRendered = true;
+
     // カスタムイベント発行
     document.dispatchEvent(new CustomEvent('checklistRendered'));
+    return true;
   }
 
   function escapeHtml(str) {
@@ -89,15 +94,14 @@
       .replace(/"/g, '&quot;');
   }
 
-  // 1. インライン埋め込みデータがあればネットワーク通信待ち 0ms（即時）で超爆速描画！
+  // 1. インライン埋め込みデータによる 0ms 超即時同期描画
   function tryPreloadedRender() {
     var preloadScript = document.getElementById('checklist-preloaded-data');
     if (preloadScript && preloadScript.textContent.trim()) {
       try {
         var data = JSON.parse(preloadScript.textContent);
         if (Array.isArray(data) && data.length > 0) {
-          renderChecklist(data);
-          return true;
+          return renderChecklist(data);
         }
       } catch (e) {
         console.warn('Preload parse error:', e);
@@ -106,31 +110,38 @@
     return false;
   }
 
-  // スクリプト読み込み時点で即時実行
+  // グローバル公開
+  window.renderPreloadedChecklist = tryPreloadedRender;
+  window.renderChecklist = renderChecklist;
+
+  // 可能な限り即時実行を試行
   tryPreloadedRender();
 
-  // 画面ロード完了時にサーバー上の最新 checklist.json を即時読み込んで描画
+  // 画面ロード完了時の処理（プリロードが未実行だった場合のみフェッチフォールバック）
   document.addEventListener('DOMContentLoaded', function () {
-    var cacheBuster = new Date().getTime();
-    var jsonUrl = 'data/checklist.json?nocache=' + cacheBuster;
+    if (!isRendered) {
+      if (tryPreloadedRender()) return;
 
-    fetch(jsonUrl, { cache: 'no-store' })
-      .then(function (response) {
-        if (!response.ok) throw new Error('HTTP error ' + response.status);
-        return response.json();
-      })
-      .then(function (data) {
-        // 本番サーバー上の最新データで100%確実に表示更新
-        renderChecklist(data);
-      })
-      .catch(function (err) {
-        console.warn('Failed to load checklist data from relative path, trying API fallback...', err);
-        fetch('api/get_checklist.php?nocache=' + cacheBuster, { cache: 'no-store' })
-          .then(function (res) { return res.json(); })
-          .then(function (data) { renderChecklist(data); })
-          .catch(function (err2) {
-            console.error('API Fallback failed:', err2);
-          });
-      });
+      var cacheBuster = new Date().getTime();
+      var jsonUrl = 'data/checklist.json?nocache=' + cacheBuster;
+
+      fetch(jsonUrl, { cache: 'no-store' })
+        .then(function (response) {
+          if (!response.ok) throw new Error('HTTP error ' + response.status);
+          return response.json();
+        })
+        .then(function (data) {
+          renderChecklist(data);
+        })
+        .catch(function (err) {
+          console.warn('Failed to load checklist data from relative path, trying API fallback...', err);
+          fetch('api/get_checklist.php?nocache=' + cacheBuster, { cache: 'no-store' })
+            .then(function (res) { return res.json(); })
+            .then(function (data) { renderChecklist(data); })
+            .catch(function (err2) {
+              console.error('API Fallback failed:', err2);
+            });
+        });
+    }
   });
 })();
