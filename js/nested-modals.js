@@ -8,7 +8,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
   document.addEventListener('click', function(e) {
     // モーダル内部のリンクまたはボタンかを判定
-    const targetBtn = e.target.closest('.modal-body a[data-bs-toggle="modal"], .modal-body button[data-bs-toggle="modal"], .modal-body a[href^="#"], .modal-body button[href^="#"], .modal-body [data-nested-modal-target]');
+    // ※ href^="#" は除外（ページ内ジャンプリンク・readAloudボタンを誤って対象にしないため）
+    const targetBtn = e.target.closest('.modal-body a[data-bs-toggle="modal"], .modal-body button[data-bs-toggle="modal"], .modal-body [data-nested-modal-target]');
     
     if (!targetBtn) return;
 
@@ -20,6 +21,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const targetModalElem = document.getElementById(rawId);
     if (!targetModalElem) return;
+
+    // 対象要素が Bootstrap モーダル（.modal クラスを持つ）かを確認
+    // ページ内ジャンプ先の <p id="m1"> 等を誤って Modal として扱わないための安全弁
+    if (!targetModalElem.classList.contains('modal')) return;
 
     e.preventDefault();
     e.stopPropagation();
@@ -46,6 +51,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
         targetModalElem.addEventListener('hidden.bs.modal', restoreParent, { once: true });
       };
+
+      // aria-hidden 警告を防ぐためフォーカスを外してから非表示にする
+      if (document.activeElement && parentModalElem.contains(document.activeElement)) {
+        document.activeElement.blur();
+      }
 
       parentModalElem.addEventListener('hidden.bs.modal', openChild, { once: true });
       parentInstance.hide();

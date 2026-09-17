@@ -46,11 +46,15 @@
         accordionHtml += '        <div class="form-check">';
         accordionHtml += '          <input class="form-check-input" type="checkbox" value="" id="' + escapeHtml(item.id) + '" name="' + escapeHtml(item.name || item.id) + '">';
         accordionHtml += '          <label class="form-check-label" for="' + escapeHtml(item.id) + '">';
-        accordionHtml += '            <a href="#' + escapeHtml(item.targetModalId) + '" class="link-primary" data-bs-toggle="modal" data-bs-target="#' + escapeHtml(item.targetModalId) + '" id="' + escapeHtml(item.linkId) + '">' + item.labelHtml + '</a>';
+        if (item.modalContentHtml && item.modalContentHtml.trim() !== '') {
+          accordionHtml += '            <a href="#' + escapeHtml(item.targetModalId) + '" class="link-primary" data-bs-toggle="modal" data-bs-target="#' + escapeHtml(item.targetModalId) + '" id="' + escapeHtml(item.linkId || ('link-' + item.id)) + '">' + item.labelHtml + '</a>';
+        } else {
+          accordionHtml += '            ' + item.labelHtml;
+        }
         accordionHtml += '          </label>';
         accordionHtml += '        </div>';
 
-        if (item.modalContentHtml) {
+        if (item.modalContentHtml && item.modalContentHtml.trim() !== '') {
           subModalsHtml += '        <div class="modal fade" id="' + escapeHtml(item.targetModalId) + '" tabindex="-1" aria-labelledby="ModalLabel' + escapeHtml(item.id.replace('Check', '')) + '" aria-hidden="true" data-original-parent="' + escapeHtml(cat.itemsDivId) + '">';
           subModalsHtml += '          <div class="modal-dialog modal-dialog-scrollable">';
           subModalsHtml += '            <div class="modal-content">';
