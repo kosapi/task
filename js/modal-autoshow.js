@@ -1,4 +1,4 @@
-﻿// Auto-open accordion and modal based on URL hash
+// Auto-open accordion and modal based on URL hash
 (function() {
   function sleep(ms) {
     return new Promise(function(res) { setTimeout(res, ms); });
@@ -417,9 +417,22 @@
 
   // hashchangeイベントで再処理
   window.addEventListener('hashchange', function(e) {
-    console.log('売 Hash changed:', window.location.hash);
+    console.log('📡 Hash changed:', window.location.hash);
+
+    const rawHash = (window.location.hash || '').replace(/^#/, '').trim();
+    if (!rawHash) return;
+
+    // モーダル内部のページ内目次（01, 02, 1 等）の場合はモーダルを閉じない
+    const targetEl = document.getElementById(rawHash);
+    const isModalOrAccordion = (targetEl && (targetEl.classList.contains('modal') || targetEl.classList.contains('collapse') || targetEl.classList.contains('accordion-collapse'))) ||
+                               rawHash.indexOf('Modal') === 0 || rawHash.indexOf('collapse') === 0 || rawHash.indexOf('Check') === 0 || rawHash.indexOf('M') === 0;
+
+    if (!isModalOrAccordion) {
+      console.log('⏩ Ignored hashchange for modal-internal anchor:', rawHash);
+      return;
+    }
     
-    // 蜑阪・繝｢繝ｼ繝繝ｫ繧帝哩縺倥ｋ
+    // 前のモーダルを閉じる
     const openModal = document.querySelector('.modal.show');
     if (openModal) {
       if (window.bootstrap && typeof bootstrap.Modal === 'function') {

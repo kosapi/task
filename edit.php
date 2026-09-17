@@ -1356,7 +1356,7 @@ if (empty($initial_json) || json_decode($initial_json) === null) {
         <div class="col-md-3 col-sm-4 col-6">
           <div class="card h-100 border shadow-sm p-2 text-center position-relative" style="cursor: pointer; transition: transform 0.2s;" onclick="insertSelectedImage('${escapeHtml(img.url)}', '${escapeHtml(img.name)}')" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'">
             <div style="height: 110px; display: flex; align-items: center; justify-content: center; background: #f8fafc; border-radius: 6px; overflow: hidden; margin-bottom: 6px;">
-              <img src="${img.url}" alt="${escapeHtml(img.name)}" style="max-height: 100%; max-width: 100%; object-fit: contain;">
+              <img src="${img.thumbUrl || img.url}" alt="${escapeHtml(img.name)}" style="max-height: 100%; max-width: 100%; object-fit: contain;" loading="lazy">
             </div>
             <div class="small fw-bold text-truncate" title="${escapeHtml(img.name)}">${escapeHtml(img.name)}</div>
             <div class="text-muted" style="font-size: 11px;">${img.sizeFormatted}</div>

@@ -563,7 +563,7 @@ $is_logged_in = !empty($_SESSION['admin_logged_in']);
                 <span class="media-badge ${isUsed ? 'used' : 'unused'}">
                   ${isUsed ? '<i class="bi bi-check-circle-fill me-1"></i>使用中 (' + img.usedCount + ')' : '<i class="bi bi-slash-circle me-1"></i>未使用'}
                 </span>
-                <img src="${img.url}" alt="${escapeHtml(img.name)}" class="media-thumb" loading="lazy">
+                <img src="${img.thumbUrl || img.url}" alt="${escapeHtml(img.name)}" class="media-thumb" loading="lazy">
               </div>
               <div class="media-info">
                 <div class="media-name" title="${escapeHtml(img.name)}">${escapeHtml(img.name)}</div>

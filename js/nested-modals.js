@@ -6,6 +6,53 @@
 document.addEventListener('DOMContentLoaded', function() {
   'use strict';
 
+  // 1. モーダル内部のページ内アンカーリンク（目次INDEXリンク・pagetop等）のスムーズスクロール処理
+  document.addEventListener('click', function(e) {
+    const anchor = e.target.closest('.modal a[href^="#"]');
+    if (!anchor) return;
+
+    // data-bs-toggle="modal" 等のモーダル切り替えボタン・リンクは除外（後続のネストモーダル処理へ）
+    if (anchor.getAttribute('data-bs-toggle') === 'modal' || 
+        anchor.getAttribute('data-nested-modal-target') ||
+        anchor.hasAttribute('data-bs-target')) {
+      return;
+    }
+
+    const href = anchor.getAttribute('href');
+    if (!href || href === '#' || href.indexOf('#') !== 0) return;
+
+    const targetId = href.substring(1);
+    if (!targetId) return;
+
+    const modal = anchor.closest('.modal');
+    if (!modal) return;
+
+    // 同一モーダル内にターゲットIDが存在するか確認（数字始まりID '01', '1' 等にも対応）
+    let targetElem = null;
+    try {
+      targetElem = modal.querySelector('#' + (window.CSS && CSS.escape ? CSS.escape(targetId) : targetId));
+    } catch (err) {
+      targetElem = document.getElementById(targetId);
+    }
+
+    // 同一モーダル内の要素である場合
+    if (targetElem && modal.contains(targetElem)) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      const modalBody = modal.querySelector('.modal-body') || modal;
+      const bodyRect = modalBody.getBoundingClientRect();
+      const elemRect = targetElem.getBoundingClientRect();
+      const offsetTop = elemRect.top - bodyRect.top + modalBody.scrollTop;
+
+      modalBody.scrollTo({
+        top: Math.max(0, offsetTop - 12),
+        behavior: 'smooth'
+      });
+    }
+  }, true);
+
+  // 2. モーダル間リンク（ネストモーダル）の処理
   document.addEventListener('click', function(e) {
     // モーダル内部のリンクまたはボタンかを判定
     // ※ href^="#" は除外（ページ内ジャンプリンク・readAloudボタンを誤って対象にしないため）

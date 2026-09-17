@@ -79,6 +79,26 @@ function applyImageCacheBuster(&$node) {
     }
 }
 
+// ============================================================
+// 保存前クリーンアップ: cms-image-delete-btn を全データから除去
+// （edit.php のエディター由来のゴミデータが混入しないようにする）
+// ============================================================
+function sanitizeDeleteButtons(&$node) {
+    if (is_array($node)) {
+        foreach ($node as &$child) {
+            sanitizeDeleteButtons($child);
+        }
+    } elseif (is_string($node)) {
+        // <button class="cms-image-delete-btn" ...>...</button> を除去
+        if (strpos($node, 'cms-image-delete-btn') !== false) {
+            $node = preg_replace('/<button[^>]+class=["\'][^"\']*cms-image-delete-btn[^"\']*["\'][^>]*>.*?<\/button>/su', '', $node);
+            // 念のため属性順が逆でも対応
+            $node = preg_replace('/<button[^>]+cms-image-delete-btn[^>]*>.*?<\/button>/su', '', $node);
+        }
+    }
+}
+
+sanitizeDeleteButtons($data);
 applyImageCacheBuster($data);
 
 // 過去のバックアップを自動保存

@@ -1,0 +1,4 @@
+dev_tools/scratch/
+img_backup_original_*/
+*.bak_*
+data/thumbnails/

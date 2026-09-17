@@ -12,12 +12,17 @@ if (empty($_SESSION['admin_logged_in'])) {
 $action = isset($_GET['action']) ? $_GET['action'] : (isset($_POST['action']) ? $_POST['action'] : 'list');
 $imgDir = __DIR__ . '/../img/';
 $jsonPath = __DIR__ . '/../data/checklist.json';
+$thumbDir = __DIR__ . '/../data/thumbnails/';
+
+// サムネイルディレクトリの自動作成
+if (!is_dir($thumbDir)) {
+    mkdir($thumbDir, 0777, true);
+}
 
 // checklist.json から画像使用状況をスキャン
 function getImageUsages($jsonPath) {
     $usages = [];
     if (!file_exists($jsonPath)) return $usages;
-    
     $raw = file_get_contents($jsonPath);
     $data = json_decode($raw, true);
     if (!is_array($data)) return $usages;
@@ -25,15 +30,11 @@ function getImageUsages($jsonPath) {
     foreach ($data as $cat) {
         $catTitle = isset($cat['categoryTitle']) ? $cat['categoryTitle'] : '';
         if (empty($cat['items']) || !is_array($cat['items'])) continue;
-
         foreach ($cat['items'] as $item) {
             $label = isset($item['labelHtml']) ? strip_tags($item['labelHtml']) : (isset($item['name']) ? $item['name'] : '項目');
             $html = isset($item['modalContentHtml']) ? $item['modalContentHtml'] : '';
-            
-            // img タグの src を抽出
             if (preg_match_all('/<img[^>]+src=["\']([^"\']+)["\']/i', $html, $matches)) {
                 foreach ($matches[1] as $src) {
-                    // クエリパラメータ (?v=...) を除去
                     $baseSrc = explode('?', $src)[0];
                     $filename = basename($baseSrc);
                     if (!isset($usages[$filename])) {
@@ -51,7 +52,107 @@ function getImageUsages($jsonPath) {
     return $usages;
 }
 
+// サムネイルを生成して指定パスに保存するヘルパー
+function generateThumbnail($origPath, $thumbPath, $maxSize = 300) {
+    $imageInfo = @getimagesize($origPath);
+    if (!$imageInfo) return false;
+
+    $srcW = $imageInfo[0];
+    $srcH = $imageInfo[1];
+    $mimeType = $imageInfo['mime'];
+
+    $srcImg = null;
+    switch ($mimeType) {
+        case 'image/jpeg': $srcImg = @imagecreatefromjpeg($origPath); break;
+        case 'image/png':  $srcImg = @imagecreatefrompng($origPath); break;
+        case 'image/gif':  $srcImg = @imagecreatefromgif($origPath); break;
+        case 'image/webp': $srcImg = @imagecreatefromwebp($origPath); break;
+        default: return false;
+    }
+    if (!$srcImg) return false;
+
+    // リサイズ計算（長辺 $maxSize px に収める）
+    if ($srcW > $srcH) {
+        $dstW = min($srcW, $maxSize);
+        $dstH = (int)round($srcH * ($dstW / $srcW));
+    } else {
+        $dstH = min($srcH, $maxSize);
+        $dstW = (int)round($srcW * ($dstH / $srcH));
+    }
+
+    $dstImg = imagecreatetruecolor($dstW, $dstH);
+
+    // PNG/GIF の透明部分は白背景で合成
+    if ($mimeType === 'image/png' || $mimeType === 'image/gif') {
+        $white = imagecolorallocate($dstImg, 255, 255, 255);
+        imagefill($dstImg, 0, 0, $white);
+    }
+
+    imagecopyresampled($dstImg, $srcImg, 0, 0, 0, 0, $dstW, $dstH, $srcW, $srcH);
+    imagedestroy($srcImg);
+
+    // JPEGとして保存（品質80）
+    $result = imagejpeg($dstImg, $thumbPath, 80);
+    imagedestroy($dstImg);
+    return $result;
+}
+
+// ==============================================
+// 0. サムネイル生成・配信（action=thumbnail）
+// ==============================================
+if ($action === 'thumbnail') {
+    // JSON Content-Type を画像に上書き
+    header_remove('Content-Type');
+
+    $filename = isset($_GET['f']) ? basename($_GET['f']) : '';
+    if (empty($filename)) {
+        http_response_code(400);
+        exit;
+    }
+
+    $origPath = $imgDir . $filename;
+    if (!file_exists($origPath)) {
+        http_response_code(404);
+        exit;
+    }
+
+    $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
+
+    // SVG はそのまま返す
+    if ($ext === 'svg') {
+        header('Content-Type: image/svg+xml');
+        header('Cache-Control: public, max-age=2592000');
+        readfile($origPath);
+        exit;
+    }
+
+    // サムネイルキャッシュのファイルパス（mtime込みハッシュで一意に）
+    $cacheKey = md5($filename . '_' . filemtime($origPath));
+    $thumbPath = $thumbDir . $cacheKey . '.jpg';
+
+    // キャッシュがなければ生成
+    if (!file_exists($thumbPath)) {
+        if (!generateThumbnail($origPath, $thumbPath)) {
+            // 生成失敗時はオリジナルを配信
+            $imageInfo = getimagesize($origPath);
+            $mime = $imageInfo ? $imageInfo['mime'] : 'image/jpeg';
+            header('Content-Type: ' . $mime);
+            readfile($origPath);
+            exit;
+        }
+    }
+
+    // キャッシュを配信
+    header('Content-Type: image/jpeg');
+    header('Cache-Control: public, max-age=2592000');
+    header('Content-Length: ' . filesize($thumbPath));
+    readfile($thumbPath);
+    exit;
+}
+
+// ==============================================
 // 1. 画像一覧取得
+// ==============================================
 if ($action === 'list') {
     if (!is_dir($imgDir)) {
         mkdir($imgDir, 0777, true);
@@ -74,16 +175,19 @@ if ($action === 'list') {
         $size = filesize($filePath);
         $mtime = filemtime($filePath);
 
-        // 画像サイズ（幅・高さ）
         $dimensions = @getimagesize($filePath);
         $width = $dimensions ? $dimensions[0] : 0;
         $height = $dimensions ? $dimensions[1] : 0;
 
         $usedIn = isset($usages[$file]) ? $usages[$file] : [];
 
+        // サムネイルURL（action=thumbnail 経由）
+        $thumbUrl = 'api/media_manager.php?action=thumbnail&f=' . rawurlencode($file);
+
         $images[] = [
             'name' => $file,
-            'url' => 'img/' . $file . '?v=' . $mtime,
+            'url' => 'img/' . rawurlencode($file) . '?v=' . $mtime,
+            'thumbUrl' => $thumbUrl,
             'size' => $size,
             'sizeFormatted' => $size > 1048576 ? round($size / 1048576, 2) . ' MB' : round($size / 1024, 1) . ' KB',
             'mtime' => $mtime,
@@ -109,7 +213,9 @@ if ($action === 'list') {
     exit;
 }
 
+// ==============================================
 // 2. 新規画像アップロード
+// ==============================================
 if ($action === 'upload') {
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
         http_response_code(405);
@@ -134,12 +240,10 @@ if ($action === 'upload') {
     $originalName = pathinfo($file['name'], PATHINFO_FILENAME);
     $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
 
-    // ファイル名のサニタイズ（英数・ハイフン・アンダースコア・日本語も安全に許可）
     $cleanName = preg_replace('/[^\w\-\p{Han}\p{Hiragana}\p{Katakana}]/u', '_', $originalName);
     if (empty($cleanName)) $cleanName = 'img_' . date('Ymd_His');
 
     $filename = $cleanName . '.' . $ext;
-    // 同名ファイルが存在する場合は連番を付与
     if (file_exists($imgDir . $filename)) {
         $filename = $cleanName . '_' . date('His') . '.' . $ext;
     }
@@ -150,7 +254,7 @@ if ($action === 'upload') {
             'success' => true,
             'message' => '画像をアップロードしました',
             'filename' => $filename,
-            'url' => 'img/' . $filename . '?v=' . time()
+            'url' => 'img/' . rawurlencode($filename) . '?v=' . time()
         ]);
     } else {
         http_response_code(500);
@@ -159,7 +263,9 @@ if ($action === 'upload') {
     exit;
 }
 
-// 3. 画像の上書き差し替え（同名ファイルを高画質画像等で上書き）
+// ==============================================
+// 3. 画像の上書き差し替え
+// ==============================================
 if ($action === 'replace') {
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
         http_response_code(405);
@@ -188,23 +294,26 @@ if ($action === 'replace') {
         exit;
     }
 
-    // 既存画像のバックアップを作成
     $backupDir = __DIR__ . '/../data/backups/images/';
     if (!is_dir($backupDir)) {
         mkdir($backupDir, 0777, true);
     }
     @copy($imgDir . $targetFilename, $backupDir . pathinfo($targetFilename, PATHINFO_FILENAME) . '_backup_' . date('Ymd_His') . '.' . pathinfo($targetFilename, PATHINFO_EXTENSION));
 
-    // 上書き保存
     $targetPath = $imgDir . $targetFilename;
     if (move_uploaded_file($file['tmp_name'], $targetPath)) {
-        // キャッシュバスターを更新するためタッチ
         touch($targetPath);
+
+        // 古いサムネイルキャッシュを一掃（差し替え後は新しいmtimeで再生成される）
+        foreach (glob($thumbDir . '*.jpg') as $tf) {
+            @unlink($tf);
+        }
+
         echo json_encode([
             'success' => true,
             'message' => '画像を差し替えました（キャッシュも自動更新されます）',
             'filename' => $targetFilename,
-            'url' => 'img/' . $targetFilename . '?v=' . time()
+            'url' => 'img/' . rawurlencode($targetFilename) . '?v=' . time()
         ]);
     } else {
         http_response_code(500);
@@ -213,7 +322,9 @@ if ($action === 'replace') {
     exit;
 }
 
+// ==============================================
 // 4. 画像の削除
+// ==============================================
 if ($action === 'delete') {
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
         http_response_code(405);
@@ -228,7 +339,6 @@ if ($action === 'delete') {
         exit;
     }
 
-    // 念のためバックアップ
     $backupDir = __DIR__ . '/../data/backups/deleted_images/';
     if (!is_dir($backupDir)) {
         mkdir($backupDir, 0777, true);
