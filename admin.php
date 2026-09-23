@@ -35,6 +35,39 @@ $initial_json = file_exists($json_path) ? file_get_contents($json_path) : '[]';
 if (empty($initial_json) || json_decode($initial_json) === null) {
     $initial_json = '[]';
 }
+
+// 本日の安全標語（曜日別）の初期データを取得
+$default_slogans = [
+    "横たわる 命を照らす ハイビーム",
+    "事故防止 一人一人が 責任者",
+    "シートベルト 命を守る お声掛け",
+    "見て、待って、自転車、二輪車、譲って防げ事故防止",
+    "後ろ側 見えてなければ 降りて見る",
+    "駐停車 まずは確認 Pレンジ",
+    "交差点 減速確認 再確認"
+];
+$current_slogans = $default_slogans;
+$parsed_json = json_decode($initial_json, true);
+if (is_array($parsed_json)) {
+    if (isset($parsed_json['slogans']) && is_array($parsed_json['slogans']) && count($parsed_json['slogans']) === 7) {
+        $current_slogans = $parsed_json['slogans'];
+    } elseif (isset($parsed_json[0]['slogans']) && is_array($parsed_json[0]['slogans']) && count($parsed_json[0]['slogans']) === 7) {
+        $current_slogans = $parsed_json[0]['slogans'];
+    }
+}
+if ($current_slogans === $default_slogans) {
+    // index.html の slogans-data から取得を試みる
+    $index_file = __DIR__ . '/index.html';
+    if (file_exists($index_file)) {
+        $index_content = file_get_contents($index_file);
+        if (preg_match('/<script[^>]*id="slogans-data"[^>]*>(.*?)<\/script>/s', $index_content, $m)) {
+            $extracted = json_decode(trim($m[1]), true);
+            if (is_array($extracted) && count($extracted) === 7) {
+                $current_slogans = $extracted;
+            }
+        }
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -90,6 +123,14 @@ if (empty($initial_json) || json_decode($initial_json) === null) {
       background-color: #E53935 !important;
       color: #ffffff !important;
       border: 1px solid #c62828;
+    }
+
+    .slogan-input {
+      user-select: text !important;
+      -webkit-user-select: text !important;
+      font-size: 1.05rem !important;
+      background-color: #ffffff !important;
+      color: #212529 !important;
     }
 
     body {
@@ -357,6 +398,55 @@ if (empty($initial_json) || json_decode($initial_json) === null) {
     </div>
   </div>
 
+  <!-- 本日の安全標語 編集モーダル -->
+  <div class="modal fade" id="slogansModal" tabindex="-1" aria-labelledby="slogansModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content shadow-lg border-0">
+        <div class="modal-header bg-success text-white">
+          <h5 class="modal-title fw-bold" id="slogansModalLabel"><i class="bi bi-megaphone-fill me-2"></i>本日の安全標語（曜日別設定）</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-4">
+          <p class="text-muted mb-3"><i class="bi bi-info-circle me-1"></i>本番画面の最上部に表示される曜日ごとの安全標語を変更できます。</p>
+          <div class="row g-3">
+            <div class="col-md-12">
+              <label class="form-label fw-bold text-danger"><i class="bi bi-calendar-event me-1"></i>日曜日:</label>
+              <input type="text" class="form-control slogan-input" data-day="0" value="<?= htmlspecialchars($current_slogans[0] ?? '', ENT_QUOTES, 'UTF-8') ?>" placeholder="例：横たわる 命を照らす ハイビーム">
+            </div>
+            <div class="col-md-12">
+              <label class="form-label fw-bold text-primary"><i class="bi bi-calendar-event me-1"></i>月曜日:</label>
+              <input type="text" class="form-control slogan-input" data-day="1" value="<?= htmlspecialchars($current_slogans[1] ?? '', ENT_QUOTES, 'UTF-8') ?>" placeholder="例：事故防止 一人一人が 責任者">
+            </div>
+            <div class="col-md-12">
+              <label class="form-label fw-bold text-danger"><i class="bi bi-calendar-event me-1"></i>火曜日:</label>
+              <input type="text" class="form-control slogan-input" data-day="2" value="<?= htmlspecialchars($current_slogans[2] ?? '', ENT_QUOTES, 'UTF-8') ?>" placeholder="例：シートベルト 命を守る お声掛け">
+            </div>
+            <div class="col-md-12">
+              <label class="form-label fw-bold text-info"><i class="bi bi-calendar-event me-1"></i>水曜日:</label>
+              <input type="text" class="form-control slogan-input" data-day="3" value="<?= htmlspecialchars($current_slogans[3] ?? '', ENT_QUOTES, 'UTF-8') ?>" placeholder="例：見て、待って、自転車、二輪車、譲って防げ事故防止">
+            </div>
+            <div class="col-md-12">
+              <label class="form-label fw-bold text-success"><i class="bi bi-calendar-event me-1"></i>木曜日:</label>
+              <input type="text" class="form-control slogan-input" data-day="4" value="<?= htmlspecialchars($current_slogans[4] ?? '', ENT_QUOTES, 'UTF-8') ?>" placeholder="例：後ろ側 見えてなければ 降りて見る">
+            </div>
+            <div class="col-md-12">
+              <label class="form-label fw-bold text-warning"><i class="bi bi-calendar-event me-1"></i>金曜日:</label>
+              <input type="text" class="form-control slogan-input" data-day="5" value="<?= htmlspecialchars($current_slogans[5] ?? '', ENT_QUOTES, 'UTF-8') ?>" placeholder="例：駐停車 まずは確認 Pレンジ">
+            </div>
+            <div class="col-md-12">
+              <label class="form-label fw-bold text-primary"><i class="bi bi-calendar-event me-1"></i>土曜日:</label>
+              <input type="text" class="form-control slogan-input" data-day="6" value="<?= htmlspecialchars($current_slogans[6] ?? '', ENT_QUOTES, 'UTF-8') ?>" placeholder="例：交差点 減速確認 再確認">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer bg-light">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
+          <button type="button" class="btn btn-success fw-bold px-4" id="btn-save-slogans"><i class="bi bi-check-circle me-1"></i>標語を保存する</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- JavaScript Libraries -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -399,6 +489,9 @@ if (empty($initial_json) || json_decode($initial_json) === null) {
       });
 
       loadChecklist();
+      if (typeof initSlogansEditor === 'function') {
+        initSlogansEditor();
+      }
     });
 
     // HTMLエスケープヘルパー
@@ -1087,101 +1180,94 @@ if (empty($initial_json) || json_decode($initial_json) === null) {
     }
 
     // 標語データの初期化・読み込み
-    let slogansData = ["横たわる 命を照らす ハイビーム","事故防止 一人一人が 責任者","シートベルト 命を守る お声掛け","見て、待って、自転車、二輪車、譲って防げ事故防止","後ろ側 見えてなければ 降りて見る","駐停車 まずは確認 Pレンジ","交差点 減速確認 再確認"];
-    if (checklistData && checklistData.slogans) {
-      slogansData = checklistData.slogans;
-    } else if (checklistData && checklistData[0] && checklistData[0].slogans) {
-      slogansData = checklistData[0].slogans;
+    let defaultSlogans = [
+      "横たわる 命を照らす ハイビーム",
+      "事故防止 一人一人が 責任者",
+      "シートベルト 命を守る お声掛け",
+      "見て、待って、自転車、二輪車、譲って防げ事故防止",
+      "後ろ側 見えてなければ 降りて見る",
+      "駐停車 まずは確認 Pレンジ",
+      "交差点 減速確認 再確認"
+    ];
+
+    let slogansData = [...defaultSlogans];
+
+    function getLatestSlogans() {
+      if (checklistData && Array.isArray(checklistData.slogans) && checklistData.slogans.length === 7) {
+        return checklistData.slogans;
+      }
+      if (checklistData && checklistData[0] && Array.isArray(checklistData[0].slogans) && checklistData[0].slogans.length === 7) {
+        return checklistData[0].slogans;
+      }
+      // HTMLの初期値から収集
+      const fromDom = [];
+      document.querySelectorAll('.slogan-input').forEach(input => {
+        const day = parseInt(input.getAttribute('data-day'), 10);
+        if (input.value) fromDom[day] = input.value;
+      });
+      if (fromDom.filter(Boolean).length === 7) {
+        return fromDom;
+      }
+      return defaultSlogans;
     }
 
-    const slogansModal = document.getElementById('slogansModal');
-    if (slogansModal) {
-      slogansModal.addEventListener('show.bs.modal', function() {
-        document.querySelectorAll('.slogan-input').forEach(input => {
-          const day = parseInt(input.getAttribute('data-day'), 10);
-          if (slogansData[day] !== undefined) {
-            input.value = slogansData[day];
+    function initSlogansEditor() {
+      slogansData = getLatestSlogans();
+
+      const slogansModal = document.getElementById('slogansModal');
+      if (slogansModal) {
+        slogansModal.addEventListener('show.bs.modal', function() {
+          slogansData = getLatestSlogans();
+          document.querySelectorAll('.slogan-input').forEach(input => {
+            const day = parseInt(input.getAttribute('data-day'), 10);
+            if (slogansData[day] !== undefined) {
+              input.value = slogansData[day];
+            }
+          });
+        });
+
+        slogansModal.addEventListener('shown.bs.modal', function() {
+          const firstInput = slogansModal.querySelector('.slogan-input');
+          if (firstInput) {
+            firstInput.focus();
+            firstInput.select();
           }
         });
-      });
-    }
+      }
 
-    const btnSaveSlogans = document.getElementById('btn-save-slogans');
-    if (btnSaveSlogans) {
-      btnSaveSlogans.addEventListener('click', function() {
-        const inputs = document.querySelectorAll('.slogan-input');
-        inputs.forEach(input => {
-          const day = parseInt(input.getAttribute('data-day'), 10);
-          slogansData[day] = input.value.trim();
+      const btnSaveSlogans = document.getElementById('btn-save-slogans');
+      if (btnSaveSlogans) {
+        btnSaveSlogans.addEventListener('click', function() {
+          const inputs = document.querySelectorAll('.slogan-input');
+          inputs.forEach(input => {
+            const day = parseInt(input.getAttribute('data-day'), 10);
+            slogansData[day] = input.value.trim();
+          });
+
+          if (Array.isArray(checklistData)) {
+            checklistData.slogans = slogansData;
+            if (checklistData[0]) checklistData[0].slogans = slogansData;
+          } else if (typeof checklistData === 'object' && checklistData !== null) {
+            checklistData.slogans = slogansData;
+          }
+
+          const modalEl = document.getElementById('slogansModal');
+          const modal = bootstrap.Modal.getInstance(modalEl);
+          if (modal) modal.hide();
+
+          saveAllData();
         });
-
-        if (Array.isArray(checklistData)) {
-          checklistData.slogans = slogansData;
-          if (checklistData[0]) checklistData[0].slogans = slogansData;
-        }
-
-        const modalEl = document.getElementById('slogansModal');
-        const modal = bootstrap.Modal.getInstance(modalEl);
-        if (modal) modal.hide();
-
-        saveAll();
-      });
+      }
     }
+
+    // 即時初期化
+    initSlogansEditor();
 
     function escapeHtml(str) {
       if (!str) return '';
       return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
     }
   </script>
-
-  <!-- 本日の安全標語 編集モーダル -->
-  <div class="modal fade" id="slogansModal" tabindex="-1" aria-labelledby="slogansModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-      <div class="modal-content shadow-lg border-0">
-        <div class="modal-header bg-success text-white">
-          <h5 class="modal-title fw-bold" id="slogansModalLabel"><i class="bi bi-megaphone-fill me-2"></i>本日の安全標語（曜日別設定）</h5>
-          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body p-4">
-          <p class="text-muted mb-3"><i class="bi bi-info-circle me-1"></i>本番画面の最上部に表示される曜日ごとの安全標語を変更できます。</p>
-          <div class="row g-3">
-            <div class="col-md-12">
-              <label class="form-label fw-bold text-danger"><i class="bi bi-calendar-event me-1"></i>日曜日:</label>
-              <input type="text" class="form-control slogan-input" data-day="0" placeholder="例：横たわる 命を照らす ハイビーム">
-            </div>
-            <div class="col-md-12">
-              <label class="form-label fw-bold text-primary"><i class="bi bi-calendar-event me-1"></i>月曜日:</label>
-              <input type="text" class="form-control slogan-input" data-day="1" placeholder="例：事故防止 一人一人が 責任者">
-            </div>
-            <div class="col-md-12">
-              <label class="form-label fw-bold text-danger"><i class="bi bi-calendar-event me-1"></i>火曜日:</label>
-              <input type="text" class="form-control slogan-input" data-day="2" placeholder="例：シートベルト 命を守る お声掛け">
-            </div>
-            <div class="col-md-12">
-              <label class="form-label fw-bold text-info"><i class="bi bi-calendar-event me-1"></i>水曜日:</label>
-              <input type="text" class="form-control slogan-input" data-day="3" placeholder="例：見て、待って、自転車、二輪車、譲って防げ事故防止">
-            </div>
-            <div class="col-md-12">
-              <label class="form-label fw-bold text-success"><i class="bi bi-calendar-event me-1"></i>木曜日:</label>
-              <input type="text" class="form-control slogan-input" data-day="4" placeholder="例：後ろ側 見えてなければ 降りて見る">
-            </div>
-            <div class="col-md-12">
-              <label class="form-label fw-bold text-warning"><i class="bi bi-calendar-event me-1"></i>金曜日:</label>
-              <input type="text" class="form-control slogan-input" data-day="5" placeholder="例：駐停車 まずは確認 Pレンジ">
-            </div>
-            <div class="col-md-12">
-              <label class="form-label fw-bold text-primary"><i class="bi bi-calendar-event me-1"></i>土曜日:</label>
-              <input type="text" class="form-control slogan-input" data-day="6" placeholder="例：交差点 減速確認 再確認">
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer bg-light">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
-          <button type="button" class="btn btn-success fw-bold px-4" id="btn-save-slogans"><i class="bi bi-check-circle me-1"></i>標語を保存する</button>
-        </div>
-      </div>
-    </div>
-  </div>
 <?php endif; ?>
 </body>
 </html>
