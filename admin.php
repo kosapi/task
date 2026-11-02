@@ -905,15 +905,23 @@ if ($current_slogans === $default_slogans) {
         const infoDiv = document.createElement('div');
         infoDiv.style.flex = '1';
         infoDiv.style.minWidth = '300px';
+        const hasModal = Boolean(item.modalContentHtml && item.modalContentHtml.trim() !== '');
         infoDiv.innerHTML = `
           <div class="d-flex align-items-center gap-2 mb-1 flex-wrap">
             <span class="badge bg-secondary">${searchQuery ? escapeHtml(categoryTitle) : '#' + (index + 1)}</span>
             ${item.parentLabel ? `<span class="badge bg-info text-dark"><i class="bi bi-link-45deg"></i> 親項目: ${escapeHtml(item.parentLabel)}</span>` : ''}
+            ${!hasModal ? `<span class="badge bg-light text-secondary border"><i class="bi bi-check2-square"></i> モーダルリンクなし</span>` : ''}
             <h5 class="m-0 fw-bold">${item.labelHtml}</h5>
           </div>
+          ${hasModal ? `
           <div class="preview-modal-body mt-2">
-            ${item.modalContentHtml || '<em class="text-muted">（内容なし）</em>'}
+            ${item.modalContentHtml}
           </div>
+          ` : `
+          <div class="text-muted small mt-1">
+            <i class="bi bi-dash-circle me-1"></i>ポップアップ（モーダル）なし・チェックボックスと文字のみ表示
+          </div>
+          `}
         `;
 
         const btnGroup = document.createElement('div');

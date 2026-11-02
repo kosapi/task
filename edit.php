@@ -291,15 +291,28 @@ if (empty($initial_json) || json_decode($initial_json) === null) {
         <input type="text" class="form-control form-control-lg" id="edit-label" required placeholder="例：本採用について">
       </div>
 
+      <!-- モーダルリンク有無の切り替え -->
+      <div class="mb-3 pt-2 border-top">
+        <div class="form-check form-switch d-flex align-items-center gap-2 ps-0">
+          <input class="form-check-input ms-0 mt-0" type="checkbox" role="switch" id="has-modal-toggle" checked style="width: 3em; height: 1.5em; cursor: pointer;" onchange="toggleModalFields()">
+          <label class="form-check-label fw-bold fs-5" for="has-modal-toggle" style="cursor: pointer;">
+            ポップアップ（モーダル）リンクを設定する
+          </label>
+        </div>
+        <div class="form-text mt-1" id="has-modal-help">
+          <i class="bi bi-info-circle me-1"></i>オフにすると、下線リンクの無い「チェックボックスと文字のみ」の項目（例：トリップメーターAとBをリセット）になります。
+        </div>
+      </div>
+
       <!-- モーダルタイトル -->
-      <div class="mb-3">
+      <div class="mb-2" id="modal-title-section">
         <label for="edit-modal-title" class="form-label fw-bold fs-5">2. ポップアップ（モーダル）のタイトル</label>
-        <input type="text" class="form-control form-control-lg" id="edit-modal-title" required placeholder="例：本採用に向けて気をつけること">
+        <input type="text" class="form-control form-control-lg" id="edit-modal-title" placeholder="例：本採用に向けて気をつけること">
       </div>
     </div>
 
     <!-- ビジュアルエディター -->
-    <div class="mb-5">
+    <div class="mb-5" id="modal-editor-section">
       <label class="form-label fw-bold fs-5 mb-2">3. モーダルの説明本文（Wordのように自由編集できます）</label>
       
       <!-- 画面スクロール時も上に固定追従するツールバー -->
@@ -584,6 +597,22 @@ if (empty($initial_json) || json_decode($initial_json) === null) {
       }
     }
 
+    // モーダル入力欄の表示・非表示切り替え
+    window.toggleModalFields = function() {
+      const toggle = document.getElementById('has-modal-toggle');
+      const titleSec = document.getElementById('modal-title-section');
+      const editorSec = document.getElementById('modal-editor-section');
+      if (!toggle || !titleSec || !editorSec) return;
+
+      if (toggle.checked) {
+        titleSec.style.display = '';
+        editorSec.style.display = '';
+      } else {
+        titleSec.style.display = 'none';
+        editorSec.style.display = 'none';
+      }
+    };
+
     function initFormValues() {
       const currentCat = checklistData.find(c => c.categoryId === catId);
       if (!currentCat) {
@@ -592,12 +621,16 @@ if (empty($initial_json) || json_decode($initial_json) === null) {
         return;
       }
 
+      const toggle = document.getElementById('has-modal-toggle');
+
       if (itemIndex === -1) {
         // 新規作成
         document.getElementById('page-title').innerHTML = '<i class="bi bi-plus-circle-fill"></i> 「' + escapeHtml(currentCat.categoryTitle) + '」に新規項目を追加';
         document.getElementById('edit-label').value = '';
         document.getElementById('edit-modal-title').value = '';
         document.getElementById('editor-body').innerHTML = '';
+        if (toggle) toggle.checked = true;
+        toggleModalFields();
         cleanAllEmptyTags(false);
       } else {
         // 既存項目編集
@@ -611,8 +644,14 @@ if (empty($initial_json) || json_decode($initial_json) === null) {
         document.getElementById('page-title').innerHTML = '<i class="bi bi-pencil-square"></i> 「' + escapeHtml(currentCat.categoryTitle) + '」の項目を編集';
         document.getElementById('edit-label').value = item.labelHtml.replace(/<[^>]*>/g, '') || '';
 
+        const hasModal = Boolean(item.modalContentHtml && item.modalContentHtml.trim() !== '');
+        if (toggle) {
+          toggle.checked = (catId === 99) ? true : hasModal;
+        }
+        toggleModalFields();
+
         const extracted = extractModalBodyContent(item.modalContentHtml || '');
-        const modalTitle = extracted.title || item.labelHtml.replace(/<[^>]*>/g, '');
+        const modalTitle = extracted.title || (hasModal ? item.labelHtml.replace(/<[^>]*>/g, '') : '');
 
         document.getElementById('edit-modal-title').value = modalTitle;
         document.getElementById('editor-body').innerHTML = extracted.bodyHtml;
@@ -636,6 +675,8 @@ if (empty($initial_json) || json_decode($initial_json) === null) {
       const label = document.getElementById('edit-label').value.trim();
       const modalTitle = document.getElementById('edit-modal-title').value.trim();
       const bodyHtml = document.getElementById('editor-body').innerHTML;
+      const toggle = document.getElementById('has-modal-toggle');
+      const useModal = toggle ? toggle.checked : true;
 
       if (!label) {
         alert('チェックボックスの表示名を入力してください');
@@ -645,6 +686,16 @@ if (empty($initial_json) || json_decode($initial_json) === null) {
 
       const currentCat = checklistData.find(c => c.categoryId === catId);
       if (!currentCat) return;
+
+      // 本文が実質的に空かどうかを判定（画像・表などの要素もテキストも無い場合）
+      const tempCheck = document.createElement('div');
+      tempCheck.innerHTML = bodyHtml;
+      const hasMediaOrTable = Boolean(tempCheck.querySelector('img, table, hr, iframe, svg, video, input, button'));
+      const plainBodyText = tempCheck.textContent.replace(/[\s\uFEFF\xA0\u200B\u200C\u200D\u3000]/g, '').trim();
+      const isBodyEmpty = !hasMediaOrTable && plainBodyText === '';
+
+      // スイッチがOFF、または（モーダルタイトルも本文も空）の場合はモーダルリンクなしとして保存
+      const shouldCreateModal = useModal && !(modalTitle === '' && isBodyEmpty);
 
       let itemNum = itemIndex === -1 ? currentCat.items.length + 1 : (itemIndex + 1);
       let modalLabelId = `ModalLabel${catId}-${itemNum}`;
@@ -659,7 +710,9 @@ if (empty($initial_json) || json_decode($initial_json) === null) {
         }
       }
 
-      const fullModalHtml = cleanAndWrapModalContent(bodyHtml, modalLabelId, modalTitle || label);
+      const fullModalHtml = shouldCreateModal
+        ? cleanAndWrapModalContent(bodyHtml, modalLabelId, modalTitle || label)
+        : '';
 
       if (itemIndex === -1) {
         const newId = `Check${catId}-${itemNum}`;
@@ -667,13 +720,24 @@ if (empty($initial_json) || json_decode($initial_json) === null) {
           id: newId,
           name: newId,
           linkId: `M${catId}-${itemNum}`,
-          targetModalId: `Modal${catId}-${itemNum}`,
+          targetModalId: shouldCreateModal ? `Modal${catId}-${itemNum}` : '',
           labelHtml: escapeHtml(label),
           modalContentHtml: fullModalHtml
         });
       } else {
-        currentCat.items[itemIndex].labelHtml = escapeHtml(label);
-        currentCat.items[itemIndex].modalContentHtml = fullModalHtml;
+        const existingItem = currentCat.items[itemIndex];
+        // 既存項目の表示名（rubyタグ等が含まれている場合でテキストが変わっていなければ維持、変わっていれば更新）
+        const existingPlainLabel = existingItem.labelHtml.replace(/<[^>]*>/g, '').replace(/\s+/g, '');
+        if (existingPlainLabel !== label.replace(/\s+/g, '')) {
+          existingItem.labelHtml = escapeHtml(label);
+        }
+        existingItem.modalContentHtml = fullModalHtml;
+        if (!shouldCreateModal) {
+          existingItem.targetModalId = '';
+        } else if (!existingItem.targetModalId) {
+          const m = existingItem.id ? existingItem.id.match(/\d+-\d+/) : null;
+          existingItem.targetModalId = m ? `Modal${m[0]}` : `Modal${catId}-${itemNum}`;
+        }
       }
 
       // 保存API実行
