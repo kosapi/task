@@ -59,6 +59,13 @@ php_value session.use_strict_mode 1
     
     # Referrer ポリシー
     Header always set Referrer-Policy "strict-origin-when-cross-origin"
+
+    # CMS更新後に古いHTMLやJSONが配信されないようにする
+    <FilesMatch "\.(html|json)$">
+        Header always set Cache-Control "no-store, no-cache, must-revalidate"
+        Header always set Pragma "no-cache"
+        Header always set Expires "0"
+    </FilesMatch>
 </IfModule>
 
 # ========== gzip圧縮 ==========

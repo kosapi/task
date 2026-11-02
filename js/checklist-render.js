@@ -10,13 +10,29 @@
     window.checklistData = data;
     var accordionHtml = '';
     var subModalsHtml = '';
+    var usedDomIds = Object.create(null);
+
+    function uniqueDomId(id, fallback) {
+      var baseId = id ? String(id) : fallback;
+      var uniqueId = baseId;
+      var suffix = 2;
+
+      while (usedDomIds[uniqueId]) {
+        uniqueId = baseId + '-' + suffix;
+        suffix++;
+      }
+
+      usedDomIds[uniqueId] = true;
+      return uniqueId;
+    }
 
     data.forEach(function (cat) {
       // categoryId 99 の場合は独立サブモーダルとして処理（アコーディオンには追加しない）
       if (cat.categoryId === 99) {
         cat.items.forEach(function(item) {
           if (item.modalContentHtml) {
-            subModalsHtml += '<div class="modal fade" id="' + escapeHtml(item.targetModalId || item.id) + '" tabindex="-1" aria-hidden="true">';
+            var modalId = uniqueDomId(item.targetModalId || item.id, 'modal');
+            subModalsHtml += '<div class="modal fade" id="' + escapeHtml(modalId) + '" tabindex="-1" aria-hidden="true">';
             subModalsHtml += '  <div class="modal-dialog modal-dialog-scrollable">';
             subModalsHtml += '    <div class="modal-content">';
             subModalsHtml +=        prepareLazyImages(item.modalContentHtml);
@@ -43,22 +59,32 @@
       accordionHtml += '      <div id="' + escapeHtml(cat.itemsDivId) + '">';
 
       cat.items.forEach(function (item) {
+        var itemDomId = uniqueDomId(item.id, 'check-item');
+        var hasModalContent = item.modalContentHtml && item.modalContentHtml.trim() !== '';
+        var modalDomId = hasModalContent
+          ? uniqueDomId(item.targetModalId || item.id, itemDomId + '-modal')
+          : '';
+        var modalLabelId = hasModalContent
+          ? uniqueDomId('ModalLabel' + item.id.replace('Check', ''), modalDomId + '-label')
+          : '';
+
         accordionHtml += '        <div class="form-check">';
-        accordionHtml += '          <input class="form-check-input" type="checkbox" value="" id="' + escapeHtml(item.id) + '" name="' + escapeHtml(item.name || item.id) + '">';
-        accordionHtml += '          <label class="form-check-label" for="' + escapeHtml(item.id) + '">';
-        if (item.modalContentHtml && item.modalContentHtml.trim() !== '') {
-          accordionHtml += '            <a href="#' + escapeHtml(item.targetModalId) + '" class="link-primary" data-bs-toggle="modal" data-bs-target="#' + escapeHtml(item.targetModalId) + '" id="' + escapeHtml(item.linkId || ('link-' + item.id)) + '">' + item.labelHtml + '</a>';
+        accordionHtml += '          <input class="form-check-input" type="checkbox" value="" id="' + escapeHtml(itemDomId) + '" name="' + escapeHtml(item.name || itemDomId) + '">';
+        accordionHtml += '          <label class="form-check-label" for="' + escapeHtml(itemDomId) + '">';
+        if (hasModalContent) {
+          var linkDomId = uniqueDomId(item.linkId || ('link-' + item.id), itemDomId + '-link');
+          accordionHtml += '            <a href="#' + escapeHtml(modalDomId) + '" class="link-primary" data-bs-toggle="modal" data-bs-target="#' + escapeHtml(modalDomId) + '" id="' + escapeHtml(linkDomId) + '">' + item.labelHtml + '</a>';
         } else {
-          accordionHtml += '            ' + item.labelHtml;
+          accordionHtml += '          ' + item.labelHtml;
         }
         accordionHtml += '          </label>';
         accordionHtml += '        </div>';
 
-        if (item.modalContentHtml && item.modalContentHtml.trim() !== '') {
-          subModalsHtml += '        <div class="modal fade" id="' + escapeHtml(item.targetModalId) + '" tabindex="-1" aria-labelledby="ModalLabel' + escapeHtml(item.id.replace('Check', '')) + '" aria-hidden="true" data-original-parent="' + escapeHtml(cat.itemsDivId) + '">';
+        if (hasModalContent) {
+          subModalsHtml += '        <div class="modal fade" id="' + escapeHtml(modalDomId) + '" tabindex="-1" aria-labelledby="' + escapeHtml(modalLabelId) + '" aria-hidden="true" data-original-parent="' + escapeHtml(cat.itemsDivId) + '">';
           subModalsHtml += '          <div class="modal-dialog modal-dialog-scrollable">';
           subModalsHtml += '            <div class="modal-content">';
-          subModalsHtml +=                prepareLazyImages(item.modalContentHtml);
+          subModalsHtml +=                prepareModalContent(item.modalContentHtml, modalLabelId);
           subModalsHtml += '            </div>';
           subModalsHtml += '          </div>';
           subModalsHtml += '        </div>';
@@ -87,6 +113,13 @@
     // カスタムイベント発行
     document.dispatchEvent(new CustomEvent('checklistRendered'));
     return true;
+  }
+
+  function prepareModalContent(html, labelId) {
+    var content = html.replace(/(<h[1-6]\b[^>]*\bid=)(["'])[^"']*\2/i, function (match, prefix, quote) {
+      return prefix + quote + escapeHtml(labelId) + quote;
+    });
+    return prepareLazyImages(content);
   }
 
   // モーダル内の画像を遅延読み込み（Lazy Load）形式に変換する関数

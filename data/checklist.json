@@ -230,6 +230,14 @@
                 "modalContentHtml": "<div class=\"modal-header\">\r\n                        <h5 class=\"modal-title kokuban\" id=\"ModalLabel2-6\">乗務員証掲示について</h5>\r\n                        <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\" aria-label=\"Close\"></button>\r\n                      </div>\r\n                      <div class=\"modal-body d-inline-block text-wrap\">\r\n                        <ul>\r\n                          <li>写真が無い面を車内に向けて掲示</li>\r\n                          <img src=\"img/jyomuin_v3.png?v=1752453617\" style=\"cursor: pointer;\">\r\n                          <li>写真がある面を車内に向けて掲示し営業した場合タクセン事案になる</li>\r\n                          <li>アルファードは乗務員証掲示不要</li>\r\n                        </ul>\r\n                      </div>"
             },
             {
+                "id": "Check2-7",
+                "name": "Check2-7",
+                "linkId": "M2-7",
+                "targetModalId": "Modal2-7",
+                "labelHtml": "ETCカード挿入",
+                "modalContentHtml": ""
+            },
+            {
                 "id": "Check2-8",
                 "name": "Check2-8",
                 "linkId": "M2-8",
