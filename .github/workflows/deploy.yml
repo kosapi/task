@@ -26,17 +26,17 @@ jobs:
           SSH_PORT: ${{ secrets.SSH_PORT || '2222' }}
           SSH_USER: ${{ secrets.SSH_USER }}
           SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
-          SSH_TARGET_PATH: ${{ secrets.SSH_TARGET_PATH || '~/web/task' }}
+          SSH_TARGET_PATH: ${{ secrets.SSH_TARGET_PATH || '~/web/teito/task' }}
         run: |
           # 反映先パスの末尾スラッシュを正規化
           TARGET_DIR="${SSH_TARGET_PATH%/}"
 
           echo "Connecting to ${SSH_HOST}:${SSH_PORT} as ${SSH_USER}..."
 
-          # リモート側にターゲットディレクトリが存在しない場合は作成
+          # リモート側にターゲットディレクトリが存在しない場合は作成（旧誤作成 ~/web/task があれば削除）
           sshpass -p "$SSH_PASSWORD" ssh -p "${SSH_PORT}" \
             -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
-            "${SSH_USER}@${SSH_HOST}" "mkdir -p ${TARGET_DIR}"
+            "${SSH_USER}@${SSH_HOST}" "mkdir -p ${TARGET_DIR} && rm -rf ~/web/task"
 
           sshpass -p "$SSH_PASSWORD" rsync -avz \
             -e "ssh -p ${SSH_PORT} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" \
@@ -56,3 +56,4 @@ jobs:
             ./ "${SSH_USER}@${SSH_HOST}:${TARGET_DIR}/"
 
           echo "Deploy completed successfully!"
+
